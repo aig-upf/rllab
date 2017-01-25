@@ -5,6 +5,15 @@
 
 # rllab
 
+Vicenc: This is a fork from the github repo at https://github.com/openai/rllab.git
+
+To keep this updated:
+
+git remote add upstream https://github.com/openai/rllab.git
+git pull upstream master
+
+
+
 rllab is a framework for developing and evaluating reinforcement learning algorithms. It includes a wide range of continuous control tasks plus implementations of the following algorithms:
 
 
