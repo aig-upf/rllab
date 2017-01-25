@@ -11,6 +11,7 @@ Vicenc: This is a fork from the github repo at https://github.com/openai/rllab.g
 To keep this updated:
 
 git remote add upstream https://github.com/openai/rllab.git
+
 git pull upstream master
 
 -------------------------------------------
