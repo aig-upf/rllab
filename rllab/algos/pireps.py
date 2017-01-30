@@ -17,21 +17,22 @@ class PIREPS(BatchPolopt, Serializable):
     References
     ----------
 
+    Parameters:
+        epsilon         Max KL divergence between new policy and old policy.
+
+
+
     """
 
     def __init__(
             self,
             epsilon=0.5,
-            L2_reg_dual=0.,  # 1e-5,
-            L2_reg_loss=0.,
             max_opt_itr=50,
             optimizer=scipy.optimize.fmin_l_bfgs_b,
             **kwargs):
         """
 
         :param epsilon: Max KL divergence between new policy and old policy.
-        :param L2_reg_dual: Dual regularization
-        :param L2_reg_loss: Loss regularization
         :param max_opt_itr: Maximum number of batch optimization iterations.
         :param optimizer: Module path to the optimizer. It must support the same interface as
         scipy.optimize.fmin_l_bfgs_b.
@@ -40,8 +41,6 @@ class PIREPS(BatchPolopt, Serializable):
         Serializable.quick_init(self, locals())
         super(PIREPS, self).__init__(**kwargs)
         self.epsilon = epsilon
-        self.L2_reg_dual = L2_reg_dual
-        self.L2_reg_loss = L2_reg_loss
         self.max_opt_itr = max_opt_itr
         self.optimizer = optimizer
         self.opt_info = None
