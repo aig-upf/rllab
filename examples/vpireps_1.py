@@ -1,4 +1,3 @@
-
 #from rllab.envs.box2d.cartpole_env import CartpoleEnv
 from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
 from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
