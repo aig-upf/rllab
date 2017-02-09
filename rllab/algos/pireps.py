@@ -52,7 +52,6 @@ class PIREPS(BatchPolopt, Serializable):
 
     @overrides
     def init_opt(self):
-        is_recurrent = int(self.policy.recurrent)
 
         # Init dual param values
         self.param_eta = 15.
@@ -62,26 +61,24 @@ class PIREPS(BatchPolopt, Serializable):
         # Theano vars
         obs_var = self.env.observation_space.new_tensor_variable(
             'obs',
-            extra_dims=1 + is_recurrent,
-        )
-        action_var = self.env.action_space.new_tensor_variable(
-            'action',
-            extra_dims=1 + is_recurrent,
-        )
+            extra_dims=1,
+        )   # corresponds to state_features
         rewards = ext.new_tensor(
             'rewards',
-            ndim=1 + is_recurrent,
+            ndim=1,
             dtype=theano.config.floatX,
+        )   # corresponds to rewards
+        log_prob = ext.new_tensor(
+            'log_prob',
+            ndim=1,
+            dtype=theano.config.floatX,
+        )   # corresponds to log_prob
+
+        action_var = self.env.action_space.new_tensor_variable(
+            'action',
+            extra_dims=1,
         )
-        # Feature difference variable representing the difference in feature
-        # value of the next observation and the current observation \phi(s') -
-        # \phi(s).
-        feat_diff = ext.new_tensor(
-            'feat_diff',
-            ndim=2 + is_recurrent,
-            dtype=theano.config.floatX
-        )
-        param_v = TT.vector('param_v')
+        param_theta = TT.vector('param_theta')
         param_eta = TT.scalar('eta')
 
         valid_var = TT.matrix('valid')
@@ -89,7 +86,7 @@ class PIREPS(BatchPolopt, Serializable):
         state_info_vars = {
             k: ext.new_tensor(
                 k,
-                ndim=2 + is_recurrent,
+                ndim=2,
                 dtype=theano.config.floatX
             ) for k in self.policy.state_info_keys
         }
@@ -135,7 +132,7 @@ class PIREPS(BatchPolopt, Serializable):
         old_dist_info_vars = {
             k: ext.new_tensor(
                 'old_%s' % k,
-                ndim=2 + is_recurrent,
+                ndim=2,
                 dtype=theano.config.floatX
             ) for k in dist.dist_info_keys
             }
@@ -151,14 +148,10 @@ class PIREPS(BatchPolopt, Serializable):
 
         # Dual-related symbolics
         # Symbolic dual
-        R = 'rewards'
-        log_prob = 'logprob'
-        phi_mat = 'stateFeatures'
         N = 'numsamples'
-
-        V = phi_mat * param_theta
-        V_hat = phi_hat * param_theta
-        adv = (R - V + log_prob*param_eta)
+        V = TT.dot(obs_var, param_theta)
+        V_hat = TT.mean(obs_var) * param_theta
+        adv = (rewards - V + log_prob*param_eta)
         max_adv = TT.max(adv)
         dual = (param_eta+1) * TT.log(
                     1/N * TT.sum(
@@ -168,15 +161,15 @@ class PIREPS(BatchPolopt, Serializable):
         dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
 
         # Symbolic dual gradient
-        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_v])
+        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_theta])
 
         # Eval functions.
         f_dual = ext.compile_function(
-            inputs=[rewards, feat_diff] + state_info_vars_list + [param_eta, param_v],
+            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_v],
             outputs=dual
         )
         f_dual_grad = ext.compile_function(
-            inputs=[rewards, feat_diff] + state_info_vars_list + [param_eta, param_v],
+            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_v],
             outputs=dual_grad
         )
 
