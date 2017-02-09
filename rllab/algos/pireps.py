@@ -20,8 +20,10 @@ class PIREPS(BatchPolopt, Serializable):
     Parameters:
         epsilon         Max KL divergence between new policy and old policy.
 
-
-
+    Dual PIREPS function related variables:
+        param_eta       dual variable : optimal dual epsilon
+        param_theta     dual variable : multiplies features
+        qprob           probability of sample trajectory
     """
 
     def __init__(
@@ -52,7 +54,7 @@ class PIREPS(BatchPolopt, Serializable):
         # Init dual param values
         self.param_eta = 15.
         # Adjust for linear feature vector.
-        self.param_v = np.random.rand(self.env.observation_space.flat_dim * 2 + 4)
+        self.param_theta = np.random.rand(self.env.observation_space.flat_dim * 2 + 4)
 
         # Theano vars
         obs_var = self.env.observation_space.new_tensor_variable(
