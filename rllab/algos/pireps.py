@@ -21,9 +21,12 @@ class PIREPS(BatchPolopt, Serializable):
         epsilon         Max KL divergence between new policy and old policy.
 
     Dual PIREPS function related variables:
-        param_eta       dual variable : optimal dual epsilon
-        param_theta     dual variable : multiplies features
-        qprob           probability of sample trajectory
+        param_eta       dual variable : optimal dual epsilon : 1x1
+        param_theta     dual variable : multiplies features : nx1
+        qprob           prob of sample trajectory (cumsum policy prob) : Nx1
+        rewards         sum of rewards : Nx1
+        features        features x_0 : Nxn
+
     """
 
     def __init__(
@@ -102,14 +105,9 @@ class PIREPS(BatchPolopt, Serializable):
         delta_v = rewards + TT.dot(feat_diff, param_v)
 
         # Policy loss (negative because we minimize)
-        if is_recurrent:
-            loss = - TT.sum(logli * TT.exp(
-                delta_v / param_eta - TT.max(delta_v / param_eta)
-            ) * valid_var) / TT.sum(valid_var)
-        else:
-            loss = - TT.mean(logli * TT.exp(
-                delta_v / param_eta - TT.max(delta_v / param_eta)
-            ))
+        loss = - TT.mean(logli * TT.exp(
+            delta_v / param_eta - TT.max(delta_v / param_eta)
+        ))
 
         # Add regularization to loss.
         reg_params = self.policy.get_params(regularizable=True)
@@ -121,15 +119,9 @@ class PIREPS(BatchPolopt, Serializable):
         loss_grad = TT.grad(
             loss, self.policy.get_params(trainable=True))
 
-        if is_recurrent:
-            recurrent_vars = [valid_var]
-        else:
-            recurrent_vars = []
-
         input = [rewards, obs_var, feat_diff,
-                 action_var] + state_info_vars_list + recurrent_vars + [param_eta, param_v]
-        # if is_recurrent:
-        #     input +=
+                 action_var] + state_info_vars_list + [param_eta, param_v]
+
         f_loss = ext.compile_function(
             inputs=input,
             outputs=loss,
@@ -149,50 +141,42 @@ class PIREPS(BatchPolopt, Serializable):
             }
         old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
 
-        if is_recurrent:
-            mean_kl = TT.sum(dist.kl_sym(old_dist_info_vars, dist_info_vars) * valid_var) / TT.sum(valid_var)
-        else:
-            mean_kl = TT.mean(dist.kl_sym(old_dist_info_vars, dist_info_vars))
+        mean_kl = TT.mean(dist.kl_sym(old_dist_info_vars, dist_info_vars))
 
         f_kl = ext.compile_function(
-            inputs=[obs_var, action_var] + state_info_vars_list + old_dist_info_vars_list + recurrent_vars,
+            inputs=[obs_var, action_var] + state_info_vars_list +
+            old_dist_info_vars_list,
             outputs=mean_kl,
         )
 
         # Dual-related symbolics
         # Symbolic dual
-        if is_recurrent:
-            dual = param_eta * self.epsilon + \
-                   param_eta * TT.log(
-                       TT.sum(
-                           TT.exp(
-                               delta_v / param_eta - TT.max(delta_v / param_eta)
-                           ) * valid_var
-                       ) / TT.sum(valid_var)
-                   ) + param_eta * TT.max(delta_v / param_eta)
-        else:
-            dual = param_eta * self.epsilon + \
-                   param_eta * TT.log(
-                       TT.mean(
-                           TT.exp(
-                               delta_v / param_eta - TT.max(delta_v / param_eta)
-                           )
-                       )
-                   ) + param_eta * TT.max(delta_v / param_eta)
-        # Add L2 regularization.
-        dual += self.L2_reg_dual * \
-                (TT.square(param_eta) + TT.square(1 / param_eta))
+        R = 'rewards'
+        log_prob = 'logprob'
+        phi_mat = 'stateFeatures'
+        N = 'numsamples'
+
+        V = phi_mat * param_theta
+        V_hat = phi_hat * param_theta
+        adv = (R - V + log_prob*param_eta)
+        max_adv = TT.max(adv)
+        dual = (param_eta+1) * TT.log(
+                    1/N * TT.sum(
+                        TT.exp(adv)
+                    )
+                )
+        dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
 
         # Symbolic dual gradient
         dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_v])
 
         # Eval functions.
         f_dual = ext.compile_function(
-            inputs=[rewards, feat_diff] + state_info_vars_list + recurrent_vars + [param_eta, param_v],
+            inputs=[rewards, feat_diff] + state_info_vars_list + [param_eta, param_v],
             outputs=dual
         )
         f_dual_grad = ext.compile_function(
-            inputs=[rewards, feat_diff] + state_info_vars_list + recurrent_vars + [param_eta, param_v],
+            inputs=[rewards, feat_diff] + state_info_vars_list + [param_eta, param_v],
             outputs=dual_grad
         )
 
@@ -220,22 +204,14 @@ class PIREPS(BatchPolopt, Serializable):
         agent_infos = samples_data["agent_infos"]
         state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
-        if self.policy.recurrent:
-            recurrent_vals = [samples_data["valids"]]
-        else:
-            recurrent_vals = []
         # Compute sample Bellman error.
         feat_diff = []
         for path in samples_data['paths']:
             feats = self._features(path)
             feats = np.vstack([feats, np.zeros(feats.shape[1])])
             feat_diff.append(feats[1:] - feats[:-1])
-        if self.policy.recurrent:
-            max_path_length = max([len(path["advantages"]) for path in samples_data["paths"]])
-            # pad feature diffs
-            feat_diff = np.array([tensor_utils.pad_tensor(fd, max_path_length) for fd in feat_diff])
-        else:
-            feat_diff = np.vstack(feat_diff)
+
+        feat_diff = np.vstack(feat_diff)
 
         #################
         # Optimize dual #
@@ -251,14 +227,14 @@ class PIREPS(BatchPolopt, Serializable):
         def eval_dual(input):
             param_eta = input[0]
             param_v = input[1:]
-            val = f_dual(*([rewards, feat_diff] + state_info_list + recurrent_vals + [param_eta, param_v]))
+            val = f_dual(*([rewards, feat_diff] + state_info_list + [param_eta, param_v]))
             return val.astype(np.float64)
 
         # Set BFGS gradient eval function
         def eval_dual_grad(input):
             param_eta = input[0]
             param_v = input[1:]
-            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + recurrent_vals + [param_eta, param_v]))
+            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + [param_eta, param_v]))
             eta_grad = np.float(grad[0])
             v_grad = grad[1]
             return np.hstack([eta_grad, v_grad])
@@ -294,7 +270,7 @@ class PIREPS(BatchPolopt, Serializable):
         f_loss = self.opt_info["f_loss"]
         f_loss_grad = self.opt_info['f_loss_grad']
         input = [rewards, observations, feat_diff,
-                 actions] + state_info_list + recurrent_vals + [self.param_eta, self.param_v]
+                 actions] + state_info_list + [self.param_eta, self.param_v]
 
         # Set loss eval function
         def eval_loss(params):
@@ -321,7 +297,7 @@ class PIREPS(BatchPolopt, Serializable):
 
         f_kl = self.opt_info['f_kl']
 
-        mean_kl = f_kl(*([observations, actions] + state_info_list + dist_info_list + recurrent_vals)).astype(
+        mean_kl = f_kl(*([observations, actions] + state_info_list + dist_info_list)).astype(
             np.float64)
 
         logger.log('eta %f -> %f' % (eta_before, self.param_eta))
