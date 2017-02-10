@@ -41,6 +41,7 @@ class NPO(BatchPolopt):
             extra_dims=1 + is_recurrent,
         )
         # we need rewards instead of advantages!!!!!
+        # (action, observation, e^W)
         advantage_var = ext.new_tensor(
             'advantage',
             ndim=1 + is_recurrent,
@@ -73,6 +74,7 @@ class NPO(BatchPolopt):
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         lr = dist.likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
+        # q(tau)/p_theta(tau)
         # This should be the Cross-Entropy!!!!
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
