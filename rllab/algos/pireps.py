@@ -97,7 +97,7 @@ class PIREPS(BatchPolopt, Serializable):
         }
         state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
 
-        # Policy-related symbolics
+        # Policy-related symbolics (should be moved to the linear Gaussian policy class
         # taken from LinearGaussianMLLearner < Learner.SupervisedLearner.LinearFeatureFunctionMLLearner
         # see also "A Survey on Policy Search for Robotics" Found & Trends
         # pag. 137 Eqs(4.3)(4.4)
@@ -105,6 +105,7 @@ class PIREPS(BatchPolopt, Serializable):
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         dist = self.policy.distribution
 
+        # MEAN UPDATE
         # normalize input and output data
         obs_var = obs_var/obs_var.sum(axis=1).reshape((obs_var.shape[0],1))
         action_var = action_var/action_var.sum(axis=1).reshape((action_var.shape[0],1))
@@ -117,11 +118,10 @@ class PIREPS(BatchPolopt, Serializable):
         k = tetha_L(:,0)        # bias
         K = tetha_L(:,1:)       # linear coef
 
-        input = [obs_var, action_var, weights] + state_info_vars_list 
-        f_loss_grad = ext.compile_function(
-            inputs=input,
-            outputs=[k, K]
-        )
+        # COVARIANCE UPDATE
+        #....
+
+        input = [obs_var, action_var, weights] + state_info_vars_list
 
         # Debug prints
         old_dist_info_vars = {
