@@ -23,7 +23,7 @@ class LinearGaussianPolicy(Policy, Serializable):
         action_dim = env_spec.action_space.flat_dim
         self._dist = DiagonalGaussian(action_dim)
 
-        super(LinearGaussianPolicy, self).__init__(env_spec=env_spec)
+        super(LinearGaussianPolicy, self).__init__(env_spec)
 
         obs_var = env_spec.observation_space.new_tensor_variable(
             'observations',

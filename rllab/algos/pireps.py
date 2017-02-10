@@ -73,11 +73,16 @@ class PIREPS(BatchPolopt, Serializable):
             ndim=1,
             dtype=theano.config.floatX,
         )   # corresponds to log_prob
-
+        weights = ext.new_tensor(
+            'weights',
+            ndim=1,
+            dtype=theano.config.floatX,
+        )   # corresponds to weights 
         action_var = self.env.action_space.new_tensor_variable(
             'action',
             extra_dims=1,
-        )
+        )   # corresponds to u_star
+
         param_theta = TT.vector('param_theta')
         param_eta = TT.scalar('eta')
 
@@ -93,39 +98,29 @@ class PIREPS(BatchPolopt, Serializable):
         state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
 
         # Policy-related symbolics
+        # taken from LinearGaussianMLLearner < Learner.SupervisedLearner.LinearFeatureFunctionMLLearner
+        # see also "A Survey on Policy Search for Robotics" Found & Trends
+        # pag. 137 Eqs(4.3)(4.4)
+        # requires features Nxd, u_star Nxu and weights Nx1
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         dist = self.policy.distribution
-        # log of the policy dist
-        logli = dist.log_likelihood_sym(action_var, dist_info_vars)
 
-        # Symbolic sample Bellman error
-        delta_v = rewards + TT.dot(feat_diff, param_v)
+        # normalize input and output data
+        obs_var = obs_var/obs_var.sum(axis=1).reshape((obs_var.shape[0],1))
+        action_var = action_var/action_var.sum(axis=1).reshape((action_var.shape[0],1))
 
-        # Policy loss (negative because we minimize)
-        loss = - TT.mean(logli * TT.exp(
-            delta_v / param_eta - TT.max(delta_v / param_eta)
-        ))
+        S_hat = [TT.ones(self.batch_size, 1), obs_var];
+        SW = (S_hat*weights).T
+        theta_L = (SW.T*S_hat) \ SW.T * action_var;
+        # maybe regularize : regularization * diag([0;ones(dimInput,1)]
 
-        # Add regularization to loss.
-        reg_params = self.policy.get_params(regularizable=True)
-        loss += self.L2_reg_loss * TT.sum(
-            [TT.mean(TT.square(param)) for param in reg_params]
-        ) / len(reg_params)
+        k = tetha_L(:,0)        # bias
+        K = tetha_L(:,1:)       # linear coef
 
-        # Policy loss gradient.
-        loss_grad = TT.grad(
-            loss, self.policy.get_params(trainable=True))
-
-        input = [rewards, obs_var, feat_diff,
-                 action_var] + state_info_vars_list + [param_eta, param_v]
-
-        f_loss = ext.compile_function(
-            inputs=input,
-            outputs=loss,
-        )
+        input = [obs_var, action_var, weights] + state_info_vars_list 
         f_loss_grad = ext.compile_function(
             inputs=input,
-            outputs=loss_grad,
+            outputs=[k, K]
         )
 
         # Debug prints
@@ -138,16 +133,9 @@ class PIREPS(BatchPolopt, Serializable):
             }
         old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
 
-        mean_kl = TT.mean(dist.kl_sym(old_dist_info_vars, dist_info_vars))
-
-        f_kl = ext.compile_function(
-            inputs=[obs_var, action_var] + state_info_vars_list +
-            old_dist_info_vars_list,
-            outputs=mean_kl,
-        )
-
         # Dual-related symbolics
         # Symbolic dual
+        # Taken from EntropyREPS < Learner.EpisodicRL.EpisodicREPS
         N = 'numsamples'
         V = TT.dot(obs_var, param_theta)
         V_hat = TT.mean(obs_var) * param_theta
@@ -165,11 +153,11 @@ class PIREPS(BatchPolopt, Serializable):
 
         # Eval functions.
         f_dual = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_v],
+            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
             outputs=dual
         )
         f_dual_grad = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_v],
+            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
             outputs=dual_grad
         )
 
@@ -209,31 +197,29 @@ class PIREPS(BatchPolopt, Serializable):
         #################
         # Optimize dual #
         #################
-
         # Here we need to optimize dual through BFGS in order to obtain \eta
-        # value. Initialize dual function g(\theta, v). \eta > 0
-        # First eval delta_v
+        # and \theta, which in turn will provide the weighting of each sample
         f_dual = self.opt_info['f_dual']
         f_dual_grad = self.opt_info['f_dual_grad']
 
         # Set BFGS eval function
         def eval_dual(input):
             param_eta = input[0]
-            param_v = input[1:]
-            val = f_dual(*([rewards, feat_diff] + state_info_list + [param_eta, param_v]))
+            param_theta = input[1:]
+            val = f_dual(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
             return val.astype(np.float64)
 
         # Set BFGS gradient eval function
         def eval_dual_grad(input):
             param_eta = input[0]
-            param_v = input[1:]
-            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + [param_eta, param_v]))
+            param_theta = input[1:]
+            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
             eta_grad = np.float(grad[0])
             v_grad = grad[1]
             return np.hstack([eta_grad, v_grad])
 
         # Initial BFGS parameter values.
-        x0 = np.hstack([self.param_eta, self.param_v])
+        x0 = np.hstack([self.param_eta, self.param_theta])
 
         # Set parameter boundaries: \eta>0, v unrestricted.
         bounds = [(-np.inf, np.inf) for _ in x0]
@@ -254,16 +240,17 @@ class PIREPS(BatchPolopt, Serializable):
 
         # Optimal values have been obtained
         self.param_eta = params_ast[0]
-        self.param_v = params_ast[1:]
+        self.param_theta = params_ast[1:]
 
         ###################
         # Optimize policy #
         ###################
+        # this should be replace using weighted ML from the previous weights
         cur_params = self.policy.get_param_values(trainable=True)
         f_loss = self.opt_info["f_loss"]
         f_loss_grad = self.opt_info['f_loss_grad']
         input = [rewards, observations, feat_diff,
-                 actions] + state_info_list + [self.param_eta, self.param_v]
+                 actions] + state_info_list + [self.param_eta, self.param_theta]
 
         # Set loss eval function
         def eval_loss(params):
