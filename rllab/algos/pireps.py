@@ -206,14 +206,14 @@ class PIREPS(BatchPolopt, Serializable):
         def eval_dual(input):
             param_eta = input[0]
             param_theta = input[1:]
-            val = f_dual(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
+            val = f_dual(*([returns, var_obs, logQ] + state_info_list + [param_eta, param_theta]))
             return val.astype(np.float64)
 
         # Set BFGS gradient eval function
         def eval_dual_grad(input):
             param_eta = input[0]
             param_theta = input[1:]
-            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
+            grad = f_dual_grad(*([returns, feat_diff] + state_info_list + [param_eta, param_theta]))
             eta_grad = np.float(grad[0])
             v_grad = grad[1]
             return np.hstack([eta_grad, v_grad])
