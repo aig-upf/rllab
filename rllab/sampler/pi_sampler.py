@@ -15,5 +15,6 @@ class PISampler(BatchSampler):
 
         # add PI stuff here...
         samples_data = super(PISampler,self).process_samples(itr,paths)
+        print('processing samples in PISampler')
 
         return samples_data
