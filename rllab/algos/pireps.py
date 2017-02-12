@@ -110,13 +110,13 @@ class PIREPS(BatchPolopt, Serializable):
         obs_var = obs_var/obs_var.sum(axis=1).reshape((obs_var.shape[0],1))
         action_var = action_var/action_var.sum(axis=1).reshape((action_var.shape[0],1))
 
-        S_hat = [TT.ones(self.batch_size, 1), obs_var];
-        SW = (S_hat*weights).T
-        theta_L = (SW.T*S_hat) \ SW.T * action_var;
+        #S_hat = [TT.ones(self.batch_size, 1), obs_var];
+        #SW = (S_hat*weights).T
+        #theta_L = (SW.T*S_hat) \ SW.T * action_var;
         # maybe regularize : regularization * diag([0;ones(dimInput,1)]
 
-        k = tetha_L(:,0)        # bias
-        K = tetha_L(:,1:)       # linear coef
+        #k = tetha_L(:,0)        # bias
+        #K = tetha_L(:,1:)       # linear coef
 
         # COVARIANCE UPDATE
         #....
@@ -141,33 +141,33 @@ class PIREPS(BatchPolopt, Serializable):
         V_hat = TT.mean(obs_var) * param_theta
         adv = (rewards - V + log_prob*param_eta)
         max_adv = TT.max(adv)
-        dual = (param_eta+1) * TT.log(
-                    1/N * TT.sum(
-                        TT.exp(adv)
-                    )
-                )
-        dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
-
-        # Symbolic dual gradient
-        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_theta])
-
-        # Eval functions.
-        f_dual = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
-            outputs=dual
-        )
-        f_dual_grad = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
-            outputs=dual_grad
-        )
-
-        self.opt_info = dict(
-            f_loss_grad=f_loss_grad,
-            f_loss=f_loss,
-            f_dual=f_dual,
-            f_dual_grad=f_dual_grad,
-            f_kl=f_kl
-        )
+#        dual = (param_eta+1) * TT.log(
+#                    1/N * TT.sum(
+#                        TT.exp(adv)
+#                    )
+#                )
+#        dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
+#
+#        # Symbolic dual gradient
+#        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_theta])
+#
+#        # Eval functions.
+#        f_dual = ext.compile_function(
+#            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
+#            outputs=dual
+#        )
+#        f_dual_grad = ext.compile_function(
+#            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
+#            outputs=dual_grad
+#        )
+#
+#        self.opt_info = dict(
+#            f_loss_grad=f_loss_grad,
+#            f_loss=f_loss,
+#            f_dual=f_dual,
+#            f_dual_grad=f_dual_grad,
+#            f_kl=f_kl
+#        )
 
     def _features(self, path):
         o = np.clip(path["observations"], -10, 10)
