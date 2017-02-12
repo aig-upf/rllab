@@ -97,11 +97,12 @@ class PIREPS(BatchPolopt, Serializable):
         }
         state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
 
+        ##########################
         # Policy-related symbolics
+        ##########################
         # taken from LinearGaussianMLLearner < Learner.SupervisedLearner.LinearFeatureFunctionMLLearner
         # see also "A Survey on Policy Search for Robotics" Found & Trends
-        # pag. 137 Eqs(4.3)(4.4)
-        # requires features Nxd, u_star Nxu and weights Nx1
+        # pag. 137 Eqs(4.3)(4.4)        requires features Nxd, u_star Nxu and weights Nx1
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         dist = self.policy.distribution
 
@@ -133,8 +134,9 @@ class PIREPS(BatchPolopt, Serializable):
             }
         old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
 
+        ########################
         # Dual-related symbolics
-        # Symbolic dual
+        ########################
         # Taken from EntropyREPS < Learner.EpisodicRL.EpisodicREPS
         N = 'numsamples'
         V = TT.dot(obs_var, param_theta)
