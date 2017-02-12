@@ -48,6 +48,7 @@ class BaseSampler(Sampler):
     def process_samples(self, itr, paths):
         baselines = []
         returns = []
+        print('processing samples in BaseSampler')
 
         if hasattr(self.algo.baseline, "predict_n"):
             all_path_baselines = self.algo.baseline.predict_n(paths)
@@ -69,6 +70,28 @@ class BaseSampler(Sampler):
             np.concatenate(baselines),
             np.concatenate(returns)
         )
+
+        #i =0
+        #for path in paths:
+        #    print('New rollout contains ' + str(len(path["rewards"]))+ ' rewards')
+        #    print(path["rewards"])
+        #    i += 1
+        #print("total " + str(i) +" paths")
+        #lrew = tensor_utils.concat_tensor_list([path["rewards"] for path in paths])
+        #print(lrew.shape)
+        #print(type(lrew))
+        #print(lrew)
+
+        #for path in paths:
+        #    print('New rollout actions')
+        #    print(path["actions"])
+        #    i += 1
+        #print("total " + str(i) +" paths")
+        #lact = tensor_utils.concat_tensor_list([path["actions"] for path in paths])
+        #print(lact.shape)
+        #print(type(lact))
+        #print(lact)
+
 
         if not self.algo.policy.recurrent:
             observations = tensor_utils.concat_tensor_list([path["observations"] for path in paths])

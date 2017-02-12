@@ -118,8 +118,15 @@ class BatchPolopt(RLAlgorithm):
         for itr in range(self.current_itr, self.n_itr):
             with logger.prefix('itr #%d | ' % itr):
                 paths = self.sampler.obtain_samples(itr)
+
+                # paths is a list of length number of rollouts
+                # where each element is a dictionary
+               
                 samples_data = self.sampler.process_samples(itr, paths)
-                print(samples_data["rewards"].shape)
+
+                # samples_data is a dictionary in which the paths
+                # have been concatenated
+
                 self.log_diagnostics(paths)
                 self.optimize_policy(itr, samples_data)
                 logger.log("saving snapshot...")

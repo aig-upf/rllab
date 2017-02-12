@@ -184,6 +184,12 @@ class PIREPS(BatchPolopt, Serializable):
         rewards = samples_data['rewards']
         actions = samples_data['actions']
         observations = samples_data['observations']
+        V = samples_data['V']
+
+        print("The state cost in optimize_policy")
+        print(V.shape)
+        print(V)
+        print("--------------")
 
         agent_infos = samples_data["agent_infos"]
         state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
