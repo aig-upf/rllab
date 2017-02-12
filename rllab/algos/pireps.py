@@ -100,29 +100,30 @@ class PIREPS(BatchPolopt, Serializable):
         ##########################
         # Policy-related symbolics
         ##########################
+        # Policy-related symbolics (should be moved to the linear Gaussian policy class
         # taken from LinearGaussianMLLearner < Learner.SupervisedLearner.LinearFeatureFunctionMLLearner
         # see also "A Survey on Policy Search for Robotics" Found & Trends
         # pag. 137 Eqs(4.3)(4.4)        requires features Nxd, u_star Nxu and weights Nx1
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         dist = self.policy.distribution
 
+        # MEAN UPDATE
         # normalize input and output data
         obs_var = obs_var/obs_var.sum(axis=1).reshape((obs_var.shape[0],1))
         action_var = action_var/action_var.sum(axis=1).reshape((action_var.shape[0],1))
 
-        S_hat = [TT.ones(self.batch_size, 1), obs_var];
-        SW = (S_hat*weights).T
-        theta_L = (SW.T*S_hat) \ SW.T * action_var;
+        #S_hat = [TT.ones(self.batch_size, 1), obs_var];
+        #SW = (S_hat*weights).T
+        #theta_L = (SW.T*S_hat) \ SW.T * action_var;
         # maybe regularize : regularization * diag([0;ones(dimInput,1)]
 
-        k = tetha_L(:,0)        # bias
-        K = tetha_L(:,1:)       # linear coef
+        #k = tetha_L(:,0)        # bias
+        #K = tetha_L(:,1:)       # linear coef
 
-        input = [obs_var, action_var, weights] + state_info_vars_list 
-        f_loss_grad = ext.compile_function(
-            inputs=input,
-            outputs=[k, K]
-        )
+        # COVARIANCE UPDATE
+        #....
+
+        input = [obs_var, action_var, weights] + state_info_vars_list
 
         # Debug prints
         old_dist_info_vars = {
@@ -143,33 +144,33 @@ class PIREPS(BatchPolopt, Serializable):
         V_hat = TT.mean(obs_var) * param_theta
         adv = (rewards - V + log_prob*param_eta)
         max_adv = TT.max(adv)
-        dual = (param_eta+1) * TT.log(
-                    1/N * TT.sum(
-                        TT.exp(adv)
-                    )
-                )
-        dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
-
-        # Symbolic dual gradient
-        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_theta])
-
-        # Eval functions.
-        f_dual = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
-            outputs=dual
-        )
-        f_dual_grad = ext.compile_function(
-            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
-            outputs=dual_grad
-        )
-
-        self.opt_info = dict(
-            f_loss_grad=f_loss_grad,
-            f_loss=f_loss,
-            f_dual=f_dual,
-            f_dual_grad=f_dual_grad,
-            f_kl=f_kl
-        )
+#        dual = (param_eta+1) * TT.log(
+#                    1/N * TT.sum(
+#                        TT.exp(adv)
+#                    )
+#                )
+#        dual += param_eta*self.epsilon + V_hat + (param_eta+1)*max_adv
+#
+#        # Symbolic dual gradient
+#        dual_grad = TT.grad(cost=dual, wrt=[param_eta, param_theta])
+#
+#        # Eval functions.
+#        f_dual = ext.compile_function(
+#            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
+#            outputs=dual
+#        )
+#        f_dual_grad = ext.compile_function(
+#            inputs=[rewards, ] + state_info_vars_list + [param_eta, param_theta],
+#            outputs=dual_grad
+#        )
+#
+#        self.opt_info = dict(
+#            f_loss_grad=f_loss_grad,
+#            f_loss=f_loss,
+#            f_dual=f_dual,
+#            f_dual_grad=f_dual_grad,
+#            f_kl=f_kl
+#        )
 
     def _features(self, path):
         o = np.clip(path["observations"], -10, 10)
@@ -208,14 +209,14 @@ class PIREPS(BatchPolopt, Serializable):
         def eval_dual(input):
             param_eta = input[0]
             param_theta = input[1:]
-            val = f_dual(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
+            val = f_dual(*([returns, var_obs, logQ] + state_info_list + [param_eta, param_theta]))
             return val.astype(np.float64)
 
         # Set BFGS gradient eval function
         def eval_dual_grad(input):
             param_eta = input[0]
             param_theta = input[1:]
-            grad = f_dual_grad(*([rewards, feat_diff] + state_info_list + [param_eta, param_theta]))
+            grad = f_dual_grad(*([returns, feat_diff] + state_info_list + [param_eta, param_theta]))
             eta_grad = np.float(grad[0])
             v_grad = grad[1]
             return np.hstack([eta_grad, v_grad])

@@ -2,6 +2,7 @@ import numpy as np
 from rllab.misc import tensor_utils
 import time
 
+from pprint import pprint
 
 def rollout(env, agent, max_path_length=np.inf, animated=False, speedup=1):
     observations = []
@@ -17,6 +18,7 @@ def rollout(env, agent, max_path_length=np.inf, animated=False, speedup=1):
     while path_length < max_path_length:
         a, agent_info = agent.get_action(o)
         next_o, r, d, env_info = env.step(a)
+        #print(type(o))
         observations.append(env.observation_space.flatten(o))
         rewards.append(r)
         actions.append(env.action_space.flatten(a))
@@ -32,6 +34,11 @@ def rollout(env, agent, max_path_length=np.inf, animated=False, speedup=1):
             time.sleep(timestep / speedup)
     if animated:
         return
+
+    #print(type(observations))
+    #pprint(observations)
+    #pprint(tensor_utils.stack_tensor_list(observations))
+    #print(type(tensor_utils.stack_tensor_list(observations)))
 
     return dict(
         observations=tensor_utils.stack_tensor_list(observations),
