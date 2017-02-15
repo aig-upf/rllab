@@ -13,13 +13,13 @@ class PISampler(BatchSampler):
 
     def process_samples(self, itr, paths):
 
-        # add PI stuff here...
         samples_data = super(PISampler,self).process_samples(itr,paths)
 
+        # add PI stuff here...
         print('processing samples in PISampler----------')
 
         # matrix of V state costs
-        # if rollout does not reach horizon reward is zero-padded
+        # for the moment, zero pad rewards if rollout does not reach horizon 
         N = int(self.algo.batch_size/self.algo.max_path_length)
         # N is number of rollouts
         T = self.algo.max_path_length
@@ -27,10 +27,9 @@ class PISampler(BatchSampler):
         V = np.zeros((N,T))
         print(V.shape)
         for i in range(0,N) :
-            print(paths[i]["rewards"].size)
+            #print(paths[i]["rewards"].size)
             V[i,0:paths[i]["rewards"].size] = paths[i]["rewards"]
 
-        print('bye')
         samples_data["V"] = V
 
         return samples_data
