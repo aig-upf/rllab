@@ -27,9 +27,11 @@ class PISampler(BatchSampler):
         V = np.zeros((N,T))
         print(V.shape)
         for i in range(0,N) :
-            #print(paths[i]["rewards"].size)
-            V[i,0:paths[i]["rewards"].size] = paths[i]["rewards"]
+            #print(paths[i]["rewards"])
+            V[i,0:paths[i]["rewards"].size] = np.exp(-paths[i]["rewards"])
 
+        #print(V)
+        print("bye")
         samples_data["V"] = V
 
         return samples_data

@@ -63,16 +63,11 @@ class PIREPS(BatchPolopt, Serializable):
             'obs',
             extra_dims=1,
         )   # corresponds to state_features
-        rewards = ext.new_tensor(
-            'rewards',
+        state_cost_var = ext.new_tensor(
+            'state_cost',
             ndim=1,
             dtype=theano.config.floatX,
-        )   # corresponds to rewards
-        log_prob = ext.new_tensor(
-            'log_prob',
-            ndim=1,
-            dtype=theano.config.floatX,
-        )   # corresponds to log_prob
+        )   # corresponds to V
         weights = ext.new_tensor(
             'weights',
             ndim=1,
@@ -85,8 +80,6 @@ class PIREPS(BatchPolopt, Serializable):
 
         param_theta = TT.vector('param_theta')
         param_eta = TT.scalar('eta')
-
-        valid_var = TT.matrix('valid')
 
         state_info_vars = {
             k: ext.new_tensor(
@@ -106,6 +99,9 @@ class PIREPS(BatchPolopt, Serializable):
         # pag. 137 Eqs(4.3)(4.4)        requires features Nxd, u_star Nxu and weights Nx1
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         dist = self.policy.distribution
+        
+        # importance sampler distribution
+        logq = dist.log_likelihood_sym(action_var, dist_info_vars)
 
         # MEAN UPDATE
         # normalize input and output data
