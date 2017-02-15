@@ -218,8 +218,15 @@ class REPS(BatchPolopt, Serializable):
         observations = samples_data['observations']
 
         agent_infos = samples_data["agent_infos"]
+        print(agent_infos)        
         state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
+
+        # a list of arrays Nxu containing mean and log_std of actions at each time-step
+        print(dist_info_list[0].shape)
+        print(dist_info_list[1].shape)
+        print(dist_info_list[2].shape)
+
         if self.policy.recurrent:
             recurrent_vals = [samples_data["valids"]]
         else:

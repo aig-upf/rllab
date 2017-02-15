@@ -7,7 +7,7 @@ import theano.tensor as TT
 from rllab.optimizers.penalty_lbfgs_optimizer import PenaltyLbfgsOptimizer
 
 
-class NPO(BatchPolopt):
+class NPIREPS(BatchPolopt):
     """
     Natural Policy Optimization.
     """
@@ -27,26 +27,36 @@ class NPO(BatchPolopt):
         self.optimizer = optimizer
         self.step_size = step_size
         self.truncate_local_is_ratio = truncate_local_is_ratio
-        super(NPO, self).__init__(**kwargs)
+        super(NPIREPS, self).__init__(**kwargs)
+
 
     @overrides
     def init_opt(self):
-        is_recurrent = int(self.policy.recurrent)
+        # Theano vars
         obs_var = self.env.observation_space.new_tensor_variable(
             'obs',
-            extra_dims=1 + is_recurrent,
-        )
-        action_var = self.env.action_space.new_tensor_variable(
-            'action',
-            extra_dims=1 + is_recurrent,
-        )
-        # we need rewards instead of advantages!!!!!
-        # (action, observation, e^W)
-        advantage_var = ext.new_tensor(
-            'advantage',
-            ndim=1 + is_recurrent,
-            dtype=theano.config.floatX
-        )
+            extra_dims=1,
+        )   # corresponds to state_features
+        state_cost_var = ext.new_tensor(
+            'state_cost',
+            ndim=1,
+            dtype=theano.config.floatX,
+        )   # corresponds to V
+        weights = ext.new_tensor(
+            'weights',
+            ndim=1,
+            dtype=theano.config.floatX,
+        )   # corresponds to weights 
+
+        ########################
+        # Dual-related symbolics
+        ########################
+ 
+        ##########################
+        # Policy-related symbolics
+        ##########################
+ 
+
         dist = self.policy.distribution
         old_dist_info_vars = {
             k: ext.new_tensor(
@@ -66,11 +76,6 @@ class NPO(BatchPolopt):
         }
         state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
 
-        if is_recurrent:
-            valid_var = TT.matrix('valid')
-        else:
-            valid_var = None
-
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         lr = dist.likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
@@ -78,20 +83,12 @@ class NPO(BatchPolopt):
         # This should be the Cross-Entropy!!!!
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
-        if is_recurrent:
-            mean_kl = TT.sum(kl * valid_var) / TT.sum(valid_var)
-            surr_loss = - TT.sum(lr * advantage_var * valid_var) / TT.sum(valid_var)
-        else:
-            mean_kl = TT.mean(kl)
-            surr_loss = - TT.mean(lr * advantage_var)
+        mean_kl = TT.mean(kl)
+        surr_loss = - TT.mean(lr * advantage_var)
 
         input_list = [
                          obs_var,
-                         action_var,
-                         advantage_var,
                      ] + state_info_vars_list + old_dist_info_vars_list
-        if is_recurrent:
-            input_list.append(valid_var)
 
         self.optimizer.update_opt(
             loss=surr_loss,
@@ -104,18 +101,21 @@ class NPO(BatchPolopt):
 
     @overrides
     def optimize_policy(self, itr, samples_data):
+
+        # collect data from samples
         all_input_values = tuple(ext.extract(
             samples_data,
-            "observations", "actions", "advantages"
+            "observations", "actions", "V"
         ))
         agent_infos = samples_data["agent_infos"]
         state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
         all_input_values += tuple(state_info_list) + tuple(dist_info_list)
-        if self.policy.recurrent:
-            all_input_values += (samples_data["valids"],)
+
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
+        
+        # call optimize
         self.optimizer.optimize(all_input_values)
         mean_kl = self.optimizer.constraint_val(all_input_values)
         loss_after = self.optimizer.loss(all_input_values)

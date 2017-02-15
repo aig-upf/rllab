@@ -1,4 +1,7 @@
-from rllab.algos.pireps import PIREPS
+
+
+#from rllab.algos.pireps import PIREPS
+from rllab.algos.reps import REPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 from examples.point_env import PointEnv
@@ -10,7 +13,7 @@ policy = GaussianMLPPolicy(
     env_spec=env.spec,
 )
 baseline = LinearFeatureBaseline(env_spec=env.spec)
-algo = PIREPS(
+algo = REPS(
     env=env,
     policy=policy,
     baseline=baseline,
