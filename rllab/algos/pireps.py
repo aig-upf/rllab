@@ -26,7 +26,7 @@ class PIREPS(BatchPolopt, Serializable):
         qprob           prob of sample trajectory (cumsum policy prob) : Nx1
         rewards         sum of rewards : Nx1
         features        features x_0 : Nxn
-
+ 
     """
 
     def __init__(
