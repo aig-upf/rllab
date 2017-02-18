@@ -18,20 +18,28 @@ class PISampler(BatchSampler):
 
         print('processing samples in PISampler----------')
 
-        # matrix of V state costs
-        # if rollout does not reach horizon reward is zero-padded
-        N = int(self.algo.batch_size/self.algo.max_path_length)
+        # construct alternative structures of fixed size rollouts
         # N is number of rollouts
-        T = self.algo.max_path_length
+        N = int(self.algo.batch_size/self.algo.max_path_length)
         # T is number of time-steps
+        T = self.algo.max_path_length
+
+        # V is NxT matrix of state costs 
         V = np.zeros((N,T))
-        print(V.shape)
+        # tensor of NxTxu, where u is action dimensions
+        U = np.zeros((N,T,self.algo.env.action_dim))
+        # tensor of NxTxs, where s is state dimensions
+        X = np.zeros((N,T,self.algo.policy.observation_space.flat_dim))
+       
         for i in range(0,N) :
             #print(paths[i]["rewards"])
-            V[i,0:paths[i]["rewards"].size] = np.exp(-paths[i]["rewards"])
+            num_steps = paths[i]["rewards"].size
+            U[i,0:num_steps,:] = paths[i]["actions"]
+            X[i,0:num_steps,:] = paths[i]["observations"]
+            V[i,0:num_steps] = -paths[i]["rewards"]
 
-        #print(V)
-        print("bye")
         samples_data["V"] = V
+        samples_data["U"] = U.reshape(N*T,2)
+        samples_data["X"] = X.reshape(N*T,2)
 
         return samples_data
