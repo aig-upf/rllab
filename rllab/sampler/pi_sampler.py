@@ -13,9 +13,9 @@ class PISampler(BatchSampler):
 
     def process_samples(self, itr, paths):
 
-        # add PI stuff here...
         samples_data = super(PISampler,self).process_samples(itr,paths)
 
+        # add PI stuff here...
         print('processing samples in PISampler----------')
 
         # construct alternative structures of fixed size rollouts
