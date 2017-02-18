@@ -37,6 +37,12 @@ class NPIREPS(BatchPolopt):
 
     @overrides
     def init_opt(self):
+
+        # N is number of rollouts
+        N = int(self.batch_size/self.max_path_length)
+        # T is number of time-steps
+        T = self.max_path_length
+
         # Theano vars
         obs_var = self.env.observation_space.new_tensor_variable(
             'obs',
@@ -67,9 +73,11 @@ class NPIREPS(BatchPolopt):
 
         logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 
-        logptheta_reshaped = logptheta.reshape((500,10))
+        logptheta_reshaped = logptheta.reshape((N,T))
         S = V_var + logptheta_reshaped - logq
-        weights = TT.exp(-S)
+        weights = -TT.sum(S,1)
+        #weights = TT.exp(-TT.sum(S,1))
+
         input = [X_var, U_var, V_var]
         #pr_op = printing.Print('obs_var')
         #printed_x = pr_op(obs_var) + pr_op(action_var)
@@ -142,8 +150,11 @@ class NPIREPS(BatchPolopt):
         input_values = [samples_data["observations"], samples_data["actions"]] #, samples_data["V"])
         f_dual = self.opt_info['f_obj']
         print('calling dummy function')
-        print(type(all_input_values))
-        print(f_dual(*all_input_values))
+        weights = f_dual(*all_input_values)
+        print(weights.shape)
+        print(weights)
+
+
         
         
 #        loss_before = self.optimizer.loss(all_input_values)
