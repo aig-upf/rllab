@@ -48,7 +48,6 @@ class BaseSampler(Sampler):
     def process_samples(self, itr, paths):
         baselines = []
         returns = []
-        print('processing samples in BaseSampler')
 
         if hasattr(self.algo.baseline, "predict_n"):
             all_path_baselines = self.algo.baseline.predict_n(paths)

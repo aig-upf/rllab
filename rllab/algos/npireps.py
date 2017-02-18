@@ -75,7 +75,7 @@ class NPIREPS(BatchPolopt):
 
         logptheta_reshaped = logptheta.reshape((N,T))
         S = V_var + logptheta_reshaped - logq
-        weights = -TT.sum(S,1)
+        weights = TT.sum(S,1)
         #weights = TT.exp(-TT.sum(S,1))
 
         input = [X_var, U_var, V_var]
