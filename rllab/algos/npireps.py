@@ -42,20 +42,15 @@ class NPIREPS(BatchPolopt):
     @overrides
     def init_opt(self):
 
+        ###########################
+        # Symbolics for line search 
+        ###########################
         # N is number of rollouts
         N = int(self.batch_size/self.max_path_length)
         # T is number of time-steps
         T = self.max_path_length
 
         # Theano vars
-        obs_var = self.env.observation_space.new_tensor_variable(
-            'obs',
-            extra_dims=1,
-        )   # corresponds to state_features
-        action_var = self.env.action_space.new_tensor_variable(
-            'action',
-            extra_dims=1,
-        )
         X_var = ext.new_tensor(
             'X',
             ndim=2,
@@ -85,9 +80,6 @@ class NPIREPS(BatchPolopt):
         w = (w/Z).reshape((w.size,1))
         norm_entropy = -(N/TT.log(N)) * TT.tensordot(w, TT.log(w))
         # line search
-        
-
-        #weights = TT.exp(-TT.sum(S,1))
 
         input = [X_var, U_var, V_var, param_eta]
         #pr_op = printing.Print('obs_var')
@@ -96,56 +88,60 @@ class NPIREPS(BatchPolopt):
             inputs=input,
             outputs=[norm_entropy,w]
         )
-        
         self.opt_info = dict(
             f_obj = f_obj
         )
 
-        ##########################
-        # Policy-related symbolics
-        ##########################
+        ############################
+        # PICE gradient optimization 
+        ############################
+        obs_var = self.env.observation_space.new_tensor_variable(
+            'obs',
+            extra_dims=1,
+        ) 
+        action_var = self.env.action_space.new_tensor_variable(
+            'action',
+            extra_dims=1,
+        )
+        dist = self.policy.distribution
+        old_dist_info_vars = {
+            k: ext.new_tensor(
+                'old_%s' % k,
+                ndim=2,
+                dtype=theano.config.floatX
+            ) for k in dist.dist_info_keys
+            }
+        old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
 
+        state_info_vars = {
+            k: ext.new_tensor(
+                k,
+                ndim=2,
+                dtype=theano.config.floatX
+            ) for k in self.policy.state_info_keys
+        }
+        state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
 
+        dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
+        kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
+        lr = dist.likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
+        
+        if self.truncate_local_is_ratio is not None:
+            lr = TT.minimum(self.truncate_local_is_ratio, lr)
+        mean_kl = TT.mean(kl)
+        surr_loss = - TT.mean(lr)
 
-#        dist = self.policy.distribution
-#        old_dist_info_vars = {
-#            k: ext.new_tensor(
-#                'old_%s' % k,
-#                ndim=2,
-#                dtype=theano.config.floatX
-#            ) for k in dist.dist_info_keys
-#            }
-#        old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
-#
-#        state_info_vars = {
-#            k: ext.new_tensor(
-#                k,
-#                ndim=2,
-#                dtype=theano.config.floatX
-#            ) for k in self.policy.state_info_keys
-#        }
-#        state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
-#
-#        dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
-#        kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
-#        lr = dist.likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
-#        
-#        if self.truncate_local_is_ratio is not None:
-#            lr = TT.minimum(self.truncate_local_is_ratio, lr)
-#        mean_kl = TT.mean(kl)
-#        surr_loss = - TT.mean(lr)
-#
-#        input_list = [
-#                         obs_var,
-#                     ] + state_info_vars_list + old_dist_info_vars_list
-#
-#        self.optimizer.update_opt(
-#            loss=surr_loss,
-#            target=self.policy,
-#            leq_constraint=(mean_kl, self.step_size),
-#            inputs=input_list,
-#            constraint_name="mean_kl"
-#        )
+        input_list = [
+                         obs_var,
+                     ] + state_info_vars_list + old_dist_info_vars_list
+
+        self.optimizer.update_opt(
+            loss=surr_loss,
+            target=self.policy,
+            leq_constraint=(mean_kl, self.step_size),
+            inputs=input_list,
+            constraint_name="mean_kl"
+        )
         return dict()
 
     @overrides
@@ -178,37 +174,36 @@ class NPIREPS(BatchPolopt):
                 self.param_eta = rang[i-1]
                 break
 
-        print(vent[i-1])
+#        print(vent[i-1])
         print(self.param_eta)
-        plt.semilogy(veta, vent)
-        plt.show()
+#        plt.semilogy(veta, vent)
+#        plt.show()
 
-#        n_iter = 0
-#        backtrack_ratio = 0.8
-#        max_backtracks = 15
-#        for n_iter, ratio in enumerate(backtrack_ratio ** np.arange(max_backtracks)):
-#            cur_step = ratio * flat_descent_step
-#            cur_param = prev_param - cur_step
-#            self._target.set_param_values(cur_param, trainable=True)
-#            entropy, weights = f_dual(*all_input_values)
-#            if entropy < entropy_before:
-#                break
-#        if (np.isnan(loss) or np.isnan(constraint_val) or loss >= loss_before or constraint_val >=
-# 
+
+        all_input_values = tuple(ext.extract(
+            samples_data,
+            "observations", "actions", "advantages"
+        ))
+        agent_infos = samples_data["agent_infos"]
+        state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
+        dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
+        all_input_values += tuple(state_info_list) + tuple(dist_info_list)
+        if self.policy.recurrent:
+            all_input_values += (samples_data["valids"],)
+ 
+        loss_before = self.optimizer.loss(all_input_values)
+        mean_kl_before = self.optimizer.constraint_val(all_input_values)
         
-        
-#        loss_before = self.optimizer.loss(all_input_values)
-#        mean_kl_before = self.optimizer.constraint_val(all_input_values)
-#        
-#        # call optimize
-#        self.optimizer.optimize(all_input_values)
-#        mean_kl = self.optimizer.constraint_val(all_input_values)
-#        loss_after = self.optimizer.loss(all_input_values)
-#        logger.record_tabular('LossBefore', loss_before)
-#        logger.record_tabular('LossAfter', loss_after)
-#        logger.record_tabular('MeanKLBefore', mean_kl_before)
-#        logger.record_tabular('MeanKL', mean_kl)
-#        logger.record_tabular('dLoss', loss_before - loss_after)
+        # call optimize
+        self.optimizer.optimize(all_input_values)
+
+        mean_kl = self.optimizer.constraint_val(all_input_values)
+        loss_after = self.optimizer.loss(all_input_values)
+        logger.record_tabular('LossBefore', loss_before)
+        logger.record_tabular('LossAfter', loss_after)
+        logger.record_tabular('MeanKLBefore', mean_kl_before)
+        logger.record_tabular('MeanKL', mean_kl)
+        logger.record_tabular('dLoss', loss_before - loss_after)
         return dict()
 
     @overrides
