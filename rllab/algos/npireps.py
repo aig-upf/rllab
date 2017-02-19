@@ -8,6 +8,7 @@ import theano.tensor as TT
 import numpy as np
 from rllab.optimizers.penalty_lbfgs_optimizer import PenaltyLbfgsOptimizer
 
+import matplotlib.pyplot as plt
 
 class NPIREPS(BatchPolopt):
     """
@@ -32,6 +33,7 @@ class NPIREPS(BatchPolopt):
         self.truncate_local_is_ratio = truncate_local_is_ratio
         self.opt_info = None
         self.std_uncontrolled=std_uncontrolled
+        self.param_eta = 0.
         super(NPIREPS, self).__init__(**kwargs)
 
 
@@ -67,23 +69,30 @@ class NPIREPS(BatchPolopt):
             ndim=2,
             dtype=theano.config.floatX,
         )   # corresponds to V
+        param_eta = TT.scalar('eta')
+
         dist_info_vars = self.policy.dist_info_sym(X_var)
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
 
         logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
-
         logptheta_reshaped = logptheta.reshape((N,T))
-        S = V_var + logptheta_reshaped - logq
-        weights = TT.sum(S,1)
+        S = -(TT.sum(V_var + logptheta_reshaped - logq,1))*(1/(1+param_eta))
+        w = TT.exp(S - TT.max(S))
+        Z = TT.sum(w)
+        w = (w/Z).reshape((w.size,1))
+        norm_entropy = -(N/TT.log(N)) * TT.tensordot(w, TT.log(w))
+        # line search
+        
+
         #weights = TT.exp(-TT.sum(S,1))
 
-        input = [X_var, U_var, V_var]
+        input = [X_var, U_var, V_var, param_eta]
         #pr_op = printing.Print('obs_var')
         #printed_x = pr_op(obs_var) + pr_op(action_var)
         f_obj = ext.compile_function(
             inputs=input,
-            outputs=weights
+            outputs=[norm_entropy,w]
         )
         
         self.opt_info = dict(
@@ -141,20 +150,42 @@ class NPIREPS(BatchPolopt):
     def optimize_policy(self, itr, samples_data):
 
         # collect data from samples
-        all_input_values = tuple(ext.extract(
-            samples_data,
-            "X", "U", "V"
-        ))
+        all_input_values = [samples_data["X"], samples_data["U"],
+                            samples_data["V"]]
         agent_infos = samples_data["agent_infos"]
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
-        input_values = [samples_data["observations"], samples_data["actions"]] #, samples_data["V"])
+
+        input_values = all_input_values + [self.param_eta]
         f_dual = self.opt_info['f_obj']
         print('calling dummy function')
-        weights = f_dual(*all_input_values)
-        print(weights.shape)
-        print(weights)
 
+        nit = 10
+        veta = np.zeros(nit)
+        vent = np.zeros(nit)
+        rang = np.linspace(0,10,nit)
+        for i in np.arange(len(rang)):
+            self.param_eta = rang[i]
+            input_values = all_input_values + [self.param_eta]
+            entropy, weights = f_dual(*input_values)
+            veta[i] = self.param_eta
+            vent[i] = entropy
 
+        print(vent.T)
+#        plt.plot(veta, vent)
+#        plt.show()
+
+#        n_iter = 0
+#        backtrack_ratio = 0.8
+#        max_backtracks = 15
+#        for n_iter, ratio in enumerate(backtrack_ratio ** np.arange(max_backtracks)):
+#            cur_step = ratio * flat_descent_step
+#            cur_param = prev_param - cur_step
+#            self._target.set_param_values(cur_param, trainable=True)
+#            entropy, weights = f_dual(*all_input_values)
+#            if entropy < entropy_before:
+#                break
+#        if (np.isnan(loss) or np.isnan(constraint_val) or loss >= loss_before or constraint_val >=
+# 
         
         
 #        loss_before = self.optimizer.loss(all_input_values)
