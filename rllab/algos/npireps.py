@@ -36,6 +36,7 @@ class NPIREPS(BatchPolopt):
         self.std_uncontrolled=std_uncontrolled
         self.param_eta = 0.
         self.param_delta = delta
+        self.f_dual = None
         super(NPIREPS, self).__init__(**kwargs)
 
 
@@ -79,22 +80,23 @@ class NPIREPS(BatchPolopt):
         Z = TT.sum(w)
         w = (w/Z).reshape((w.size,1))
         norm_entropy = -(N/TT.log(N)) * TT.tensordot(w, TT.log(w))
-        # line search
 
         input = [X_var, U_var, V_var, param_eta]
         #pr_op = printing.Print('obs_var')
         #printed_x = pr_op(obs_var) + pr_op(action_var)
-        f_obj = ext.compile_function(
+        self.f_dual = ext.compile_function(
             inputs=input,
             outputs=[norm_entropy,w]
-        )
-        self.opt_info = dict(
-            f_obj = f_obj
         )
 
         ############################
         # PICE gradient optimization 
         ############################
+        # TODO
+        # replace obs_var and action_var with X_var and U_var
+        # obtain kl and lr as it is done
+        # reshape kl and lr to be NxT matrices
+        # multiply the lr by a repmat of the weights obtained before
         obs_var = self.env.observation_space.new_tensor_variable(
             'obs',
             extra_dims=1,
@@ -120,11 +122,9 @@ class NPIREPS(BatchPolopt):
                 dtype=theano.config.floatX
             ) for k in self.policy.state_info_keys
         }
-        state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
-
         dist_info_vars = self.policy.dist_info_sym(obs_var, state_info_vars)
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
-        lr = dist.likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
+        lr = dist.log_likelihood_ratio_sym(action_var, old_dist_info_vars, dist_info_vars)
         
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
@@ -133,7 +133,8 @@ class NPIREPS(BatchPolopt):
 
         input_list = [
                          obs_var,
-                     ] + state_info_vars_list + old_dist_info_vars_list
+                         action_var,
+                     ] + old_dist_info_vars_list
 
         self.optimizer.update_opt(
             loss=surr_loss,
@@ -154,10 +155,10 @@ class NPIREPS(BatchPolopt):
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
 
         input_values = all_input_values + [self.param_eta]
-        f_dual = self.opt_info['f_obj']
-        print('calling dummy function')
 
+        ###############################
         # line search: must be improved
+        ###############################
         nit = 20
         veta = np.zeros(nit)
         vent = np.zeros(nit)
@@ -165,7 +166,7 @@ class NPIREPS(BatchPolopt):
         for i in np.arange(len(rang)):
             self.param_eta = rang[i]
             input_values = all_input_values + [self.param_eta]
-            entropy, weights = f_dual(*input_values)
+            entropy, weights = self.f_dual(*input_values)
             veta[i] = self.param_eta
             vent[i] = entropy
             if entropy > self.param_delta and i > 0:
@@ -179,18 +180,19 @@ class NPIREPS(BatchPolopt):
 #        plt.semilogy(veta, vent)
 #        plt.show()
 
-
+        #######################
+        # natural PICE gradient
+        #######################
         all_input_values = tuple(ext.extract(
             samples_data,
-            "observations", "actions", "advantages"
+            "observations", "actions"
         ))
         agent_infos = samples_data["agent_infos"]
-        state_info_list = [agent_infos[k] for k in self.policy.state_info_keys]
         dist_info_list = [agent_infos[k] for k in self.policy.distribution.dist_info_keys]
-        all_input_values += tuple(state_info_list) + tuple(dist_info_list)
-        if self.policy.recurrent:
-            all_input_values += (samples_data["valids"],)
- 
+        all_input_values += tuple(dist_info_list)
+
+        print(all_input_values[0].shape)
+
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
         
