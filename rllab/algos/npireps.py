@@ -22,6 +22,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             std_uncontrolled=1,
+            delta = 0.3,
             **kwargs
     ):
         if optimizer is None:
@@ -34,6 +35,7 @@ class NPIREPS(BatchPolopt):
         self.opt_info = None
         self.std_uncontrolled=std_uncontrolled
         self.param_eta = 0.
+        self.param_delta = delta
         super(NPIREPS, self).__init__(**kwargs)
 
 
@@ -159,20 +161,27 @@ class NPIREPS(BatchPolopt):
         f_dual = self.opt_info['f_obj']
         print('calling dummy function')
 
-        nit = 10
+        # line search: must be improved
+        nit = 20
         veta = np.zeros(nit)
         vent = np.zeros(nit)
-        rang = np.linspace(0,10,nit)
+        rang = np.logspace(-5,2,nit)
         for i in np.arange(len(rang)):
             self.param_eta = rang[i]
             input_values = all_input_values + [self.param_eta]
             entropy, weights = f_dual(*input_values)
             veta[i] = self.param_eta
             vent[i] = entropy
+            if entropy > self.param_delta and i > 0:
+                print(self.param_eta)
+                print(entropy)
+                self.param_eta = rang[i-1]
+                break
 
-        print(vent.T)
-#        plt.plot(veta, vent)
-#        plt.show()
+        print(vent[i-1])
+        print(self.param_eta)
+        plt.semilogy(veta, vent)
+        plt.show()
 
 #        n_iter = 0
 #        backtrack_ratio = 0.8
