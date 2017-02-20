@@ -21,15 +21,20 @@ class PISampler(BatchSampler):
         # construct alternative structures of fixed size rollouts
         # N is number of rollouts
         N = int(self.algo.batch_size/self.algo.max_path_length)
+        if N != len(paths) :
+            print("\t\t\t\t" + str(N) + " != " + str(len(paths)))
+
         # T is number of time-steps
         T = self.algo.max_path_length
 
         # V is NxT matrix of state costs 
         V = np.zeros((N,T))
         # tensor of NxTxu, where u is action dimensions
-        U = np.zeros((N,T,self.algo.env.action_dim))
+        udim = self.algo.env.action_dim
+        U = np.zeros((N,T,udim))
         # tensor of NxTxs, where s is state dimensions
-        X = np.zeros((N,T,self.algo.policy.observation_space.flat_dim))
+        xdim = self.algo.policy.observation_space.flat_dim
+        X = np.zeros((N,T,xdim))
        
         for i in range(0,N) :
             #print(paths[i]["rewards"])
@@ -39,7 +44,19 @@ class PISampler(BatchSampler):
             V[i,0:num_steps] = -paths[i]["rewards"]
 
         samples_data["V"] = V
-        samples_data["U"] = U.reshape(N*T,2)
-        samples_data["X"] = X.reshape(N*T,2)
+        samples_data["X"] = X.reshape(N*T,xdim)
+        samples_data["U"] = U.reshape(N*T,udim)
+
+        D = dict()
+        agent_infos2 = dict()
+        for key,val in paths[0]["agent_infos"].items() :
+            D[key] = np.zeros((N,T,val.shape[1]))
+        for i in range(0,N) :
+            for key,val in paths[i]["agent_infos"].items() :
+                num_steps = val.shape[0]
+                D[key][i,0:num_steps,:] = val
+        for key,val in paths[0]["agent_infos"].items() :
+            agent_infos2[key] = D[key].reshape(N*T,val.shape[1])
+        samples_data["agent_infos2"] = agent_infos2
 
         return samples_data
