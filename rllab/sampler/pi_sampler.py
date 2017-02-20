@@ -35,7 +35,7 @@ class PISampler(BatchSampler):
         # tensor of NxTxs, where s is state dimensions
         xdim = self.algo.policy.observation_space.flat_dim
         X = np.zeros((N,T,xdim))
-       
+
         for i in range(0,N) :
             #print(paths[i]["rewards"])
             num_steps = paths[i]["rewards"].size

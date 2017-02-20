@@ -1,14 +1,15 @@
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
+from rllab.optimizers.penalty_lbfgs_optimizer import PenaltyLbfgsOptimizer
 import rllab.misc.logger as logger
+import numpy as np
+import theano.tensor as TT
 import theano
 from theano import printing
-import theano.tensor as TT
-import numpy as np
-from rllab.optimizers.penalty_lbfgs_optimizer import PenaltyLbfgsOptimizer
 
 import matplotlib.pyplot as plt
+import rllab.misc.logger as logger
 
 class NPIREPS(BatchPolopt):
     """
@@ -22,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             std_uncontrolled=1,
-            delta = 0.3,
+            delta = 0.1,
             **kwargs
     ):
         if optimizer is None:
@@ -73,8 +74,13 @@ class NPIREPS(BatchPolopt):
         dist_info_vars = self.policy.dist_info_sym(X_var)
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
+ 
+        unc_dist = DiagonalGaussian(X_var.shape[1])
+        # call log_likelihood_sym with same zero mean and fixed variance for
+        # all samples
+        logq = unc_dist.log_likelihood_sym(U_var, dist_info_vars)
 
-        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
+        # FIX: logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
         logptheta_reshaped = logptheta.reshape((N,T))
         S = -(TT.sum(V_var + logptheta_reshaped - logq,1))*(1/(1+param_eta))
         w = TT.exp(S - TT.max(S))
@@ -93,14 +99,11 @@ class NPIREPS(BatchPolopt):
         ############################
         # PICE gradient optimization 
         ############################
-        # TODO
-        # obtain kl and lr as it is done
         # reshape kl and lr to be NxT matrices
-        # multiply the lr by a repmat of the weights obtained before
         obs_var = self.env.observation_space.new_tensor_variable(
             'obs',
             extra_dims=1,
-        ) 
+        )
         action_var = self.env.action_space.new_tensor_variable(
             'action',
             extra_dims=1,
@@ -111,7 +114,7 @@ class NPIREPS(BatchPolopt):
             ndim=2,
             dtype=theano.config.floatX,
         )   # a N*T array 
-        
+
         old_dist_info_vars = {
             k: ext.new_tensor(
                 'old_%s' % k,
@@ -129,7 +132,7 @@ class NPIREPS(BatchPolopt):
             ) for k in self.policy.state_info_keys
         }
         state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
-        
+
         dist_info_vars = self.policy.dist_info_sym(X_var, state_info_vars)
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
@@ -140,7 +143,6 @@ class NPIREPS(BatchPolopt):
 
         lr_reshaped = lr.reshape((N,T))
 
- 
         surr_loss = - TT.mean(lr)
 
         input_list = [ X_var, U_var] + old_dist_info_vars_list
@@ -203,14 +205,13 @@ class NPIREPS(BatchPolopt):
 
 #        print(len(all_input_values))
 #        self.f_opt(*all_input_values)
-    
 #        print(all_input_values[2].shape)
 #        print(all_input_values[3].shape)
 #        print(dist_info_list)
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
-        
+
         # call optimize
         self.optimizer.optimize(all_input_values)
 
