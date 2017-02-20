@@ -106,6 +106,12 @@ class NPIREPS(BatchPolopt):
             extra_dims=1,
         )
         dist = self.policy.distribution
+        weights_var = ext.new_tensor(
+            'W',
+            ndim=2,
+            dtype=theano.config.floatX,
+        )   # a N*T array 
+        
         old_dist_info_vars = {
             k: ext.new_tensor(
                 'old_%s' % k,
@@ -122,32 +128,34 @@ class NPIREPS(BatchPolopt):
                 dtype=theano.config.floatX
             ) for k in self.policy.state_info_keys
         }
+        state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
+        
         dist_info_vars = self.policy.dist_info_sym(X_var, state_info_vars)
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
 
+        if self.truncate_local_is_ratio is not None:
+            lr = TT.minimum(self.truncate_local_is_ratio, lr)
+        mean_kl = TT.mean(kl)
+
+        lr_reshaped = lr.reshape((N,T))
+
+ 
+        surr_loss = - TT.mean(lr)
+
+        input_list = [ X_var, U_var] + old_dist_info_vars_list
         self.f_opt = ext.compile_function(
-            inputs = [X_var, U_var, old_dist_info_vars],
+            inputs = input_list,
             outputs = TT.mean(kl)
         )
-#        
-#        if self.truncate_local_is_ratio is not None:
-#            lr = TT.minimum(self.truncate_local_is_ratio, lr)
-#        mean_kl = TT.mean(kl)
-#        surr_loss = - TT.mean(lr)
-#
-#        input_list = [
-#                         obs_var,
-#                         action_var,
-#                     ] + old_dist_info_vars_list
-#
-#        self.optimizer.update_opt(
-#            loss=surr_loss,
-#            target=self.policy,
-#            leq_constraint=(mean_kl, self.step_size),
-#            inputs=input_list,
-#            constraint_name="mean_kl"
-#        )
+
+        self.optimizer.update_opt(
+            loss=surr_loss,
+            target=self.policy,
+            leq_constraint=(mean_kl, self.step_size),
+            inputs=input_list,
+            constraint_name="mean_kl"
+        )
         return dict()
 
     @overrides
@@ -193,25 +201,26 @@ class NPIREPS(BatchPolopt):
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
         all_input_values += tuple(dist_info_list)
 
-        self.f_opt(all_input_values)
+#        print(len(all_input_values))
+#        self.f_opt(*all_input_values)
     
 #        print(all_input_values[2].shape)
 #        print(all_input_values[3].shape)
 #        print(dist_info_list)
 
-#        loss_before = self.optimizer.loss(all_input_values)
-#        mean_kl_before = self.optimizer.constraint_val(all_input_values)
-#        
-#        # call optimize
-#        self.optimizer.optimize(all_input_values)
-#
-#        mean_kl = self.optimizer.constraint_val(all_input_values)
-#        loss_after = self.optimizer.loss(all_input_values)
-#        logger.record_tabular('LossBefore', loss_before)
-#        logger.record_tabular('LossAfter', loss_after)
-#        logger.record_tabular('MeanKLBefore', mean_kl_before)
-#        logger.record_tabular('MeanKL', mean_kl)
-#        logger.record_tabular('dLoss', loss_before - loss_after)
+        loss_before = self.optimizer.loss(all_input_values)
+        mean_kl_before = self.optimizer.constraint_val(all_input_values)
+        
+        # call optimize
+        self.optimizer.optimize(all_input_values)
+
+        mean_kl = self.optimizer.constraint_val(all_input_values)
+        loss_after = self.optimizer.loss(all_input_values)
+        logger.record_tabular('LossBefore', loss_before)
+        logger.record_tabular('LossAfter', loss_after)
+        logger.record_tabular('MeanKLBefore', mean_kl_before)
+        logger.record_tabular('MeanKL', mean_kl)
+        logger.record_tabular('dLoss', loss_before - loss_after)
         return dict()
 
     @overrides
