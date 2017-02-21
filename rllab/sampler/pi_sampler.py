@@ -37,8 +37,11 @@ class PISampler(BatchSampler):
         X = np.zeros((N,T,xdim))
 
         for i in range(0,N) :
-            #print(paths[i]["rewards"])
             num_steps = paths[i]["rewards"].size
+            if (num_steps != T) :
+                print("----------- truncated episode " + str(num_steps) + " < "
+                     + str(T)
+                )
             U[i,0:num_steps,:] = paths[i]["actions"]
             X[i,0:num_steps,:] = paths[i]["observations"]
             V[i,0:num_steps] = -paths[i]["rewards"]

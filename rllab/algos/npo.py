@@ -89,6 +89,12 @@ class NPO(BatchPolopt):
         if is_recurrent:
             input_list.append(valid_var)
 
+        # deleteme
+        self.f_test = ext.compile_function(
+            inputs = input_list,
+            outputs = kl
+        )
+
         self.optimizer.update_opt(
             loss=surr_loss,
             target=self.policy,
@@ -110,6 +116,13 @@ class NPO(BatchPolopt):
         all_input_values += tuple(state_info_list) + tuple(dist_info_list)
         if self.policy.recurrent:
             all_input_values += (samples_data["valids"],)
+
+
+        # delete me
+        out1 = self.f_test(*all_input_values)
+        print(out1)
+
+
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
         self.optimizer.optimize(all_input_values)

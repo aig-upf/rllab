@@ -13,7 +13,7 @@ import rllab.misc.logger as logger
 
 class NPIREPS(BatchPolopt):
     """
-    Natural Policy Optimization.
+    Natural PIREPS method
     """
 
     def __init__(
@@ -36,6 +36,7 @@ class NPIREPS(BatchPolopt):
         self.opt_info = None
         self.std_uncontrolled=std_uncontrolled
         self.param_eta = 0.
+        self.final_entropy = 0.
         self.param_delta = delta
         self.f_dual = None
         self.f_opt = None
@@ -74,15 +75,13 @@ class NPIREPS(BatchPolopt):
         dist_info_vars = self.policy.dist_info_sym(X_var)
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
- 
-        unc_dist = DiagonalGaussian(X_var.shape[1])
-        # call log_likelihood_sym with same zero mean and fixed variance for
-        # all samples
-        logq = unc_dist.log_likelihood_sym(U_var, dist_info_vars)
+        udist_info_vars = dict(mean=np.zeros((1,2)),log_std=np.ones((1,2))*self.std_uncontrolled)
+        logq = dist.log_likelihood_sym(U_var, udist_info_vars) 
+#        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 
-        # FIX: logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
         logptheta_reshaped = logptheta.reshape((N,T))
-        S = -(TT.sum(V_var + logptheta_reshaped - logq,1))*(1/(1+param_eta))
+        logq_reshaped = logq.reshape((N,T))
+        S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
         w = TT.exp(S - TT.max(S))
         Z = TT.sum(w)
         w = (w/Z).reshape((w.size,1))
@@ -93,22 +92,13 @@ class NPIREPS(BatchPolopt):
         #printed_x = pr_op(obs_var) + pr_op(action_var)
         self.f_dual = ext.compile_function(
             inputs=input,
-            outputs=[norm_entropy,w]
+            outputs=[norm_entropy,w,logq]
         )
 
         ############################
         # PICE gradient optimization 
         ############################
         # reshape kl and lr to be NxT matrices
-        obs_var = self.env.observation_space.new_tensor_variable(
-            'obs',
-            extra_dims=1,
-        )
-        action_var = self.env.action_space.new_tensor_variable(
-            'action',
-            extra_dims=1,
-        )
-        dist = self.policy.distribution
         weights_var = ext.new_tensor(
             'W',
             ndim=2,
@@ -123,7 +113,6 @@ class NPIREPS(BatchPolopt):
             ) for k in dist.dist_info_keys
             }
         old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
-
         state_info_vars = {
             k: ext.new_tensor(
                 k,
@@ -131,24 +120,26 @@ class NPIREPS(BatchPolopt):
                 dtype=theano.config.floatX
             ) for k in self.policy.state_info_keys
         }
-        state_info_vars_list = [state_info_vars[k] for k in self.policy.state_info_keys]
-
         dist_info_vars = self.policy.dist_info_sym(X_var, state_info_vars)
+
+        #temp1 = dist.log_likelihood_sym(U_var, dist_info_vars)
+        #temp2 = dist.log_likelihood_sym(U_var, old_dist_info_vars)
+
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
-        lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+        lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
 
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        lr_reshaped = lr.reshape((N,T))
+        lr_reshaped = lr.reshape((N,T)) 
+        weights_rep = TT.extra_ops.repeat(weights_var,T,axis=1)
+        surr_loss = - TT.sum(lr_reshaped*weights_rep)
 
-        surr_loss = - TT.mean(lr)
-
-        input_list = [ X_var, U_var] + old_dist_info_vars_list
+        input_list = [ X_var, U_var] + old_dist_info_vars_list + [weights_var]
         self.f_opt = ext.compile_function(
             inputs = input_list,
-            outputs = TT.mean(kl)
+            outputs = surr_loss 
         )
 
         self.optimizer.update_opt(
@@ -171,27 +162,44 @@ class NPIREPS(BatchPolopt):
         ###############################
         # line search: must be improved
         ###############################
-        nit = 20
-        veta = np.zeros(nit)
-        vent = np.zeros(nit)
-        rang = np.logspace(-5,2,nit)
-        for i in np.arange(len(rang)):
-            self.param_eta = rang[i]
-            input_values = all_input_values + [self.param_eta]
-            entropy, weights = self.f_dual(*input_values)
-            veta[i] = self.param_eta
-            vent[i] = entropy
-            if entropy > self.param_delta and i > 0:
-                print(self.param_eta)
-                print(entropy)
-                self.param_eta = rang[i-1]
-                break
+        outer_it = 3 
+        min_log = -10
+        max_log = 2 
+        it = 0
+        nit = 25
+        rang = np.logspace(min_log,max_log,nit)
+        while (it<outer_it) :
+            veta = np.zeros(nit)
+            vent = np.zeros(nit)
+            i = 0
+            while (i<nit) :
+  #              print("it = " + str(it) + " i = " + str(i))
+                self.param_eta = rang[i]
+                input_values = all_input_values + [self.param_eta]
+                entropy, weights, logq = self.f_dual(*input_values)
+                veta[i] = self.param_eta
+                vent[i] = entropy
+                if entropy > self.param_delta and i > 0:
+ #                   print("passed")
+                    self.param_eta = rang[i-1]
+                    self.final_entropy = vent[i-1]
+                    min_eta = rang[i-1]
+                    max_eta = rang[i]
+                    break
+                i += 1
+            it += 1
+            rang = np.linspace(min_eta,max_eta,nit)
+#            print("new range " + str(min_eta) + "/" + str(max_eta))
 
-#        print(vent[i-1])
-        print(self.param_eta)
+        if (self.final_entropy > self.param_delta) :
+            print("------------------ Line search for eta failed!!!")
+            print("weight entropy is " + str(self.final_entropy))
+
+        print("eta is            " + str(self.param_eta))
+#        print(logq)
 #        plt.semilogy(veta, vent)
 #        plt.show()
-
+#
         #######################
         # natural PICE gradient
         #######################
@@ -201,13 +209,10 @@ class NPIREPS(BatchPolopt):
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
-        all_input_values += tuple(dist_info_list)
-
-#        print(len(all_input_values))
-#        self.f_opt(*all_input_values)
-#        print(all_input_values[2].shape)
-#        print(all_input_values[3].shape)
-#        print(dist_info_list)
+        all_input_values += tuple(dist_info_list) + tuple([weights])
+        out1 = self.f_opt(*all_input_values)
+        print("loss before")
+        print(out1)
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
