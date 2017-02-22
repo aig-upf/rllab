@@ -20,7 +20,7 @@ class NPIREPS(BatchPolopt):
             self,
             optimizer=None,
             optimizer_args=None,
-            step_size=0.1,
+            step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=1,
             delta = 0.1,
