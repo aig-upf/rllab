@@ -23,7 +23,8 @@ def run_task(*_):
         env=env,
         policy=policy,
         baseline=baseline,
-        sampler_cls=PISampler
+        sampler_cls=PISampler,
+        kl_trpo=True
     )
     algo.train()
 

@@ -24,6 +24,7 @@ class NPIREPS(BatchPolopt):
             truncate_local_is_ratio=None,
             log_std_uncontrolled=1,
             delta = 0.1,
+            kl_trpo = False,
             **kwargs
     ):
         if optimizer_args is None:
@@ -40,6 +41,7 @@ class NPIREPS(BatchPolopt):
         self.param_delta = delta
         self.f_dual = None
         self.f_opt = None
+        self.kl_trpo = kl_trpo
         super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
 
 
@@ -84,24 +86,28 @@ class NPIREPS(BatchPolopt):
 
         logptheta_reshaped = logptheta.reshape((N,T))
         logq_reshaped = logq.reshape((N,T))
-        S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
         
-        # trpo ->
-        # S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
-        # w = S - TT.min(S)
+        if self.kl_trpo :
+            # we run here our TRPO variant 
+            S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
+            w = S - TT.min(S)
+            w = TT.reshape(w,(N,1))
+        else :
+            # we run here natural PIREPS
+            S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
+            w = TT.exp(S - TT.max(S))
+            Z = TT.sum(w)
+            w = (w/Z).reshape((N,1))
         
-        w = TT.exp(S - TT.max(S))
-        Z = TT.sum(w)
-        w = (w/Z).reshape((w.size,1))
         norm_entropy = -(N/TT.log(N)) * TT.tensordot(w, TT.log(w))
 
         input = [X_var, U_var, V_var, param_eta]
-        #pr_op = printing.Print('obs_var')
-        #printed_x = pr_op(obs_var) + pr_op(action_var)
+
         self.f_dual = ext.compile_function(
             inputs=input,
             outputs=[norm_entropy,w,logq]
         )
+            #outputs=[norm_entropy,w,logq]
 
         ############################
         # PICE gradient optimization 
@@ -170,44 +176,50 @@ class NPIREPS(BatchPolopt):
         ###############################
         # line search: must be improved
         ###############################
-        outer_it = 3 
-        min_log = -10
-        max_log = 2 
-        it = 0
-        nit = 25
-        rang = np.logspace(min_log,max_log,nit)
-        while (it<outer_it) :
-            veta = np.zeros(nit)
-            vent = np.zeros(nit)
-            i = 0
-            while (i<nit) :
-  #              print("it = " + str(it) + " i = " + str(i))
-                self.param_eta = rang[i]
-                input_values = all_input_values + [self.param_eta]
-                entropy, weights, logq = self.f_dual(*input_values)
-                veta[i] = self.param_eta
-                vent[i] = entropy
-                if entropy > self.param_delta and i > 0:
- #                   print("passed")
-                    self.param_eta = rang[i-1]
-                    self.final_entropy = vent[i-1]
-                    min_eta = rang[i-1]
-                    max_eta = rang[i]
-                    break
-                i += 1
-            it += 1
-            rang = np.linspace(min_eta,max_eta,nit)
-#            print("new range " + str(min_eta) + "/" + str(max_eta))
+        if not self.kl_trpo :
+            outer_it = 3 
+            min_log = -10
+            max_log = 2 
+            it = 0
+            nit = 25
+            rang = np.logspace(min_log,max_log,nit)
+            while (it<outer_it) :
+                veta = np.zeros(nit)
+                vent = np.zeros(nit)
+                i = 0
+                while (i<nit) :
+      #              print("it = " + str(it) + " i = " + str(i))
+                    self.param_eta = rang[i]
+                    input_values = all_input_values + [self.param_eta]
+                    entropy, weights, logq = self.f_dual(*input_values)
+                    veta[i] = self.param_eta
+                    vent[i] = entropy
+                    if entropy > self.param_delta and i > 0:
+     #                   print("passed")
+                        self.param_eta = rang[i-1]
+                        self.final_entropy = vent[i-1]
+                        min_eta = rang[i-1]
+                        max_eta = rang[i]
+                        break
+                    i += 1
+                it += 1
+                rang = np.linspace(min_eta,max_eta,nit)
+    #            print("new range " + str(min_eta) + "/" + str(max_eta))
+    
+            if (self.final_entropy > self.param_delta) :
+                print("------------------ Line search for eta failed!!!")
+                print("weight entropy is " + str(self.final_entropy))
+    
+            print("eta is            " + str(self.param_eta))
+    #        print(logq)
+    #        plt.semilogy(veta, vent)
+    #        plt.show()
 
-        if (self.final_entropy > self.param_delta) :
-            print("------------------ Line search for eta failed!!!")
-            print("weight entropy is " + str(self.final_entropy))
+        else :
+            
+            # for the variant of trpo we do not need a line search
+            entropy, weights, logq = self.f_dual(*input_values)
 
-        print("eta is            " + str(self.param_eta))
-#        print(logq)
-#        plt.semilogy(veta, vent)
-#        plt.show()
-#
         #######################
         # natural PICE gradient
         #######################
