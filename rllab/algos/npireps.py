@@ -22,7 +22,7 @@ class NPIREPS(BatchPolopt):
             optimizer_args=None,
             step_size=0.01,
             truncate_local_is_ratio=None,
-            std_uncontrolled=1,
+            log_std_uncontrolled=1,
             delta = 0.1,
             **kwargs
     ):
@@ -34,7 +34,7 @@ class NPIREPS(BatchPolopt):
         self.step_size = step_size
         self.truncate_local_is_ratio = truncate_local_is_ratio
         self.opt_info = None
-        self.std_uncontrolled=std_uncontrolled
+        self.log_std_uncontrolled=log_std_uncontrolled
         self.param_eta = 0.
         self.final_entropy = 0.
         self.param_delta = delta
@@ -75,7 +75,10 @@ class NPIREPS(BatchPolopt):
         dist_info_vars = self.policy.dist_info_sym(X_var)
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
-        udist_info_vars = dict(mean=np.zeros((1,2)),log_std=np.ones((1,2))*self.std_uncontrolled)
+        udist_info_vars = dict(
+            mean=np.zeros((1,2)),
+            log_std=np.ones((1,2))*self.log_std_uncontrolled
+        )
         logq = dist.log_likelihood_sym(U_var, udist_info_vars) 
 #        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 

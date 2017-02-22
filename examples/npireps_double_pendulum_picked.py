@@ -10,6 +10,9 @@ from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 def run_task(*_):
     env = normalize(DoublePendulumEnv())
 
+    print("Action dims = " + str(env.action_dim))
+    print("obs dim = " + str(env.observation_spaces.flat_dim))
+
     policy = GaussianMLPPolicy(
         env_spec=env.spec,
     )
