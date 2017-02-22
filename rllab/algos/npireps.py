@@ -1,7 +1,7 @@
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
-from rllab.optimizers.penalty_lbfgs_optimizer import PenaltyLbfgsOptimizer
+from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
 import rllab.misc.logger as logger
 import numpy as np
 import theano.tensor as TT
@@ -26,10 +26,10 @@ class NPIREPS(BatchPolopt):
             delta = 0.1,
             **kwargs
     ):
-        if optimizer is None:
-            if optimizer_args is None:
-                optimizer_args = dict()
-            optimizer = PenaltyLbfgsOptimizer(**optimizer_args)
+        if optimizer_args is None:
+            optimizer_args = dict()
+        optimizer = ConjugateGradientOptimizer(**optimizer_args)
+        #optimizer = PenaltyLbfgsOptimizer(**optimizer_args)
         self.optimizer = optimizer
         self.step_size = step_size
         self.truncate_local_is_ratio = truncate_local_is_ratio
@@ -40,7 +40,7 @@ class NPIREPS(BatchPolopt):
         self.param_delta = delta
         self.f_dual = None
         self.f_opt = None
-        super(NPIREPS, self).__init__(**kwargs)
+        super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
 
 
     @overrides
@@ -85,6 +85,11 @@ class NPIREPS(BatchPolopt):
         logptheta_reshaped = logptheta.reshape((N,T))
         logq_reshaped = logq.reshape((N,T))
         S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
+        
+        # trpo ->
+        # S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
+        # w = S - TT.min(S)
+        
         w = TT.exp(S - TT.max(S))
         Z = TT.sum(w)
         w = (w/Z).reshape((w.size,1))

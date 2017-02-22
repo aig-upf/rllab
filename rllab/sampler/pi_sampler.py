@@ -31,9 +31,6 @@ class PISampler(BatchSampler):
         V = np.zeros((N,T))
         # tensor of NxTxu, where u is action dimensions
         udim = self.algo.env.action_dim
-        print("action dim = " + str(self.algo.env.action_dim))
-        print("obs dim = " + str(self.algo.policy.observation_space.flat_dim))
-
 
         U = np.zeros((N,T,udim))
         # tensor of NxTxs, where s is state dimensions
