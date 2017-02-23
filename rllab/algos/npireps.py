@@ -20,10 +20,11 @@ class NPIREPS(BatchPolopt):
             self,
             optimizer=None,
             optimizer_args=None,
-            step_size=0.01,
             truncate_local_is_ratio=None,
-            log_std_uncontrolled=0,
-            delta = 0.2,
+            step_size=0.01,                 # epsilon for 2nd linesearch
+            log_std_uncontrolled=-0.6931,   # log_std pasive dynamics
+            delta = 0.2,                    # threshold 1st linesearch
+            lambd = 1,                      # divides state-cost
             kl_trpo = False,
             **kwargs
     ):
@@ -41,6 +42,7 @@ class NPIREPS(BatchPolopt):
         self.param_delta = delta
         self.f_dual = None
         self.f_opt = None
+        self.lambd = lambd
         self.kl_trpo = kl_trpo
         
         super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
@@ -99,12 +101,12 @@ class NPIREPS(BatchPolopt):
 
         if self.kl_trpo :
             # we run here our TRPO variant 
-            S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
+            S = -(TT.sum(V_var/self.lamb + logptheta_reshaped - logq_reshaped,1))
             w = S - TT.mean(S)
             w = TT.reshape(w,(self.N,1))
         else :
             # we run here natural PIREPS
-            S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
+            S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
             w = (w/Z).reshape((self.N,1))
