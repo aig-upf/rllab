@@ -47,7 +47,6 @@ def run_task(*_):
     )
 
     logger.log("    variant " + variant)
-    logger.log("    delta " + str(delta))
     logger.log("    eps " + str(epsilon))
     logger.log("    seed " + str(seed))
 

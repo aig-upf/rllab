@@ -119,7 +119,8 @@ class NPIREPS(BatchPolopt):
         )
             #outputs=[norm_entropy,w,logq]
 
-        total_cost = TT.sum(V_var + logptheta_reshaped - logq_reshaped,1)
+        total_cost = TT.mean(TT.sum(V_var + logptheta_reshaped -
+                                    logq_reshaped,1))
         self.f_total_cost = ext.compile_function( 
             inputs=input,         
             outputs=[total_cost]
