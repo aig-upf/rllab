@@ -42,11 +42,19 @@ class NPIREPS(BatchPolopt):
         self.f_dual = None
         self.f_opt = None
         self.kl_trpo = kl_trpo
+        
+        super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
+        
+        # N is number of rollouts
+        self.N = int(self.batch_size/self.max_path_length)
+        # T is number of time-steps
+        self.T = self.max_path_length
+        logger.log("With " + str(self.N) + " rollouts per iteration")
+        logger.log("With time-horizon " + str(self.T))
         if kl_trpo:
             logger.log('Running KL-TRPO')
         else:
             logger.log('Running Natural PIREPS')
-        super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
 
     @overrides
     def init_opt(self):
@@ -55,10 +63,6 @@ class NPIREPS(BatchPolopt):
         ###########################
         # Symbolics for line search 
         ###########################
-        # N is number of rollouts
-        N = int(self.batch_size/self.max_path_length)
-        # T is number of time-steps
-        T = self.max_path_length
 
         # Theano vars
         X_var = ext.new_tensor(
@@ -89,22 +93,22 @@ class NPIREPS(BatchPolopt):
         logq = dist.log_likelihood_sym(U_var, udist_info_vars)
 #        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 
-        logptheta_reshaped = logptheta.reshape((N,T))
-        logq_reshaped = logq.reshape((N,T))
+        logptheta_reshaped = logptheta.reshape((self.N,self.T))
+        logq_reshaped = logq.reshape((self.N,self.T))
 
         if self.kl_trpo :
             # we run here our TRPO variant 
             S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
             w = S - TT.mean(S)
-            w = TT.reshape(w,(N,1))
+            w = TT.reshape(w,(self.N,1))
         else :
             # we run here natural PIREPS
             S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
-            w = (w/Z).reshape((N,1))
+            w = (w/Z).reshape((self.N,1))
 
-        norm_entropy = -(1/TT.log(N)) * TT.tensordot(w, TT.log(w))
+        norm_entropy = -(1/TT.log(self.N)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
         input = [X_var, U_var, V_var, param_eta]
 
@@ -151,8 +155,8 @@ class NPIREPS(BatchPolopt):
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        lr_reshaped = lr.reshape((N,T)) 
-        weights_rep = TT.extra_ops.repeat(weights_var,T,axis=1)
+        lr_reshaped = lr.reshape((self.N,self.T)) 
+        weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
         surr_loss = - TT.sum(lr_reshaped*weights_rep)
 
         input_list = [ X_var, U_var] + old_dist_info_vars_list + [weights_var]
