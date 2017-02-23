@@ -26,7 +26,8 @@ def run_task(*_):
         policy=policy,
         baseline=baseline,
         sampler_cls=PISampler,
-        kl_trpo=False
+        kl_trpo=False,
+        plot=True
     )
     logger.log('Running Natural PIREPS')
     logger.log(str(env))
@@ -41,4 +42,5 @@ run_experiment_lite(
     # Specifies the seed for the experiment. If this is not provided, a random seed
     # will be used
     seed=1,
+    plot=True
 )

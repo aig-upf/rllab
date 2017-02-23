@@ -23,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=0,
-            delta = 0.2,
+            delta = 0.1,
             kl_trpo = False,
             **kwargs
     ):
@@ -202,7 +202,7 @@ class NPIREPS(BatchPolopt):
                         max_eta = rang[i]
                         break
                     i += 1
-                print("it " + str(it) + " i " + str(i) + ": entropy " + str(entropy))
+                #print("it " + str(it) + " i " + str(i) + ": entropy " + str(entropy))
                 it += 1
                 rang = np.linspace(min_eta,max_eta,nit)
     #            print("new range " + str(min_eta) + "/" + str(max_eta))
@@ -222,7 +222,7 @@ class NPIREPS(BatchPolopt):
             entropy, weights, logq = self.f_dual(*input_values)
         logger.log("Entropy of weights " + str(entropy))
         ws = np.sort(np.squeeze(weights))[::-1]
-        print(ws)
+        print(ws[0:3])
         #######################
         # natural PICE gradient
         #######################
