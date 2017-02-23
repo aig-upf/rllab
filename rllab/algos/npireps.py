@@ -159,7 +159,7 @@ class NPIREPS(BatchPolopt):
         
         if self.kl_trpo:
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-        else
+        else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
 
         if self.truncate_local_is_ratio is not None:
