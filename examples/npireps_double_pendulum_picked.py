@@ -9,7 +9,7 @@ from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
 import rllab.misc.logger as logger
 
-plot = False
+plot = False 
 
 def run_task(*_):
     env = normalize(DoublePendulumEnv())

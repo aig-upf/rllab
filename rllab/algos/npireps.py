@@ -51,7 +51,7 @@ class NPIREPS(BatchPolopt):
     @overrides
     def init_opt(self):
 
-        logger.log(str(sel.env))
+        logger.log(str(self.env))
         ###########################
         # Symbolics for line search 
         ###########################
