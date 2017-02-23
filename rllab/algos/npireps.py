@@ -55,6 +55,7 @@ class NPIREPS(BatchPolopt):
             logger.log('Running KL-TRPO')
         else:
             logger.log('Running Natural PIREPS')
+            logger.log('    delta = ' + str(self.param_delta))
 
     @overrides
     def init_opt(self):
@@ -114,7 +115,7 @@ class NPIREPS(BatchPolopt):
 
         self.f_dual = ext.compile_function(
             inputs=input,
-            outputs=[norm_entropy,w,logq]
+            outputs=[rel_entropy,w,logq]
         )
             #outputs=[norm_entropy,w,logq]
 
@@ -149,7 +150,11 @@ class NPIREPS(BatchPolopt):
         #temp2 = dist.log_likelihood_sym(U_var, old_dist_info_vars)
 
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
-        lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+        
+        if self.kl_trpo:
+            lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+        else
+            lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
 
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
@@ -204,14 +209,14 @@ class NPIREPS(BatchPolopt):
                     rel_entropy, weights, logq = self.f_dual(*input_values)
                     veta[i] = self.param_eta
                     vent[i] = rel_entropy
-                    if rel_entropy > self.param_delta and i > 0:
+                    if rel_entropy < self.param_delta and i > 0:
                         #print("passed")
                         self.param_eta = rang[i-1]
                         self.final_rel_entropy = vent[i-1]
                         min_eta = rang[i-1]
                         max_eta = rang[i]
                         break
-                    elif rel_entropy > self.param_delta and i == 0 and it == 0:
+                    elif rel_entropy < self.param_delta and i == 0 and it == 0:
                         it = outer_it
                         logger.log("------------------ Line search for eta failed!!!")
                         self.final_rel_entropy = rel_entropy
@@ -225,7 +230,7 @@ class NPIREPS(BatchPolopt):
 
             # check again?
             rel_entropy = self.final_rel_entropy
-            if rel_entropy > self.param_delta : 
+            if rel_entropy < self.param_delta : 
                 logger.log("------------------ Line search for eta failed (2) !!!")
 
             logger.log("eta is      " + str(self.param_eta))

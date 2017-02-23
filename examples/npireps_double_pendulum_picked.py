@@ -9,6 +9,18 @@ from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
 import rllab.misc.logger as logger
 
+import numpy as np
+import sys
+
+print('Number of arguments:', len(sys.argv), 'arguments.')
+print('Argument List:', str(sys.argv))
+
+variant = sys.argv[1]
+delta = np.float(sys.argv[2])
+epsilon = np.float(sys.argv[3])
+seed = np.int(sys.argv[4])
+
+kl_trpo = True if variant == 'kl_trpo' else False
 plot = False 
 
 def run_task(*_):
@@ -29,8 +41,16 @@ def run_task(*_):
         baseline=baseline,
         sampler_cls=PISampler,
         kl_trpo=False,
-        plot=plot
+        step_size = epsilon,
+        plot=plot,
+        delta=delta
     )
+
+    logger.log("    variant " + variant)
+    logger.log("    delta " + str(delta))
+    logger.log("    eps " + str(epsilon))
+    logger.log("    seed " + str(seed))
+
     algo.train()
 
 run_experiment_lite(
@@ -41,6 +61,6 @@ run_experiment_lite(
     snapshot_mode="last",
     # Specifies the seed for the experiment. If this is not provided, a random seed
     # will be used
-    seed=1,
+    seed=10,
     plot=plot
 )
