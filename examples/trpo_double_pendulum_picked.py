@@ -17,6 +17,7 @@ def run_task(*_):
         env=env,
         policy=policy,
         baseline=baseline,
+        plot=True
     )
     algo.train()
 
@@ -29,4 +30,5 @@ run_experiment_lite(
     # Specifies the seed for the experiment. If this is not provided, a random seed
     # will be used
     seed=1,
+    plot=True
 )
