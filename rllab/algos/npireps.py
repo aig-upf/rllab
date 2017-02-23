@@ -253,6 +253,8 @@ class NPIREPS(BatchPolopt):
         ws = np.sort(np.squeeze(weights))[::-1]
         logger.log("Three largest weights are " + str(ws[0:3]))
         
+        total_cost = self.f_total_cost(*input_values)
+
         #######################
         # natural PICE gradient
         #######################
@@ -280,6 +282,7 @@ class NPIREPS(BatchPolopt):
         logger.record_tabular('MeanKLBefore', mean_kl_before)
         logger.record_tabular('MeanKL', mean_kl)
         logger.record_tabular('dLoss', loss_before - loss_after)
+        logger.record_tabular('Total cost', total_cost)
         return dict()
 
     @overrides
