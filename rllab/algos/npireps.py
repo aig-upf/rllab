@@ -23,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=0,
-            delta = 0.05,
+            delta = 0.1,
             kl_trpo = False,
             **kwargs
     ):
@@ -190,39 +190,40 @@ class NPIREPS(BatchPolopt):
                 vent = np.zeros(nit)
                 i = 0
                 while (i<nit) :
-                    print("it = " + str(it) + " i = " + str(i))
+                    #print("it = " + str(it) + " i = " + str(i))
                     self.param_eta = rang[i]
                     input_values = all_input_values + [self.param_eta]
                     rel_entropy, weights, logq = self.f_dual(*input_values)
                     veta[i] = self.param_eta
-                    vent[i] = entropy
-                    if rel_entropy < self.param_delta and i > 0:
-                        print("passed")
+                    vent[i] = rel_entropy
+                    if rel_entropy > self.param_delta and i > 0:
+                        #print("passed")
                         self.param_eta = rang[i-1]
                         self.final_rel_entropy = vent[i-1]
                         min_eta = rang[i-1]
                         max_eta = rang[i]
                         break
                     i += 1
-                print("it " + str(it) + " i " + str(i) + ": entropy " + str(entropy))
+                #print("it " + str(it) + " i " + str(i) + ": entropy " +
+                #      str(rel_entropy))
                 it += 1
                 rang = np.linspace(min_eta,max_eta,nit)
-    #            print("new range " + str(min_eta) + "/" + str(max_eta))
+                #print("new range " + str(min_eta) + "/" + str(max_eta))
 
-            if (self.final_rel_entropy < self.param_delta) :
+            if (self.final_rel_entropy > self.param_delta) :
                 logger.log("------------------ Line search for eta failed!!!")
 
-            logger.log("eta is " + str(self.param_eta))
+            #logger.log("eta is " + str(self.param_eta))
             rel_entropy = self.final_rel_entropy
-            print(logq)
-            plt.semilogy(veta, vent)
-            plt.show()
+            #print(logq)
+            #plt.semilogy(veta, vent)
+            #plt.show()
 
         else :
 
             # for the variant of trpo we do not need a line search
-            entropy, weights, logq = self.f_dual(*input_values)
-        logger.log("Entropy of weights " + str(entropy))
+            rel_entropy, weights, logq = self.f_dual(*input_values)
+        logger.log("Entropy of weights " + str(rel_entropy))
         ws = np.sort(np.squeeze(weights))[::-1]
         print(ws[0:3])
         #######################
