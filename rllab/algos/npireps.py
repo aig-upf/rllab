@@ -22,7 +22,7 @@ class NPIREPS(BatchPolopt):
             optimizer_args=None,
             step_size=0.01,
             truncate_local_is_ratio=None,
-            log_std_uncontrolled=1,
+            log_std_uncontrolled=0,
             delta = 0.1,
             kl_trpo = False,
             **kwargs
@@ -207,10 +207,10 @@ class NPIREPS(BatchPolopt):
     #            print("new range " + str(min_eta) + "/" + str(max_eta))
     
             if (self.final_entropy > self.param_delta) :
-                print("------------------ Line search for eta failed!!!")
-                print("weight entropy is " + str(self.final_entropy))
+                logger.log("------------------ Line search for eta failed!!!")
+                logger.log("weight entropy is " + str(self.final_entropy))
     
-            print("eta is            " + str(self.param_eta))
+            logger.log("eta is            " + str(self.param_eta))
     #        print(logq)
     #        plt.semilogy(veta, vent)
     #        plt.show()
@@ -230,9 +230,9 @@ class NPIREPS(BatchPolopt):
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
         all_input_values += tuple(dist_info_list) + tuple([weights])
-        out1 = self.f_opt(*all_input_values)
-        print("loss before")
-        print(out1)
+        #out1 = self.f_opt(*all_input_values)
+        #print("loss before")
+        #print(out1)
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)

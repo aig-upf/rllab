@@ -31,6 +31,7 @@ def rollout(env, agent, max_path_length=np.inf, animated=False, speedup=1):
             env.render()
             timestep = 0.05
             time.sleep(timestep / speedup)
+    print(path_length)
     if animated:
         return
     #pprint(tensor_utils.stack_tensor_list(observations))

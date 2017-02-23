@@ -20,9 +20,7 @@ class PISampler(BatchSampler):
 
         # construct alternative structures of fixed size rollouts
         # N is number of rollouts
-        N = int(self.algo.batch_size/self.algo.max_path_length)
-        if N != len(paths) :
-            print("\t\t\t\t" + str(N) + " != " + str(len(paths)))
+        N = len(paths)
 
         # T is number of time-steps
         T = self.algo.max_path_length
@@ -40,8 +38,9 @@ class PISampler(BatchSampler):
         for i in range(0,N) :
             num_steps = paths[i]["rewards"].size
             if (num_steps != T) :
-                print("----------- truncated episode " + str(num_steps) + " < "
-                     + str(T)
+                logger.log("----------- truncated episode "
+                    + str(num_steps) + " < "
+                    + str(T)
                 )
             U[i,0:num_steps,:] = paths[i]["actions"]
             X[i,0:num_steps,:] = paths[i]["observations"]

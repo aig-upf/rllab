@@ -28,7 +28,7 @@ def run_task(*_):
         sampler_cls=PISampler,
         kl_trpo=False
     )
-    logger.log('Running KL-TRPO')
+    logger.log('Running Natural PIREPS')
     logger.log(str(env))
     algo.train()
 
