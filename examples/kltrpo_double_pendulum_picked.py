@@ -7,6 +7,8 @@ from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
+import rllab.misc.logger as logger
+
 def run_task(*_):
     env = normalize(DoublePendulumEnv())
 
@@ -26,6 +28,8 @@ def run_task(*_):
         sampler_cls=PISampler,
         kl_trpo=True
     )
+    logger.log('Running KL-TRPO')
+    logger.log(str(env))
     algo.train()
 
 run_experiment_lite(
