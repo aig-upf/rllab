@@ -15,12 +15,10 @@ class PISampler(BatchSampler):
 
         samples_data = super(PISampler,self).process_samples(itr,paths)
 
-        # add PI stuff here...
-        print('processing samples in PISampler----------')
-
         # construct alternative structures of fixed size rollouts
         # N is number of rollouts
-        N = len(paths)
+        N = int(self.algo.batch_size/self.algo.max_path_length)
+        #N = len(paths)
 
         # T is number of time-steps
         T = self.algo.max_path_length

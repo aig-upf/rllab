@@ -23,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=0,
-            delta = 0.1,
+            delta = 0.2,
             kl_trpo = False,
             **kwargs
     ):
@@ -77,9 +77,10 @@ class NPIREPS(BatchPolopt):
         dist_info_vars = self.policy.dist_info_sym(X_var)
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
+        udim = self.env.action_dim
         udist_info_vars = dict(
-            mean=np.zeros((1,2)),
-            log_std=np.ones((1,2))*self.log_std_uncontrolled
+            mean=np.zeros((1,udim)),
+            log_std=np.ones((1,udim))*self.log_std_uncontrolled
         )
         logq = dist.log_likelihood_sym(U_var, udist_info_vars) 
 #        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
@@ -98,9 +99,8 @@ class NPIREPS(BatchPolopt):
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
             w = (w/Z).reshape((N,1))
-        
-        norm_entropy = -(N/TT.log(N)) * TT.tensordot(w, TT.log(w))
-
+       
+        norm_entropy = -(1/TT.log(N)) * TT.tensordot(w, TT.log(w))
         input = [X_var, U_var, V_var, param_eta]
 
         self.f_dual = ext.compile_function(
@@ -177,12 +177,12 @@ class NPIREPS(BatchPolopt):
         # line search: must be improved
         ###############################
         if not self.kl_trpo :
-            outer_it = 3 
-            min_log = -10
+            outer_it = 5 
+            min_log = -20
             max_log = 2 
             it = 0
-            nit = 25
-            rang = np.logspace(min_log,max_log,nit)
+            rang = np.logspace(min_log,max_log,5)
+            nit = 15 
             while (it<outer_it) :
                 veta = np.zeros(nit)
                 vent = np.zeros(nit)
@@ -202,15 +202,16 @@ class NPIREPS(BatchPolopt):
                         max_eta = rang[i]
                         break
                     i += 1
+                print("it " + str(it) + " i " + str(i) + ": entropy " + str(entropy))
                 it += 1
                 rang = np.linspace(min_eta,max_eta,nit)
     #            print("new range " + str(min_eta) + "/" + str(max_eta))
     
             if (self.final_entropy > self.param_delta) :
                 logger.log("------------------ Line search for eta failed!!!")
-                logger.log("weight entropy is " + str(self.final_entropy))
     
-            logger.log("eta is            " + str(self.param_eta))
+            logger.log("eta is " + str(self.param_eta))
+            entropy = self.final_entropy
     #        print(logq)
     #        plt.semilogy(veta, vent)
     #        plt.show()
@@ -219,7 +220,9 @@ class NPIREPS(BatchPolopt):
             
             # for the variant of trpo we do not need a line search
             entropy, weights, logq = self.f_dual(*input_values)
-
+        logger.log("Entropy of weights " + str(entropy))
+        ws = np.sort(np.squeeze(weights))[::-1]
+        print(ws)
         #######################
         # natural PICE gradient
         #######################
