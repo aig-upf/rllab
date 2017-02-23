@@ -5,7 +5,6 @@ import time
 from pprint import pprint
 
 def rollout(env, agent, max_path_length=np.inf, animated=False, speedup=1):
-    print(animated)
     observations = []
     actions = []
     rewards = []
