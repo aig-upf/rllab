@@ -15,52 +15,55 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-variant = sys.argv[1]
-delta = np.float(sys.argv[2])
-epsilon = np.float(sys.argv[3])
-seed = np.int(sys.argv[4])
-
-kl_trpo = True if variant == 'kl_trpo' else False
-
-plot = False 
-
-def run_task(*_):
-    env = normalize(DoublePendulumEnv())
-
-    print("Action dims = " + str(env.action_dim))
-    print("obs dim = " + str(env.observation_space.flat_dim))
-
-    policy = GaussianMLPPolicy(
-        env_spec=env.spec,
+if len(sys.argv) != 5 :
+    print('Use as: python fname.py {kl_trpo|npireps} delta epsilon seed')
+else :
+    variant = sys.argv[1]
+    delta = np.float(sys.argv[2])
+    epsilon = np.float(sys.argv[3])
+    seed = np.int(sys.argv[4])
+    
+    kl_trpo = True if variant == 'kl_trpo' else False
+    
+    plot = False 
+    
+    def run_task(*_):
+        env = normalize(DoublePendulumEnv())
+    
+        print("Action dims = " + str(env.action_dim))
+        print("obs dim = " + str(env.observation_space.flat_dim))
+    
+        policy = GaussianMLPPolicy(
+            env_spec=env.spec,
+        )
+    
+        baseline = LinearFeatureBaseline(env_spec=env.spec)
+    
+        algo = NPIREPS(
+            env=env,
+            policy=policy,
+            baseline=baseline,
+            sampler_cls=PISampler,
+            kl_trpo=kl_trpo,
+            step_size = epsilon,
+            plot=plot,
+            delta=delta
+        )
+    
+        logger.log("    variant " + variant)
+        logger.log("    eps " + str(epsilon))
+        logger.log("    seed " + str(seed))
+    
+        algo.train()
+    
+    run_experiment_lite(
+        run_task,
+        # Number of parallel workers for sampling
+        n_parallel=5,
+        # Only keep the snapshot parameters for the last iteration
+        snapshot_mode="last",
+        # Specifies the seed for the experiment. If this is not provided, a random seed
+        # will be used
+        seed=10,
+        plot=plot
     )
-
-    baseline = LinearFeatureBaseline(env_spec=env.spec)
-
-    algo = NPIREPS(
-        env=env,
-        policy=policy,
-        baseline=baseline,
-        sampler_cls=PISampler,
-        kl_trpo=kl_trpo,
-        step_size = epsilon,
-        plot=plot,
-        delta=delta
-    )
-
-    logger.log("    variant " + variant)
-    logger.log("    eps " + str(epsilon))
-    logger.log("    seed " + str(seed))
-
-    algo.train()
-
-run_experiment_lite(
-    run_task,
-    # Number of parallel workers for sampling
-    n_parallel=10,
-    # Only keep the snapshot parameters for the last iteration
-    snapshot_mode="last",
-    # Specifies the seed for the experiment. If this is not provided, a random seed
-    # will be used
-    seed=10,
-    plot=plot
-)
