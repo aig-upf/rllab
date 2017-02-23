@@ -123,7 +123,7 @@ class NPIREPS(BatchPolopt):
                                     logq_reshaped,1))
         self.f_total_cost = ext.compile_function( 
             inputs=input,         
-            outputs=[total_cost]
+            outputs=total_cost
         )
 
         ############################

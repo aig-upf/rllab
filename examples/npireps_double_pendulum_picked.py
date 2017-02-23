@@ -21,6 +21,7 @@ epsilon = np.float(sys.argv[3])
 seed = np.int(sys.argv[4])
 
 kl_trpo = True if variant == 'kl_trpo' else False
+
 plot = False 
 
 def run_task(*_):
@@ -40,7 +41,7 @@ def run_task(*_):
         policy=policy,
         baseline=baseline,
         sampler_cls=PISampler,
-        kl_trpo=False,
+        kl_trpo=kl_trpo,
         step_size = epsilon,
         plot=plot,
         delta=delta
