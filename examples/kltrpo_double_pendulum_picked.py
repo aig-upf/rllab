@@ -31,8 +31,6 @@ def run_task(*_):
         kl_trpo=True,
         plot=plot
     )
-    logger.log('Running KL-TRPO')
-    logger.log(str(env))
     algo.train()
 
 run_experiment_lite(

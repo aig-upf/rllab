@@ -31,8 +31,6 @@ def run_task(*_):
         kl_trpo=False,
         plot=plot
     )
-    logger.log('Running Natural PIREPS')
-    logger.log(str(env))
     algo.train()
 
 run_experiment_lite(

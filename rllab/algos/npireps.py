@@ -42,12 +42,16 @@ class NPIREPS(BatchPolopt):
         self.f_dual = None
         self.f_opt = None
         self.kl_trpo = kl_trpo
+        if kl_trpo:
+            logger.log('Running KL-TRPO')
+        else:
+            logger.log('Running Natural PIREPS')
         super(NPIREPS, self).__init__(optimizer=optimizer, **kwargs)
-
 
     @overrides
     def init_opt(self):
 
+        logger.log(str(sel.env))
         ###########################
         # Symbolics for line search 
         ###########################
