@@ -49,7 +49,7 @@ class BatchPolopt(RLAlgorithm):
             n_itr=500,
             start_itr=0,
             batch_size=20000,
-            max_path_length=500,
+            max_path_length=200,#500,
             discount=0.99,
             gae_lambda=1,
             plot=False,
@@ -68,7 +68,7 @@ class BatchPolopt(RLAlgorithm):
         :type policy: Policy
         :param baseline: Baseline
         :param scope: Scope for identifying the algorithm. Must be specified if running multiple algorithms
-        simultaneously, each using different environments and policies
+            simultaneously, each using different environments and policies
         :param n_itr: Number of iterations.
         :param start_itr: Starting iteration.
         :param batch_size: Number of samples per iteration.
@@ -79,7 +79,7 @@ class BatchPolopt(RLAlgorithm):
         :param pause_for_plot: Whether to pause before contiuing when plotting.
         :param center_adv: Whether to rescale the advantages so that they have mean 0 and standard deviation 1.
         :param positive_adv: Whether to shift the advantages so that they are always positive. When used in
-        conjunction with center_adv the advantages will be standardized before shifting.
+            conjunction with center_adv the advantages will be standardized before shifting.
         :param store_paths: Whether to save all paths data to the snapshot.
         """
         self.env = env

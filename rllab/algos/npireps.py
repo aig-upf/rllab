@@ -23,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=0,
-            delta = 0.1,
+            delta = 0.05,
             kl_trpo = False,
             **kwargs
     ):

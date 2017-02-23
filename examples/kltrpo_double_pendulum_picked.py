@@ -9,6 +9,8 @@ from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
 import rllab.misc.logger as logger
 
+plot = False
+
 def run_task(*_):
     env = normalize(DoublePendulumEnv())
 
@@ -27,7 +29,7 @@ def run_task(*_):
         baseline=baseline,
         sampler_cls=PISampler,
         kl_trpo=True,
-        plot=True
+        plot=plot
     )
     logger.log('Running KL-TRPO')
     logger.log(str(env))
@@ -42,5 +44,5 @@ run_experiment_lite(
     # Specifies the seed for the experiment. If this is not provided, a random seed
     # will be used
     seed=1,
-    plot=True
+    plot=plot
 )
