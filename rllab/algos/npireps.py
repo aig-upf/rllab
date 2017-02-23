@@ -13,7 +13,7 @@ import rllab.misc.logger as logger
 
 class NPIREPS(BatchPolopt):
     """
-    Natural PIREPS method
+    Natural PIREPS method ... and kl_trpo
     """
 
     def __init__(
@@ -101,7 +101,7 @@ class NPIREPS(BatchPolopt):
 
         if self.kl_trpo :
             # we run here our TRPO variant 
-            S = -(TT.sum(V_var/self.lamb + logptheta_reshaped - logq_reshaped,1))
+            S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             w = S - TT.mean(S)
             w = TT.reshape(w,(self.N,1))
         else :
