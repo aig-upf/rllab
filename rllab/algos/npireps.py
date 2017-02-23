@@ -91,8 +91,7 @@ class NPIREPS(BatchPolopt):
         if self.kl_trpo :
             # we run here our TRPO variant 
             S = -(TT.sum(V_var + logptheta_reshaped - logq_reshaped,1))
-            # substract MEAN
-            w = S - TT.min(S)
+            w = S - TT.mean(S)
             w = TT.reshape(w,(N,1))
         else :
             # we run here natural PIREPS
@@ -223,6 +222,7 @@ class NPIREPS(BatchPolopt):
 
             # for the variant of trpo we do not need a line search
             rel_entropy, weights, logq = self.f_dual(*input_values)
+
         logger.log("Entropy of weights " + str(rel_entropy))
         ws = np.sort(np.squeeze(weights))[::-1]
         print(ws[0:3])
