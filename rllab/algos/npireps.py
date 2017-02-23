@@ -23,7 +23,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,
             truncate_local_is_ratio=None,
             log_std_uncontrolled=0,
-            delta = 0.1,
+            delta = 0.2,
             kl_trpo = False,
             **kwargs
     ):
@@ -182,16 +182,17 @@ class NPIREPS(BatchPolopt):
                             samples_data["V"]]
         input_values = all_input_values + [self.param_eta]
 
-        ###############################
-        # line search: must be improved
-        ###############################
         if not self.kl_trpo :
+
+            #############
+            # line search
+            #############
             outer_it = 5 
-            min_log = -20
+            min_log = -30
             max_log = 2 
             it = 0
             rang = np.logspace(min_log,max_log,5)
-            nit = 15 
+            nit = 20 
             while (it<outer_it) :
                 veta = np.zeros(nit)
                 vent = np.zeros(nit)
@@ -210,6 +211,11 @@ class NPIREPS(BatchPolopt):
                         min_eta = rang[i-1]
                         max_eta = rang[i]
                         break
+                    elif rel_entropy > self.param_delta and i == 0 and it == 0:
+                        it = outer_it
+                        logger.log("------------------ Line search for eta failed!!!")
+                        self.final_rel_entropy = rel_entropy
+ 
                     i += 1
                 #print("it " + str(it) + " i " + str(i) + ": entropy " +
                 #      str(rel_entropy))
@@ -217,12 +223,12 @@ class NPIREPS(BatchPolopt):
                 rang = np.linspace(min_eta,max_eta,nit)
                 #print("new range " + str(min_eta) + "/" + str(max_eta))
 
-            if (self.final_rel_entropy > self.param_delta) :
-                logger.log("------------------ Line search for eta failed!!!")
-
-            #logger.log("eta is " + str(self.param_eta))
+            # check again?
             rel_entropy = self.final_rel_entropy
-            #print(logq)
+            if rel_entropy > self.param_delta : 
+                logger.log("------------------ Line search for eta failed (2) !!!")
+
+            logger.log("eta is      " + str(self.param_eta))
             #plt.semilogy(veta, vent)
             #plt.show()
 
@@ -231,9 +237,11 @@ class NPIREPS(BatchPolopt):
             # for the variant of trpo we do not need a line search
             rel_entropy, weights, logq = self.f_dual(*input_values)
 
-        logger.log("Entropy of weights " + str(rel_entropy))
+        logger.log("rel_entropy " + str(rel_entropy))
+        
         ws = np.sort(np.squeeze(weights))[::-1]
-        print(ws[0:3])
+        logger.log("Three largest weights are " + str(ws[0:3]))
+        
         #######################
         # natural PICE gradient
         #######################
