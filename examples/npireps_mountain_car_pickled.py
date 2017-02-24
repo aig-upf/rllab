@@ -25,7 +25,7 @@ else :
     
     kl_trpo = True if variant == 'kl_trpo' else False
     
-    plot = True 
+    plot = False 
     
     def run_task(*_):
         env = normalize(KLMountainCarEnv())
@@ -35,8 +35,8 @@ else :
     
         policy = GaussianMLPPolicy(
             env_spec=env.spec,
-            hidden_sizes=(10,10),
-            std_hidden_sizes=(10,10),
+            hidden_sizes=(2,2),
+            std_hidden_sizes=(2,2),
         )
     
         baseline = LinearFeatureBaseline(env_spec=env.spec)

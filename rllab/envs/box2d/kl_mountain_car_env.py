@@ -37,6 +37,9 @@ class KLMountainCarEnv(KLBox2DEnv, Serializable):
     @overrides
     def is_current_done(self):
         return False
+#        return self.cart.position[0] >= self.goal_cart_pos \
+#            or abs(self.cart.position[0]) >= self.max_cart_pos
+
 
     @overrides
     def reset(self):

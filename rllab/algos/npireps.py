@@ -24,7 +24,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,                 # epsilon for 2nd linesearch
             log_std_uncontrolled= 0,   # log_std pasive dynamics
             delta = 0.2,                    # threshold 1st linesearch
-            lambd = .5,                      # divides state-cost
+            lambd = 1,                      # divides state-cost
             kl_trpo = False,
             **kwargs
     ):
@@ -184,14 +184,14 @@ class NPIREPS(BatchPolopt):
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
+            S = (S.reshape((self.N,1)) - S_min_var)#/S_sum_var
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
             weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
-            surr_loss = - TT.sum(lr_reshaped*weights_rep)
+            surr_loss = - TT.sum(lr_reshaped*weights_rep)/std(weight_var)
 
 
         if self.truncate_local_is_ratio is not None:
