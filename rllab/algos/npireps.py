@@ -171,7 +171,9 @@ class NPIREPS(BatchPolopt):
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.Neff,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            surr_loss = - TT.sum(lr_reshaped*S)
+            S = S.reshape((self.Neff,1))
+            S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
+            surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.Neff,self.T)) 
@@ -183,10 +185,10 @@ class NPIREPS(BatchPolopt):
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        input_list = [ X_var, U_var] + old_dist_info_vars_list + [weights_var]
+        input_list = [ X_var, U_var, V_var] + old_dist_info_vars_list + [weights_var]
         self.f_opt = ext.compile_function(
             inputs = input_list,
-            outputs = surr_loss 
+            outputs = [surr_loss, S, lr_reshaped]
         )
         # plot lr ration after optimization
         self.optimizer.update_opt(
@@ -278,13 +280,15 @@ class NPIREPS(BatchPolopt):
         #######################
         all_input_values = tuple(ext.extract(
             samples_data,
-            "X", "U"
+            "X", "U", "V"
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
         all_input_values += tuple(dist_info_list) + tuple([weights]) 
-        #out1 = self.f_opt(*all_input_values)
-        #print("loss before")
+        out1,out2,out3 = self.f_opt(*all_input_values)
+        print(out2.shape)
+        print(out3.shape)
+        
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
