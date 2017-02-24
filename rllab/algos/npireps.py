@@ -105,7 +105,7 @@ class NPIREPS(BatchPolopt):
             # we run here our TRPO variant 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             S_min = TT.min(S)
-            S_sum = TT.sum(S + S_min)
+            S_sum = TT.sum(S - S_min)
             w = S - TT.mean(S)
             w = TT.reshape(w,(self.Neff,1))
         else :
@@ -127,7 +127,7 @@ class NPIREPS(BatchPolopt):
         #############
         self.f_dual = ext.compile_function(
             inputs=input,
-            outputs=[rel_entropy,w,logq,S_min,S_sum]
+            outputs=[rel_entropy,w,logq,S,S_min,S_sum]
         )
             #outputs=[norm_entropy,w,logq]
 
@@ -175,7 +175,7 @@ class NPIREPS(BatchPolopt):
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.Neff,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.Neff,1)) + S_min)/S_sum
+            S = (S.reshape((self.Neff,1)) - S_min)/S_sum
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
@@ -237,7 +237,7 @@ class NPIREPS(BatchPolopt):
                     #print("it = " + str(it) + " i = " + str(i))
                     self.param_eta = rang[i]
                     input_values = all_input_values + [self.param_eta]
-                    rel_entropy, weights, logq, S_min, S_sum = self.f_dual(*input_values)
+                    rel_entropy, weights, logq, S, S_min, S_sum = self.f_dual(*input_values)
                     #print("it " + str(it) + " i " + str(i) + ": entropy " +
                     #    str(rel_entropy))
                     veta[i] = self.param_eta
@@ -273,9 +273,11 @@ class NPIREPS(BatchPolopt):
         else :
 
             # for the variant of trpo we do not need a line search
-            rel_entropy, weights, logq, S_min, S_sum = self.f_dual(*input_values)
-            print(S_min)
-            print(S_sum)
+            rel_entropy, weights, logq, S, S_min, S_sum = self.f_dual(*input_values)
+            #print("S ")
+            #print(S)
+            #print("S_min " + str(S_min))
+            #print("S_sum " + str(S_sum))
 
         ws = np.sort(np.squeeze(np.abs(weights)))[::-1]
         logger.log("Three largest weights are " + str(ws[0:3]))
@@ -294,7 +296,7 @@ class NPIREPS(BatchPolopt):
         all_input_values += tuple(dist_info_list) + tuple([weights]) 
         #out = self.f_opt(*all_input_values)
 
-        extra_inputs = tuple([S_min]) + tuple([S_sum])
+        extra_inputs = tuple([S_min,S_sum])
         loss_before = self.optimizer.loss(all_input_values, extra_inputs=extra_inputs)
         mean_kl_before = self.optimizer.constraint_val(all_input_values, extra_inputs=extra_inputs)
 
