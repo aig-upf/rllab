@@ -226,16 +226,16 @@ class NPIREPS(BatchPolopt):
                 vent = np.zeros(nit)
                 i = 0
                 while (i<nit) :
-                    #print("it = " + str(it) + " i = " + str(i))
+                    print("it = " + str(it) + " i = " + str(i))
                     self.param_eta = rang[i]
                     input_values = all_input_values + [self.param_eta]
                     rel_entropy, weights, logq = self.f_dual(*input_values)
                     veta[i] = self.param_eta
                     vent[i] = rel_entropy
                     if rel_entropy < self.param_delta and i > 0:
-                        #print("passed")
-                        self.param_eta = rang[i-1]
-                        self.final_rel_entropy = vent[i-1]
+                        print("passed")
+                        self.param_eta = rang[i]
+                        self.final_rel_entropy = vent[i]
                         min_eta = rang[i-1]
                         max_eta = rang[i]
                         break
@@ -253,7 +253,7 @@ class NPIREPS(BatchPolopt):
 
             # check again?
             rel_entropy = self.final_rel_entropy
-            if rel_entropy < self.param_delta : 
+            if rel_entropy >= self.param_delta : 
                 logger.log("------------------ Line search for eta failed (2) !!!")
 
             logger.log("eta is      " + str(self.param_eta))
