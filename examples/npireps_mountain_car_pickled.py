@@ -25,7 +25,7 @@ else :
     
     kl_trpo = True if variant == 'kl_trpo' else False
     
-    plot = False 
+    plot = True 
     
     def run_task(*_):
         env = normalize(KLMountainCarEnv())
