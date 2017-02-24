@@ -299,7 +299,7 @@ class NPIREPS(BatchPolopt):
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
 
         # call optimize
-        self.optimizer.optimize(all_input_values)
+        self.optimizer.optimize(all_input_values, extra_inputs=extra_inputs)
 
         mean_kl = self.optimizer.constraint_val(all_input_values)
         loss_after = self.optimizer.loss(all_input_values)
