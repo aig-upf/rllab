@@ -35,8 +35,8 @@ else :
     
         policy = GaussianMLPPolicy(
             env_spec=env.spec,
-            hidden_sizes=(5,5)
-            std_hidden_sizes=(5,5)
+            hidden_sizes=(5,5),
+            std_hidden_sizes=(5,5),
         )
     
         baseline = LinearFeatureBaseline(env_spec=env.spec)
