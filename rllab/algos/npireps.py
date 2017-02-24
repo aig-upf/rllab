@@ -188,7 +188,7 @@ class NPIREPS(BatchPolopt):
             inputs = input_list,
             outputs = surr_loss 
         )
-
+        # plot lr ration after optimization
         self.optimizer.update_opt(
             loss=surr_loss,
             target=self.policy,
@@ -214,46 +214,48 @@ class NPIREPS(BatchPolopt):
             #############
             # line search
             #############
-            outer_it = 5 
+            outer_it = 15 
             min_log = -30
             max_log = 20 
             it = 0
             rang = np.logspace(min_log,max_log,5)
             # add zero in the beginning
-            nit = 50 
-            while (it<outer_it) :
+            nit = 100
+            converged = False
+            while (not converged) and it<outer_it :
                 veta = np.zeros(nit)
                 vent = np.zeros(nit)
                 i = 0
                 while (i<nit) :
-                    print("it = " + str(it) + " i = " + str(i))
+                    #print("it = " + str(it) + " i = " + str(i))
                     self.param_eta = rang[i]
                     input_values = all_input_values + [self.param_eta]
                     rel_entropy, weights, logq = self.f_dual(*input_values)
+                    #print("it " + str(it) + " i " + str(i) + ": entropy " +
+                    #    str(rel_entropy))
                     veta[i] = self.param_eta
                     vent[i] = rel_entropy
                     if rel_entropy < self.param_delta and i > 0:
-                        print("passed")
+                        #print("passed")
                         self.param_eta = rang[i]
                         self.final_rel_entropy = vent[i]
                         min_eta = rang[i-1]
                         max_eta = rang[i]
                         break
-                    elif rel_entropy < self.param_delta and i == 0 and it == 0:
-                        it = outer_it
-                        logger.log("------------------ Line search for eta failed!!!")
-                        self.final_rel_entropy = rel_entropy
- 
                     i += 1
-                #print("it " + str(it) + " i " + str(i) + ": entropy " +
-                #      str(rel_entropy))
+                dif = abs(self.param_delta-self.final_rel_entropy);
+                converged = dif < 1e-5
+                print("it " + str(it) + " eta " + str(self.param_eta) + str(i)
+                      + ": entropy " + str(self.final_rel_entropy) + " diff " +
+                      str(dif))
                 it += 1
+                nit = 10
                 rang = np.linspace(min_eta,max_eta,nit)
                 #print("new range " + str(min_eta) + "/" + str(max_eta))
 
             # check again?
             rel_entropy = self.final_rel_entropy
-            if rel_entropy >= self.param_delta : 
+            if rel_entropy > self.param_delta : 
                 logger.log("------------------ Line search for eta failed (2) !!!")
 
             logger.log("eta is      " + str(self.param_eta))
