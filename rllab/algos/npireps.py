@@ -104,8 +104,8 @@ class NPIREPS(BatchPolopt):
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             #S_min = TT.min(S)
             #S_sum = TT.sum(S - S_min)
-            S_min = TT.min(S)
-            S_sum = TT.sum(S - S_min)
+            S_min = TT.mean(S)
+            S_sum = TT.std(S - S_min)
             w = S - TT.mean(S)
             w = TT.reshape(w,(self.N,1))
         else :
@@ -184,7 +184,7 @@ class NPIREPS(BatchPolopt):
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.N,1)) - S_min_var)#/S_sum_var
+            S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
