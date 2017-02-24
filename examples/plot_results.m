@@ -76,13 +76,36 @@ kl_trpo_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/exper
 kl_trpo_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_16_45_01_0001/progress.csv','AverageReturn');
 kl_trpo_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_16_58_54_0001/progress.csv','Total cost');
 kl_trpo_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_16_58_54_0001/progress.csv','AverageReturn');
-npireps_0_01_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_16_59_20_0001/progress.csv','Total cost');
-npireps_0_01_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_16_59_20_0001/progress.csv','AverageReturn');
+kl_trpo_total_cost_unc05_lambda2_std = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_18_16_35_0001/progress.csv','Total cost');
+kl_trpo_avg_return_unc05_lambda2_std = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_18_16_35_0001/progress.csv','AverageReturn');
+
+kl_trpo_total_cost_lambda1_nod_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_21_20_54_0001/progress.csv','Total cost');
+kl_trpo_avg_return_lambda1_nod_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_21_20_54_0001/progress.csv','AverageReturn');
+kl_trpo_total_cost_lambda1_nod_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_21_21_23_0001/progress.csv','Total cost');
+kl_trpo_avg_return_lambda1_nod_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_21_21_23_0001/progress.csv','AverageReturn');
+
+kl_trpo_total_cost_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_13_0001/progress.csv','Total cost');
+kl_trpo_avg_return_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_13_0001/progress.csv','AverageReturn');
+kl_trpo_total_cost_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_26_0001/progress.csv','Total cost');
+kl_trpo_avg_return_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_26_0001/progress.csv','AverageReturn');
+
+npireps_0_001_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_17_55_34_0001/progress.csv','Total cost');
+npireps_0_001_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_17_55_34_0001/progress.csv','AverageReturn');
+npireps_0_01_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_26_0001/progress.csv','Total cost');
+npireps_0_01_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_34_26_0001/progress.csv','AverageReturn');
 % npireps_0_02_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_15_03_48_0001/progress.csv','Total cost');
 % npireps_0_02_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_15_03_48_0001/progress.csv','AverageReturn');
 % npireps_0_05_total_cost_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_15_05_46_0001/progress.csv','Total cost');
 % npireps_0_05_avg_return_unc05_lambda2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_15_05_46_0001/progress.csv','AverageReturn');
 
+npireps_0_01_total_cost_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_04_55_0001/progress.csv','Total cost');
+npireps_0_01_avg_return_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_04_55_0001/progress.csv','AverageReturn');
+npireps_0_1_total_cost_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_04_59_0001/progress.csv','Total cost');
+npireps_0_1_avg_return_lambda1_std_s1 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_04_59_0001/progress.csv','AverageReturn');
+npireps_0_01_total_cost_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_20_31_0001/progress.csv','Total cost');
+npireps_0_01_avg_return_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_20_31_0001/progress.csv','AverageReturn');
+npireps_0_1_total_cost_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_20_11_0001/progress.csv','Total cost');
+npireps_0_1_avg_return_lambda1_std_s2 = get_data('/home/vgomez/rllab/data/local/experiment/experiment_2017_02_24_22_20_11_0001/progress.csv','AverageReturn');
 %2017_02_24_14_53
 %2017_02_24_14_53_20
 
@@ -90,26 +113,53 @@ h = figure(2);
 
 clf;
 
-subplot(1,2,1);
-plot(kl_trpo_total_cost_unc05_lambda2);
+% blue = kl_trpo
+% green = good pireps 0.1
+% yellow = 0.01
+% red = 0.2
+
+subplot(2,1,1);
+%plot(kl_trpo_total_cost_unc05_lambda2);
 hold on;
-plot(npireps_0_01_total_cost_unc05_lambda2);
+%plot(kl_trpo_total_cost_unc05_lambda2_std);
+%plot(kl_trpo_total_cost_lambda1_nod_s1);
+%plot(kl_trpo_total_cost_lambda1_nod_s2);
+plot(kl_trpo_total_cost_lambda1_std_s1);
+plot(kl_trpo_total_cost_lambda1_std_s2);
+%plot(npireps_0_001_total_cost_unc05_lambda2);
+plot(npireps_0_01_total_cost_lambda1_std_s1);
+plot(npireps_0_01_total_cost_lambda1_std_s2);
+plot(npireps_0_1_total_cost_lambda1_std_s1);
+plot(npireps_0_1_total_cost_lambda1_std_s2);
 % plot(npireps_0_02_total_cost_unc05_lambda2);
 % plot(npireps_0_05_total_cost_unc05_lambda2);
 grid on;
 ylabel('Total Cost');
 title('N = 400')
+set(gca,'xlim',[0 100])
 
-subplot(1,2,2);
-plot(kl_trpo_avg_return_unc05_lambda2);
+subplot(2,1,2);
+%plot(kl_trpo_avg_return_unc05_lambda2);
 hold on;
-plot(npireps_0_01_avg_return_unc05_lambda2);
+%plot(kl_trpo_avg_return_unc05_lambda2_std);
+%plot(kl_trpo_avg_return_lambda1_nod_s1);
+%plot(kl_trpo_avg_return_lambda1_nod_s2);
+plot(kl_trpo_avg_return_lambda1_std_s1);
+plot(kl_trpo_avg_return_lambda1_std_s2);
+%plot(npireps_0_001_avg_return_unc05_lambda2);
+plot(npireps_0_01_avg_return_lambda1_std_s1);
+plot(npireps_0_01_avg_return_lambda1_std_s2);
+plot(npireps_0_1_avg_return_lambda1_std_s1);
+plot(npireps_0_1_avg_return_lambda1_std_s2);
 % plot(npireps_0_02_avg_return_unc05_lambda2);
 % plot(npireps_0_05_avg_return_unc05_lambda2);
 ylabel('Average Reward');
+set(gca,'xlim',[0 100])
+
 
 grid on;
-legend('KL-TRPO','Nat-PIREPS \delta=0.01','Nat-PIREPS \delta=0.02','Nat-PIREPS \delta=0.05','location','southeast')
+%legend('KL-TRPO min-mean','KL-TRPO mean-std','KL-TRPO nodiv','KL-TRPO nodiv','Nat-PIREPS \delta=0.001','Nat-PIREPS \delta=0.01','Nat-PIREPS \delta=0.05','location','southeast')
+legend('KL-TRPO nodiv','KL-TRPO nodiv','KL-TRPO std1','KL-TRPO std2','Nat-PIREPS \delta=0.01','Nat-PIREPS \delta=0.01','Nat-PIREPS \delta=0.1','Nat-PIREPS \delta=0.1','location','southeast')
 saveas(h,'fig1.eps','psc2')
 
 % 
