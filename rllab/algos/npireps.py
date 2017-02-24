@@ -147,7 +147,17 @@ class NPIREPS(BatchPolopt):
             'W',
             ndim=2,
             dtype=theano.config.floatX,
-        )   # a N*T array 
+        ) 
+        S_min_var = ext.new_tensor(
+            'S_min',
+            ndim=2,
+            dtype=theano.config.floatX,
+        )
+        S_sum_var = ext.new_tensor(
+            'S_sum',
+            ndim=2,
+            dtype=theano.config.floatX,
+        )
 
         old_dist_info_vars = {
             k: ext.new_tensor(
@@ -175,7 +185,7 @@ class NPIREPS(BatchPolopt):
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.Neff,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.Neff,1)) - S_min)/S_sum
+            S = (S.reshape((self.Neff,1)) - S_min_var)/S_sum_var
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
@@ -189,7 +199,7 @@ class NPIREPS(BatchPolopt):
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        input_list = [ X_var, U_var, V_var] + old_dist_info_vars_list + [weights_var]
+        input_list = [ X_var, U_var, V_var] + old_dist_info_vars_list + [weights_var] + [S_min_var] + [S_sum_var]
 #        self.f_opt = ext.compile_function(
 #            inputs = input_list,
 #            outputs = [surr_loss, lr_reshaped]
@@ -200,7 +210,6 @@ class NPIREPS(BatchPolopt):
             target=self.policy,
             leq_constraint=(mean_kl, self.step_size),
             inputs=input_list,
-            extra_inputs=[S_min, S_sum],
             constraint_name="mean_kl"
         )
         return dict()
@@ -293,18 +302,20 @@ class NPIREPS(BatchPolopt):
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
-        all_input_values += tuple(dist_info_list) + tuple([weights]) 
-        #out = self.f_opt(*all_input_values)
+        S_min_v = np.array((self.Neff,1))
+        S_min_v = S_min
+        S_sum_v = np.array((self.Neff,1))
+        S_sum_v = S_sum
+        all_input_values += tuple(dist_info_list) + tuple([weights]) + tuple([S_min_v]) + tuple([S_sum_v]) 
 
-        extra_inputs = tuple([S_min,S_sum])
-        loss_before = self.optimizer.loss(all_input_values, extra_inputs=extra_inputs)
-        mean_kl_before = self.optimizer.constraint_val(all_input_values, extra_inputs=extra_inputs)
+        loss_before = self.optimizer.loss(all_input_values)
+        mean_kl_before = self.optimizer.constraint_val(all_input_values)
 
         # call optimize
-        self.optimizer.optimize(all_input_values, extra_inputs=extra_inputs)
+        self.optimizer.optimize(all_input_values)
 
-        mean_kl = self.optimizer.constraint_val(all_input_values, extra_inputs=extra_inputs)
-        loss_after = self.optimizer.loss(all_input_values, extra_inputs=extra_inputs)
+        mean_kl = self.optimizer.constraint_val(all_input_values)
+        loss_after = self.optimizer.loss(all_input_values)
 
         logger.record_tabular('LossBefore', loss_before)
         logger.record_tabular('LossAfter', loss_after)
