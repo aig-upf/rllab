@@ -48,7 +48,7 @@ class BatchPolopt(RLAlgorithm):
             scope=None,
             n_itr=100,
             start_itr=0,
-            batch_size=10000,
+            batch_size=20000,
             max_path_length=100,#500,
             discount=0.99,
             gae_lambda=1,
