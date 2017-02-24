@@ -23,41 +23,51 @@ class PISampler(BatchSampler):
         # T is number of time-steps
         T = self.algo.max_path_length
 
-        # V is NxT matrix of state costs 
-        V = np.zeros((N,T))
-        # tensor of NxTxu, where u is action dimensions
-        udim = self.algo.env.action_dim
-
-        U = np.zeros((N,T,udim))
-        # tensor of NxTxs, where s is state dimensions
-        xdim = self.algo.policy.observation_space.flat_dim
-        X = np.zeros((N,T,xdim))
-
+        # For the moment, we discard those rollouts that not reach the
+        # time-horizon, which means they have infinite cost
+        Neff = 0;
         for i in range(0,N) :
-            num_steps = paths[i]["rewards"].size
-            if (num_steps != T) :
+            steps = paths[i]["rewards"].size
+            if steps < T :
                 logger.log("----------- truncated episode "
-                    + str(num_steps) + " < "
+                    + str(steps) + " < "
                     + str(T)
                 )
-            U[i,0:num_steps,:] = paths[i]["actions"]
-            X[i,0:num_steps,:] = paths[i]["observations"]
-            V[i,0:num_steps] = -paths[i]["rewards"]
+            else :
+                Neff += 1
+        if Neff != N :
+            logger.log("Using " + str(Neff) + " out of " + str(N) + " rollouts")
+
+        # tensor of NxTxs, where s is state dimensions
+        xdim = self.algo.policy.observation_space.flat_dim
+        X = np.zeros((Neff,T,xdim))
+        # V is NxT matrix of state costs 
+        V = np.zeros((Neff,T))
+        # tensor of NxTxu, where u is action dimensions
+        udim = self.algo.env.action_dim
+        U = np.zeros((Neff,T,udim))
+
+        for i in range(0,Neff) :
+            steps = paths[i]["rewards"].size
+            if steps == T :
+                U[i,0:steps,:] = paths[i]["actions"]
+                X[i,0:steps,:] = paths[i]["observations"]
+                V[i,0:steps] = -paths[i]["rewards"]
 
         samples_data["V"] = V
-        samples_data["X"] = X.reshape(N*T,xdim)
-        samples_data["U"] = U.reshape(N*T,udim)
+        samples_data["X"] = X.reshape(Neff*T,xdim)
+        samples_data["U"] = U.reshape(Neff*T,udim)
 
         D = dict()
         agent_infos2 = dict()
         for key,val in paths[0]["agent_infos"].items() :
-            D[key] = np.zeros((N,T,val.shape[1]))
-        for i in range(0,N) :
+            D[key] = np.zeros((Neff,T,val.shape[1]))
+        for i in range(0,Neff) :
             for key,val in paths[i]["agent_infos"].items() :
                 num_steps = val.shape[0]
                 D[key][i,0:num_steps,:] = val
         for key,val in paths[0]["agent_infos"].items() :
-            agent_infos2[key] = D[key].reshape(N*T,val.shape[1])
+            agent_infos2[key] = D[key].reshape(Neff*T,val.shape[1])
         samples_data["agent_infos2"] = agent_infos2
 
         return samples_data

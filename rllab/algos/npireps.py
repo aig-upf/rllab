@@ -49,6 +49,8 @@ class NPIREPS(BatchPolopt):
         
         # N is number of rollouts
         self.N = int(self.batch_size/self.max_path_length)
+        # effective num of rollouts (depends on iteration)
+        self.Neff = self.N
         # T is number of time-steps
         self.T = self.max_path_length
         logger.log("With " + str(self.N) + " rollouts per iteration")
@@ -96,22 +98,22 @@ class NPIREPS(BatchPolopt):
         logq = dist.log_likelihood_sym(U_var, udist_info_vars)
 #        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 
-        logptheta_reshaped = logptheta.reshape((self.N,self.T))
-        logq_reshaped = logq.reshape((self.N,self.T))
+        logptheta_reshaped = logptheta.reshape((self.Neff,self.T))
+        logq_reshaped = logq.reshape((self.Neff,self.T))
 
         if self.kl_trpo :
             # we run here our TRPO variant 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             w = S - TT.mean(S)
-            w = TT.reshape(w,(self.N,1))
+            w = TT.reshape(w,(self.Neff,1))
         else :
             # we run here natural PIREPS
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
-            w = (w/Z).reshape((self.N,1))
+            w = (w/Z).reshape((self.Neff,1))
 
-        norm_entropy = -(1/TT.log(self.N)) * TT.tensordot(w, TT.log(w))
+        norm_entropy = -(1/TT.log(self.Neff)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
         input = [X_var, U_var, V_var, param_eta]
 
@@ -169,7 +171,7 @@ class NPIREPS(BatchPolopt):
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        lr_reshaped = lr.reshape((self.N,self.T)) 
+        lr_reshaped = lr.reshape((self.Neff,self.T)) 
         weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
         surr_loss = - TT.sum(lr_reshaped*weights_rep)
 
@@ -192,10 +194,13 @@ class NPIREPS(BatchPolopt):
     def optimize_policy(self, itr, samples_data):
 
         # collect data from samples
+        # get effective number of rollouts
+        self.Neff = len(samples_data["V"])
         all_input_values = [samples_data["X"], samples_data["U"],
                             samples_data["V"]]
         input_values = all_input_values + [self.param_eta]
 
+        print("------------ arrived " + str(self.Neff) + " rollouts")
         if not self.kl_trpo :
 
             #############
@@ -203,10 +208,10 @@ class NPIREPS(BatchPolopt):
             #############
             outer_it = 5 
             min_log = -30
-            max_log = 2 
+            max_log = 20 
             it = 0
             rang = np.logspace(min_log,max_log,5)
-            nit = 20 
+            nit = 50 
             while (it<outer_it) :
                 veta = np.zeros(nit)
                 vent = np.zeros(nit)
@@ -243,6 +248,7 @@ class NPIREPS(BatchPolopt):
                 logger.log("------------------ Line search for eta failed (2) !!!")
 
             logger.log("eta is      " + str(self.param_eta))
+            logger.log("rel_entropy " + str(rel_entropy))
             #plt.semilogy(veta, vent)
             #plt.show()
 
@@ -251,9 +257,7 @@ class NPIREPS(BatchPolopt):
             # for the variant of trpo we do not need a line search
             rel_entropy, weights, logq = self.f_dual(*input_values)
 
-        logger.log("rel_entropy " + str(rel_entropy))
-        
-        ws = np.sort(np.squeeze(weights))[::-1]
+        ws = np.sort(np.squeeze(np.abs(weights)))[::-1]
         logger.log("Three largest weights are " + str(ws[0:3]))
         
         total_cost = self.f_total_cost(*input_values)
@@ -267,10 +271,9 @@ class NPIREPS(BatchPolopt):
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
-        all_input_values += tuple(dist_info_list) + tuple([weights])
+        all_input_values += tuple(dist_info_list) + tuple([weights]) 
         #out1 = self.f_opt(*all_input_values)
         #print("loss before")
-        #print(out1)
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
