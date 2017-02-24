@@ -188,7 +188,7 @@ class NPIREPS(BatchPolopt):
         input_list = [ X_var, U_var, V_var] + old_dist_info_vars_list + [weights_var]
         self.f_opt = ext.compile_function(
             inputs = input_list,
-            outputs = [surr_loss, S, lr_reshaped]
+            outputs = [surr_loss, lr_reshaped]
         )
         # plot lr ration after optimization
         self.optimizer.update_opt(
@@ -285,10 +285,7 @@ class NPIREPS(BatchPolopt):
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
         all_input_values += tuple(dist_info_list) + tuple([weights]) 
-        out1,out2,out3 = self.f_opt(*all_input_values)
-        print(out2.shape)
-        print(out3.shape)
-        
+        out = self.f_opt(*all_input_values)
 
         loss_before = self.optimizer.loss(all_input_values)
         mean_kl_before = self.optimizer.constraint_val(all_input_values)
@@ -298,6 +295,7 @@ class NPIREPS(BatchPolopt):
 
         mean_kl = self.optimizer.constraint_val(all_input_values)
         loss_after = self.optimizer.loss(all_input_values)
+
         logger.record_tabular('LossBefore', loss_before)
         logger.record_tabular('LossAfter', loss_after)
         logger.record_tabular('MeanKLBefore', mean_kl_before)
