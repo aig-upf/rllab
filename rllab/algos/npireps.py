@@ -131,7 +131,7 @@ class NPIREPS(BatchPolopt):
         )
             #outputs=[norm_entropy,w,logq]
 
-        total_cost = TT.mean(TT.sum(V_var + logptheta_reshaped -
+        total_cost = TT.mean(TT.sum(V_var/self.lambd + logptheta_reshaped -
                                     logq_reshaped,1))
         self.f_total_cost = ext.compile_function( 
             inputs=input,         
@@ -191,7 +191,7 @@ class NPIREPS(BatchPolopt):
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
             weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
-            surr_loss = - TT.sum(lr_reshaped*weights_rep)/std(weight_var)
+            surr_loss = - TT.sum(lr_reshaped*weights_rep)/TT.std(weights_var)
 
 
         if self.truncate_local_is_ratio is not None:
