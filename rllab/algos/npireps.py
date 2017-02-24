@@ -117,6 +117,10 @@ class NPIREPS(BatchPolopt):
         rel_entropy = 1-norm_entropy
         input = [X_var, U_var, V_var, param_eta]
 
+        # This is the first optimization (corresponds to the line search)
+        #############
+        # line search
+        #############
         self.f_dual = ext.compile_function(
             inputs=input,
             outputs=[rel_entropy,w,logq]
@@ -130,6 +134,7 @@ class NPIREPS(BatchPolopt):
             outputs=total_cost
         )
 
+        # This is the second optimization (corresponds to the conj. grad)
         ############################
         # PICE gradient optimization 
         ############################
@@ -164,16 +169,19 @@ class NPIREPS(BatchPolopt):
         
         if self.kl_trpo:
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            lr_reshaped = lr.reshape((self.Neff,self.T)) 
+            S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
+            surr_loss = - TT.sum(lr_reshaped*S)
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            lr_reshaped = lr.reshape((self.Neff,self.T)) 
+            weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
+            surr_loss = - TT.sum(lr_reshaped*weights_rep)
+
 
         if self.truncate_local_is_ratio is not None:
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
-
-        lr_reshaped = lr.reshape((self.Neff,self.T)) 
-        weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
-        surr_loss = - TT.sum(lr_reshaped*weights_rep)
 
         input_list = [ X_var, U_var] + old_dist_info_vars_list + [weights_var]
         self.f_opt = ext.compile_function(
@@ -211,6 +219,7 @@ class NPIREPS(BatchPolopt):
             max_log = 20 
             it = 0
             rang = np.logspace(min_log,max_log,5)
+            # add zero in the beginning
             nit = 50 
             while (it<outer_it) :
                 veta = np.zeros(nit)
