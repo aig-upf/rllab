@@ -24,7 +24,7 @@ class NPIREPS(BatchPolopt):
             step_size=0.01,                 # epsilon for 2nd linesearch
             log_std_uncontrolled= 0,   # log_std pasive dynamics
             delta = 0.2,                    # threshold 1st linesearch
-            lambd = 1,                      # divides state-cost
+            lambd = .5,                      # divides state-cost
             kl_trpo = False,
             **kwargs
     ):
