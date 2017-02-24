@@ -106,8 +106,8 @@ class NPIREPS(BatchPolopt):
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             #S_min = TT.min(S)
             #S_sum = TT.sum(S - S_min)
-            S_min = TT.mean(S)
-            S_sum = TT.std(S - S_min)
+            S_min = TT.min(S)
+            S_sum = TT.sum(S - S_min)
             w = S - TT.mean(S)
             w = TT.reshape(w,(self.Neff,1))
         else :
