@@ -294,15 +294,15 @@ class NPIREPS(BatchPolopt):
         all_input_values += tuple(dist_info_list) + tuple([weights]) 
         #out = self.f_opt(*all_input_values)
 
-        extra_inputs = [S_min, S_sum]
-        loss_before = self.optimizer.loss(all_input_values)
-        mean_kl_before = self.optimizer.constraint_val(all_input_values)
+        extra_inputs = tuple([S_min]) + tuple([S_sum])
+        loss_before = self.optimizer.loss(all_input_values, extra_inputs=extra_inputs)
+        mean_kl_before = self.optimizer.constraint_val(all_input_values, extra_inputs=extra_inputs)
 
         # call optimize
         self.optimizer.optimize(all_input_values, extra_inputs=extra_inputs)
 
-        mean_kl = self.optimizer.constraint_val(all_input_values)
-        loss_after = self.optimizer.loss(all_input_values)
+        mean_kl = self.optimizer.constraint_val(all_input_values, extra_inputs=extra_inputs)
+        loss_after = self.optimizer.loss(all_input_values, extra_inputs=extra_inputs)
 
         logger.record_tabular('LossBefore', loss_before)
         logger.record_tabular('LossAfter', loss_after)
