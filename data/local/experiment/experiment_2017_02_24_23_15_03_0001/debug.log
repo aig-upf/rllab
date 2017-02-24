@@ -1,0 +1,2117 @@
+2017-02-24 23:15:07.110146 CET | [experiment_2017_02_24_23_15_03_0001] With 200 rollouts per iteration
+2017-02-24 23:15:07.110826 CET | [experiment_2017_02_24_23_15_03_0001] With time-horizon 100
+2017-02-24 23:15:07.111311 CET | [experiment_2017_02_24_23_15_03_0001] Running KL-TRPO
+2017-02-24 23:15:07.111788 CET | [experiment_2017_02_24_23_15_03_0001]     variant kl_trpo
+2017-02-24 23:15:07.112284 CET | [experiment_2017_02_24_23_15_03_0001]     eps 0.01
+2017-02-24 23:15:07.112753 CET | [experiment_2017_02_24_23_15_03_0001]     seed 1
+2017-02-24 23:15:07.113237 CET | [experiment_2017_02_24_23_15_03_0001] Populating workers...
+2017-02-24 23:15:08.432308 CET | [experiment_2017_02_24_23_15_03_0001] Populated
+2017-02-24 23:15:08.432635 CET | [experiment_2017_02_24_23_15_03_0001] Normalized: <rllab.envs.box2d.kl_double_pendulum_env.KLDoublePendulumEnv object at 0x7fb3c59da940>
+2017-02-24 23:15:11.557596 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | fitting baseline...
+2017-02-24 23:15:11.576548 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | fitted
+2017-02-24 23:15:11.662616 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | Three largest weights are [ 71.74154829  71.27286812  71.02337534]
+2017-02-24 23:15:12.530826 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | computing loss before
+2017-02-24 23:15:12.568366 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | performing update
+2017-02-24 23:15:12.568708 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | computing descent direction
+2017-02-24 23:15:17.926656 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | descent direction computed
+2017-02-24 23:15:18.480907 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | backtrack iters: 2
+2017-02-24 23:15:18.481407 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | computing loss after
+2017-02-24 23:15:18.481810 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | optimization finished
+2017-02-24 23:15:18.551201 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | saving snapshot...
+2017-02-24 23:15:18.951689 CET | [experiment_2017_02_24_23_15_03_0001] itr #0 | saved
+2017-02-24 23:15:18.952791 CET | -----------------------  ----------------
+2017-02-24 23:15:18.953028 CET | Iteration                     0
+2017-02-24 23:15:18.953272 CET | AverageDiscountedReturn    -161.767
+2017-02-24 23:15:18.953534 CET | AverageReturn              -249.487
+2017-02-24 23:15:18.953759 CET | ExplainedVariance             4.80482e-12
+2017-02-24 23:15:18.953984 CET | NumTrajs                    204
+2017-02-24 23:15:18.954208 CET | Entropy                       1.41894
+2017-02-24 23:15:18.954434 CET | Perplexity                    4.13273
+2017-02-24 23:15:18.954658 CET | StdReturn                    28.2955
+2017-02-24 23:15:18.954882 CET | MaxReturn                  -174.484
+2017-02-24 23:15:18.955106 CET | MinReturn                  -307.503
+2017-02-24 23:15:18.955329 CET | AveragePolicyStd              1
+2017-02-24 23:15:18.955554 CET | LossBefore                    2.71598e-09
+2017-02-24 23:15:18.955778 CET | LossAfter                -38919.9
+2017-02-24 23:15:18.956002 CET | MeanKLBefore                  0
+2017-02-24 23:15:18.956226 CET | MeanKL                        0.00886754
+2017-02-24 23:15:18.956450 CET | dLoss                     38919.9
+2017-02-24 23:15:18.956674 CET | Total cost                  255.345
+2017-02-24 23:15:18.956898 CET | -----------------------  ----------------
+2017-02-24 23:15:21.067704 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | fitting baseline...
+2017-02-24 23:15:21.085817 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | fitted
+2017-02-24 23:15:21.133618 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | Three largest weights are [ 80.73899294  77.55602631  71.80918532]
+2017-02-24 23:15:21.249974 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | computing loss before
+2017-02-24 23:15:21.288781 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | performing update
+2017-02-24 23:15:21.289126 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | computing descent direction
+2017-02-24 23:15:22.195731 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | descent direction computed
+2017-02-24 23:15:22.387709 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | backtrack iters: 4
+2017-02-24 23:15:22.388040 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | computing loss after
+2017-02-24 23:15:22.388270 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | optimization finished
+2017-02-24 23:15:22.463719 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | saving snapshot...
+2017-02-24 23:15:22.996787 CET | [experiment_2017_02_24_23_15_03_0001] itr #1 | saved
+2017-02-24 23:15:22.997912 CET | -----------------------  ----------------
+2017-02-24 23:15:22.998154 CET | Iteration                     1
+2017-02-24 23:15:22.998377 CET | AverageDiscountedReturn    -164.808
+2017-02-24 23:15:22.998596 CET | AverageReturn              -253.898
+2017-02-24 23:15:22.998813 CET | ExplainedVariance             0.901123
+2017-02-24 23:15:22.999030 CET | NumTrajs                    204
+2017-02-24 23:15:22.999245 CET | Entropy                       1.4254
+2017-02-24 23:15:22.999460 CET | Perplexity                    4.15953
+2017-02-24 23:15:22.999676 CET | StdReturn                    29.713
+2017-02-24 23:15:22.999891 CET | MaxReturn                  -170.026
+2017-02-24 23:15:23.000106 CET | MinReturn                  -323.769
+2017-02-24 23:15:23.000323 CET | AveragePolicyStd              1.00648
+2017-02-24 23:15:23.000538 CET | LossBefore                    1.19122e-09
+2017-02-24 23:15:23.000754 CET | LossAfter                -31750.7
+2017-02-24 23:15:23.000968 CET | MeanKLBefore                  0
+2017-02-24 23:15:23.001183 CET | MeanKL                        0.00626663
+2017-02-24 23:15:23.001424 CET | dLoss                     31750.7
+2017-02-24 23:15:23.001684 CET | Total cost                  259.327
+2017-02-24 23:15:23.001899 CET | -----------------------  ----------------
+2017-02-24 23:15:25.270318 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | fitting baseline...
+2017-02-24 23:15:25.282386 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | fitted
+2017-02-24 23:15:25.335737 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | Three largest weights are [ 87.61139539  76.54687223  72.3489844 ]
+2017-02-24 23:15:25.449991 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | computing loss before
+2017-02-24 23:15:25.488748 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | performing update
+2017-02-24 23:15:25.489096 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | computing descent direction
+2017-02-24 23:15:26.403898 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | descent direction computed
+2017-02-24 23:15:26.598395 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | backtrack iters: 4
+2017-02-24 23:15:26.598739 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | computing loss after
+2017-02-24 23:15:26.598972 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | optimization finished
+2017-02-24 23:15:26.674961 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | saving snapshot...
+2017-02-24 23:15:27.104279 CET | [experiment_2017_02_24_23_15_03_0001] itr #2 | saved
+2017-02-24 23:15:27.105408 CET | -----------------------  ----------------
+2017-02-24 23:15:27.105650 CET | Iteration                     2
+2017-02-24 23:15:27.105874 CET | AverageDiscountedReturn    -172.712
+2017-02-24 23:15:27.106096 CET | AverageReturn              -266.197
+2017-02-24 23:15:27.106316 CET | ExplainedVariance             0.903898
+2017-02-24 23:15:27.106536 CET | NumTrajs                    204
+2017-02-24 23:15:27.106756 CET | Entropy                       1.42136
+2017-02-24 23:15:27.106974 CET | Perplexity                    4.14275
+2017-02-24 23:15:27.107192 CET | StdReturn                    31.1372
+2017-02-24 23:15:27.107410 CET | MaxReturn                  -180.529
+2017-02-24 23:15:27.107628 CET | MinReturn                  -332.399
+2017-02-24 23:15:27.107847 CET | AveragePolicyStd              1.00242
+2017-02-24 23:15:27.108065 CET | LossBefore                    6.54263e-09
+2017-02-24 23:15:27.108284 CET | LossAfter                -28713.6
+2017-02-24 23:15:27.108507 CET | MeanKLBefore                  0
+2017-02-24 23:15:27.108726 CET | MeanKL                        0.00577211
+2017-02-24 23:15:27.108944 CET | dLoss                     28713.6
+2017-02-24 23:15:27.109162 CET | Total cost                  269.744
+2017-02-24 23:15:27.109392 CET | -----------------------  ----------------
+2017-02-24 23:15:29.211361 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | fitting baseline...
+2017-02-24 23:15:29.223517 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | fitted
+2017-02-24 23:15:29.289259 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | Three largest weights are [ 87.36334453  70.9359987   68.01047959]
+2017-02-24 23:15:29.462574 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | computing loss before
+2017-02-24 23:15:29.520916 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | performing update
+2017-02-24 23:15:29.521399 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | computing descent direction
+2017-02-24 23:15:30.483489 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | descent direction computed
+2017-02-24 23:15:30.638105 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | backtrack iters: 3
+2017-02-24 23:15:30.638460 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | computing loss after
+2017-02-24 23:15:30.638729 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | optimization finished
+2017-02-24 23:15:30.726170 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | saving snapshot...
+2017-02-24 23:15:31.134784 CET | [experiment_2017_02_24_23_15_03_0001] itr #3 | saved
+2017-02-24 23:15:31.135941 CET | -----------------------  ----------------
+2017-02-24 23:15:31.136188 CET | Iteration                     3
+2017-02-24 23:15:31.136445 CET | AverageDiscountedReturn    -174.573
+2017-02-24 23:15:31.136690 CET | AverageReturn              -268.976
+2017-02-24 23:15:31.136935 CET | ExplainedVariance             0.923463
+2017-02-24 23:15:31.137174 CET | NumTrajs                    204
+2017-02-24 23:15:31.137423 CET | Entropy                       1.42417
+2017-02-24 23:15:31.137665 CET | Perplexity                    4.15439
+2017-02-24 23:15:31.137904 CET | StdReturn                    28.7107
+2017-02-24 23:15:31.138142 CET | MaxReturn                  -179.478
+2017-02-24 23:15:31.138380 CET | MinReturn                  -318.317
+2017-02-24 23:15:31.138619 CET | AveragePolicyStd              1.00524
+2017-02-24 23:15:31.138868 CET | LossBefore                   -1.54898e-10
+2017-02-24 23:15:31.139107 CET | LossAfter                -32227.4
+2017-02-24 23:15:31.139344 CET | MeanKLBefore                  0
+2017-02-24 23:15:31.139580 CET | MeanKL                        0.00801394
+2017-02-24 23:15:31.139818 CET | dLoss                     32227.4
+2017-02-24 23:15:31.140058 CET | Total cost                  273.384
+2017-02-24 23:15:31.140296 CET | -----------------------  ----------------
+2017-02-24 23:15:33.241412 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | fitting baseline...
+2017-02-24 23:15:33.253676 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | fitted
+2017-02-24 23:15:33.296721 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | Three largest weights are [ 70.24484218  69.27198708  68.4424016 ]
+2017-02-24 23:15:33.411454 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | computing loss before
+2017-02-24 23:15:33.450347 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | performing update
+2017-02-24 23:15:33.450694 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | computing descent direction
+2017-02-24 23:15:34.375346 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | descent direction computed
+2017-02-24 23:15:34.495524 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | backtrack iters: 2
+2017-02-24 23:15:34.495892 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | computing loss after
+2017-02-24 23:15:34.496128 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | optimization finished
+2017-02-24 23:15:34.575891 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | saving snapshot...
+2017-02-24 23:15:34.992983 CET | [experiment_2017_02_24_23_15_03_0001] itr #4 | saved
+2017-02-24 23:15:34.994176 CET | -----------------------  ----------------
+2017-02-24 23:15:34.994418 CET | Iteration                     4
+2017-02-24 23:15:34.994642 CET | AverageDiscountedReturn    -180.058
+2017-02-24 23:15:34.994863 CET | AverageReturn              -276.798
+2017-02-24 23:15:34.995081 CET | ExplainedVariance             0.933152
+2017-02-24 23:15:34.995299 CET | NumTrajs                    204
+2017-02-24 23:15:34.995516 CET | Entropy                       1.4229
+2017-02-24 23:15:34.995734 CET | Perplexity                    4.14916
+2017-02-24 23:15:34.995951 CET | StdReturn                    27.1895
+2017-02-24 23:15:34.996169 CET | MaxReturn                  -206.084
+2017-02-24 23:15:34.996386 CET | MinReturn                  -334.825
+2017-02-24 23:15:34.996603 CET | AveragePolicyStd              1.00397
+2017-02-24 23:15:34.996820 CET | LossBefore                    4.07764e-09
+2017-02-24 23:15:34.997037 CET | LossAfter                -46471.4
+2017-02-24 23:15:34.997254 CET | MeanKLBefore                  0
+2017-02-24 23:15:34.997485 CET | MeanKL                        0.00994512
+2017-02-24 23:15:34.997702 CET | dLoss                     46471.4
+2017-02-24 23:15:34.997919 CET | Total cost                  279.195
+2017-02-24 23:15:34.998136 CET | -----------------------  ----------------
+2017-02-24 23:15:37.517554 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | fitting baseline...
+2017-02-24 23:15:37.530527 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | fitted
+2017-02-24 23:15:37.602619 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | Three largest weights are [ 90.52931334  73.98440863  72.47653854]
+2017-02-24 23:15:37.782865 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | computing loss before
+2017-02-24 23:15:37.846910 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | performing update
+2017-02-24 23:15:37.847375 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | computing descent direction
+2017-02-24 23:15:39.277037 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | descent direction computed
+2017-02-24 23:15:39.395561 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | backtrack iters: 1
+2017-02-24 23:15:39.395992 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | computing loss after
+2017-02-24 23:15:39.396336 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | optimization finished
+2017-02-24 23:15:39.512663 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | saving snapshot...
+2017-02-24 23:15:40.035021 CET | [experiment_2017_02_24_23_15_03_0001] itr #5 | saved
+2017-02-24 23:15:40.036160 CET | -----------------------  ----------------
+2017-02-24 23:15:40.036409 CET | Iteration                     5
+2017-02-24 23:15:40.036640 CET | AverageDiscountedReturn    -175.803
+2017-02-24 23:15:40.036868 CET | AverageReturn              -269.768
+2017-02-24 23:15:40.037094 CET | ExplainedVariance             0.922153
+2017-02-24 23:15:40.037320 CET | NumTrajs                    204
+2017-02-24 23:15:40.037568 CET | Entropy                       1.42973
+2017-02-24 23:15:40.037792 CET | Perplexity                    4.17758
+2017-02-24 23:15:40.038017 CET | StdReturn                    29.1895
+2017-02-24 23:15:40.038241 CET | MaxReturn                  -177.056
+2017-02-24 23:15:40.038465 CET | MinReturn                  -331.448
+2017-02-24 23:15:40.038690 CET | AveragePolicyStd              1.01085
+2017-02-24 23:15:40.038914 CET | LossBefore                    6.00576e-09
+2017-02-24 23:15:40.039136 CET | LossAfter                -46281.9
+2017-02-24 23:15:40.039360 CET | MeanKLBefore                  0
+2017-02-24 23:15:40.039583 CET | MeanKL                        0.00755272
+2017-02-24 23:15:40.039807 CET | dLoss                     46281.9
+2017-02-24 23:15:40.040030 CET | Total cost                  274.372
+2017-02-24 23:15:40.040253 CET | -----------------------  ----------------
+2017-02-24 23:15:43.200694 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | fitting baseline...
+2017-02-24 23:15:43.234114 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | fitted
+2017-02-24 23:15:43.303410 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | Three largest weights are [ 88.15617725  85.53843325  78.1578945 ]
+2017-02-24 23:15:43.484196 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | computing loss before
+2017-02-24 23:15:43.544567 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | performing update
+2017-02-24 23:15:43.545149 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | computing descent direction
+2017-02-24 23:15:44.815257 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | descent direction computed
+2017-02-24 23:15:44.991100 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | backtrack iters: 2
+2017-02-24 23:15:44.991642 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | computing loss after
+2017-02-24 23:15:44.992095 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | optimization finished
+2017-02-24 23:15:45.110249 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | saving snapshot...
+2017-02-24 23:15:45.817742 CET | [experiment_2017_02_24_23_15_03_0001] itr #6 | saved
+2017-02-24 23:15:45.818834 CET | -----------------------  ----------------
+2017-02-24 23:15:45.819090 CET | Iteration                     6
+2017-02-24 23:15:45.819323 CET | AverageDiscountedReturn    -174.644
+2017-02-24 23:15:45.819552 CET | AverageReturn              -268.067
+2017-02-24 23:15:45.819778 CET | ExplainedVariance             0.9148
+2017-02-24 23:15:45.820006 CET | NumTrajs                    204
+2017-02-24 23:15:45.820235 CET | Entropy                       1.45092
+2017-02-24 23:15:45.820460 CET | Perplexity                    4.26705
+2017-02-24 23:15:45.820686 CET | StdReturn                    30.2843
+2017-02-24 23:15:45.820912 CET | MaxReturn                  -179.588
+2017-02-24 23:15:45.821138 CET | MinReturn                  -352.132
+2017-02-24 23:15:45.821386 CET | AveragePolicyStd              1.0325
+2017-02-24 23:15:45.821615 CET | LossBefore                   -3.71581e-09
+2017-02-24 23:15:45.821849 CET | LossAfter                -34568.1
+2017-02-24 23:15:45.822075 CET | MeanKLBefore                  0
+2017-02-24 23:15:45.822301 CET | MeanKL                        0.00656282
+2017-02-24 23:15:45.822526 CET | dLoss                     34568.1
+2017-02-24 23:15:45.822756 CET | Total cost                  273.103
+2017-02-24 23:15:45.822986 CET | -----------------------  ----------------
+2017-02-24 23:15:48.254309 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | fitting baseline...
+2017-02-24 23:15:48.267789 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | fitted
+2017-02-24 23:15:48.368484 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | Three largest weights are [ 77.70103601  76.99836233  69.97948053]
+2017-02-24 23:15:48.548116 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | computing loss before
+2017-02-24 23:15:48.608698 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | performing update
+2017-02-24 23:15:48.609265 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | computing descent direction
+2017-02-24 23:15:49.795909 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | descent direction computed
+2017-02-24 23:15:49.914180 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | backtrack iters: 1
+2017-02-24 23:15:49.914716 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | computing loss after
+2017-02-24 23:15:49.915098 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | optimization finished
+2017-02-24 23:15:50.055037 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | saving snapshot...
+2017-02-24 23:15:50.663752 CET | [experiment_2017_02_24_23_15_03_0001] itr #7 | saved
+2017-02-24 23:15:50.664939 CET | -----------------------  ----------------
+2017-02-24 23:15:50.665202 CET | Iteration                     7
+2017-02-24 23:15:50.665482 CET | AverageDiscountedReturn    -162.59
+2017-02-24 23:15:50.665741 CET | AverageReturn              -246.435
+2017-02-24 23:15:50.665993 CET | ExplainedVariance             0.880738
+2017-02-24 23:15:50.666246 CET | NumTrajs                    204
+2017-02-24 23:15:50.666494 CET | Entropy                       1.45868
+2017-02-24 23:15:50.666752 CET | Perplexity                    4.30029
+2017-02-24 23:15:50.666993 CET | StdReturn                    33.6279
+2017-02-24 23:15:50.667240 CET | MaxReturn                  -175.341
+2017-02-24 23:15:50.667486 CET | MinReturn                  -331.708
+2017-02-24 23:15:50.667729 CET | AveragePolicyStd              1.04054
+2017-02-24 23:15:50.667973 CET | LossBefore                   -2.71654e-09
+2017-02-24 23:15:50.668218 CET | LossAfter                -31969.1
+2017-02-24 23:15:50.668463 CET | MeanKLBefore                  0
+2017-02-24 23:15:50.668710 CET | MeanKL                        0.00707665
+2017-02-24 23:15:50.668954 CET | dLoss                     31969.1
+2017-02-24 23:15:50.669200 CET | Total cost                  254.357
+2017-02-24 23:15:50.669469 CET | -----------------------  ----------------
+2017-02-24 23:15:53.900068 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | fitting baseline...
+2017-02-24 23:15:53.922426 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | fitted
+2017-02-24 23:15:54.000446 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | Three largest weights are [ 96.2408856   81.36515927  78.92816123]
+2017-02-24 23:15:54.183752 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | computing loss before
+2017-02-24 23:15:54.270782 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | performing update
+2017-02-24 23:15:54.271285 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | computing descent direction
+2017-02-24 23:15:55.580964 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | descent direction computed
+2017-02-24 23:15:55.699108 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | backtrack iters: 2
+2017-02-24 23:15:55.699468 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | computing loss after
+2017-02-24 23:15:55.699734 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | optimization finished
+2017-02-24 23:15:55.777303 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | saving snapshot...
+2017-02-24 23:15:56.216358 CET | [experiment_2017_02_24_23_15_03_0001] itr #8 | saved
+2017-02-24 23:15:56.217535 CET | -----------------------  ----------------
+2017-02-24 23:15:56.217780 CET | Iteration                     8
+2017-02-24 23:15:56.218014 CET | AverageDiscountedReturn    -168.293
+2017-02-24 23:15:56.218242 CET | AverageReturn              -257.444
+2017-02-24 23:15:56.218467 CET | ExplainedVariance             0.895151
+2017-02-24 23:15:56.218690 CET | NumTrajs                    204
+2017-02-24 23:15:56.218914 CET | Entropy                       1.46074
+2017-02-24 23:15:56.219136 CET | Perplexity                    4.30913
+2017-02-24 23:15:56.219360 CET | StdReturn                    33.5082
+2017-02-24 23:15:56.219582 CET | MaxReturn                  -161.618
+2017-02-24 23:15:56.219804 CET | MinReturn                  -339.409
+2017-02-24 23:15:56.220026 CET | AveragePolicyStd              1.04268
+2017-02-24 23:15:56.220247 CET | LossBefore                    6.06395e-09
+2017-02-24 23:15:56.220469 CET | LossAfter                -30221.8
+2017-02-24 23:15:56.220693 CET | MeanKLBefore                  0
+2017-02-24 23:15:56.220916 CET | MeanKL                        0.00721348
+2017-02-24 23:15:56.221139 CET | dLoss                     30221.8
+2017-02-24 23:15:56.221387 CET | Total cost                  263.827
+2017-02-24 23:15:56.221611 CET | -----------------------  ----------------
+2017-02-24 23:15:59.266032 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | fitting baseline...
+2017-02-24 23:15:59.290293 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | fitted
+2017-02-24 23:15:59.348420 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | Three largest weights are [ 89.27420427  85.01644873  77.04209079]
+2017-02-24 23:15:59.536612 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | computing loss before
+2017-02-24 23:15:59.596059 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | performing update
+2017-02-24 23:15:59.596640 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | computing descent direction
+2017-02-24 23:16:00.929863 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | descent direction computed
+2017-02-24 23:16:01.052955 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | backtrack iters: 1
+2017-02-24 23:16:01.053558 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | computing loss after
+2017-02-24 23:16:01.053958 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | optimization finished
+2017-02-24 23:16:01.172522 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | saving snapshot...
+2017-02-24 23:16:01.725569 CET | [experiment_2017_02_24_23_15_03_0001] itr #9 | saved
+2017-02-24 23:16:01.726740 CET | -----------------------  ----------------
+2017-02-24 23:16:01.726984 CET | Iteration                     9
+2017-02-24 23:16:01.727254 CET | AverageDiscountedReturn    -169.699
+2017-02-24 23:16:01.727500 CET | AverageReturn              -261.766
+2017-02-24 23:16:01.727744 CET | ExplainedVariance             0.910644
+2017-02-24 23:16:01.727984 CET | NumTrajs                    204
+2017-02-24 23:16:01.728226 CET | Entropy                       1.45909
+2017-02-24 23:16:01.728465 CET | Perplexity                    4.30203
+2017-02-24 23:16:01.728707 CET | StdReturn                    31.5888
+2017-02-24 23:16:01.728946 CET | MaxReturn                  -169
+2017-02-24 23:16:01.729184 CET | MinReturn                  -317.043
+2017-02-24 23:16:01.729429 CET | AveragePolicyStd              1.04096
+2017-02-24 23:16:01.729682 CET | LossBefore                   -6.38352e-09
+2017-02-24 23:16:01.729922 CET | LossAfter                -40860.5
+2017-02-24 23:16:01.730158 CET | MeanKLBefore                  0
+2017-02-24 23:16:01.730399 CET | MeanKL                        0.00795815
+2017-02-24 23:16:01.730638 CET | dLoss                     40860.5
+2017-02-24 23:16:01.730876 CET | Total cost                  267.566
+2017-02-24 23:16:01.731115 CET | -----------------------  ----------------
+2017-02-24 23:16:04.982274 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | fitting baseline...
+2017-02-24 23:16:04.995079 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | fitted
+2017-02-24 23:16:05.049721 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | Three largest weights are [ 82.16738947  68.40329828  64.58584868]
+2017-02-24 23:16:05.218671 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | computing loss before
+2017-02-24 23:16:05.278346 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | performing update
+2017-02-24 23:16:05.278904 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | computing descent direction
+2017-02-24 23:16:06.656705 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | descent direction computed
+2017-02-24 23:16:06.779050 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | backtrack iters: 1
+2017-02-24 23:16:06.779683 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | computing loss after
+2017-02-24 23:16:06.780122 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | optimization finished
+2017-02-24 23:16:06.898499 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | saving snapshot...
+2017-02-24 23:16:07.483626 CET | [experiment_2017_02_24_23_15_03_0001] itr #10 | saved
+2017-02-24 23:16:07.484767 CET | -----------------------  ----------------
+2017-02-24 23:16:07.485011 CET | Iteration                    10
+2017-02-24 23:16:07.485257 CET | AverageDiscountedReturn    -164.309
+2017-02-24 23:16:07.485522 CET | AverageReturn              -251.23
+2017-02-24 23:16:07.485766 CET | ExplainedVariance             0.90121
+2017-02-24 23:16:07.486008 CET | NumTrajs                    204
+2017-02-24 23:16:07.486248 CET | Entropy                       1.43693
+2017-02-24 23:16:07.486487 CET | Perplexity                    4.20776
+2017-02-24 23:16:07.486726 CET | StdReturn                    29.8391
+2017-02-24 23:16:07.486984 CET | MaxReturn                  -170.804
+2017-02-24 23:16:07.487225 CET | MinReturn                  -325.068
+2017-02-24 23:16:07.487465 CET | AveragePolicyStd              1.01815
+2017-02-24 23:16:07.487704 CET | LossBefore                    4.78971e-09
+2017-02-24 23:16:07.487950 CET | LossAfter                -42935.7
+2017-02-24 23:16:07.488195 CET | MeanKLBefore                  0
+2017-02-24 23:16:07.488427 CET | MeanKL                        0.00849769
+2017-02-24 23:16:07.488668 CET | dLoss                     42935.7
+2017-02-24 23:16:07.488904 CET | Total cost                  257.899
+2017-02-24 23:16:07.489132 CET | -----------------------  ----------------
+2017-02-24 23:16:10.836460 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | fitting baseline...
+2017-02-24 23:16:10.848716 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | fitted
+2017-02-24 23:16:10.916851 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | Three largest weights are [ 86.47192149  73.46293957  72.42156026]
+2017-02-24 23:16:11.100596 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | computing loss before
+2017-02-24 23:16:11.161822 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | performing update
+2017-02-24 23:16:11.162385 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | computing descent direction
+2017-02-24 23:16:12.520943 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | descent direction computed
+2017-02-24 23:16:12.716207 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | backtrack iters: 2
+2017-02-24 23:16:12.716654 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | computing loss after
+2017-02-24 23:16:12.717008 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | optimization finished
+2017-02-24 23:16:12.833893 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | saving snapshot...
+2017-02-24 23:16:13.465023 CET | [experiment_2017_02_24_23_15_03_0001] itr #11 | saved
+2017-02-24 23:16:13.466190 CET | -----------------------  ---------------
+2017-02-24 23:16:13.466445 CET | Iteration                    11
+2017-02-24 23:16:13.466685 CET | AverageDiscountedReturn    -161.994
+2017-02-24 23:16:13.466940 CET | AverageReturn              -247.922
+2017-02-24 23:16:13.467192 CET | ExplainedVariance             0.897501
+2017-02-24 23:16:13.467443 CET | NumTrajs                    204
+2017-02-24 23:16:13.467692 CET | Entropy                       1.46183
+2017-02-24 23:16:13.467943 CET | Perplexity                    4.31386
+2017-02-24 23:16:13.468192 CET | StdReturn                    30.6751
+2017-02-24 23:16:13.468446 CET | MaxReturn                  -158.631
+2017-02-24 23:16:13.468695 CET | MinReturn                  -325.502
+2017-02-24 23:16:13.468961 CET | AveragePolicyStd              1.04383
+2017-02-24 23:16:13.469209 CET | LossBefore                    4.6702e-09
+2017-02-24 23:16:13.469475 CET | LossAfter                -38532.8
+2017-02-24 23:16:13.469726 CET | MeanKLBefore                  0
+2017-02-24 23:16:13.469975 CET | MeanKL                        0.00720297
+2017-02-24 23:16:13.470218 CET | dLoss                     38532.8
+2017-02-24 23:16:13.470453 CET | Total cost                  254.986
+2017-02-24 23:16:13.470689 CET | -----------------------  ---------------
+2017-02-24 23:16:16.880197 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | fitting baseline...
+2017-02-24 23:16:16.910325 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | fitted
+2017-02-24 23:16:16.982958 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | Three largest weights are [ 67.00506075  64.84435683  64.45876277]
+2017-02-24 23:16:17.161968 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | computing loss before
+2017-02-24 23:16:17.222163 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | performing update
+2017-02-24 23:16:17.222646 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | computing descent direction
+2017-02-24 23:16:18.408013 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | descent direction computed
+2017-02-24 23:16:18.486352 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | backtrack iters: 1
+2017-02-24 23:16:18.486684 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | computing loss after
+2017-02-24 23:16:18.486918 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | optimization finished
+2017-02-24 23:16:18.596246 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | saving snapshot...
+2017-02-24 23:16:19.398497 CET | [experiment_2017_02_24_23_15_03_0001] itr #12 | saved
+2017-02-24 23:16:19.400603 CET | -----------------------  ----------------
+2017-02-24 23:16:19.401068 CET | Iteration                    12
+2017-02-24 23:16:19.401549 CET | AverageDiscountedReturn    -158.672
+2017-02-24 23:16:19.401999 CET | AverageReturn              -243.466
+2017-02-24 23:16:19.402443 CET | ExplainedVariance             0.898397
+2017-02-24 23:16:19.402890 CET | NumTrajs                    204
+2017-02-24 23:16:19.403335 CET | Entropy                       1.46519
+2017-02-24 23:16:19.403793 CET | Perplexity                    4.32835
+2017-02-24 23:16:19.404237 CET | StdReturn                    28.8955
+2017-02-24 23:16:19.404687 CET | MaxReturn                  -172.815
+2017-02-24 23:16:19.405127 CET | MinReturn                  -312.704
+2017-02-24 23:16:19.406814 CET | AveragePolicyStd              1.04733
+2017-02-24 23:16:19.407049 CET | LossBefore                   -6.44212e-09
+2017-02-24 23:16:19.407465 CET | LossAfter                -31816.2
+2017-02-24 23:16:19.407729 CET | MeanKLBefore                  0
+2017-02-24 23:16:19.407957 CET | MeanKL                        0.00676327
+2017-02-24 23:16:19.408235 CET | dLoss                     31816.2
+2017-02-24 23:16:19.408461 CET | Total cost                  250.358
+2017-02-24 23:16:19.408686 CET | -----------------------  ----------------
+2017-02-24 23:16:22.455231 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | fitting baseline...
+2017-02-24 23:16:22.484086 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | fitted
+2017-02-24 23:16:22.555380 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | Three largest weights are [ 74.10839941  73.80372072  71.82873273]
+2017-02-24 23:16:22.741152 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | computing loss before
+2017-02-24 23:16:22.812620 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | performing update
+2017-02-24 23:16:22.813175 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | computing descent direction
+2017-02-24 23:16:24.184890 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | descent direction computed
+2017-02-24 23:16:24.309657 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | backtrack iters: 1
+2017-02-24 23:16:24.310212 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | computing loss after
+2017-02-24 23:16:24.310648 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | optimization finished
+2017-02-24 23:16:24.417894 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | saving snapshot...
+2017-02-24 23:16:25.096062 CET | [experiment_2017_02_24_23_15_03_0001] itr #13 | saved
+2017-02-24 23:16:25.097215 CET | -----------------------  ----------------
+2017-02-24 23:16:25.097490 CET | Iteration                    13
+2017-02-24 23:16:25.097724 CET | AverageDiscountedReturn    -158.472
+2017-02-24 23:16:25.097954 CET | AverageReturn              -242.323
+2017-02-24 23:16:25.098183 CET | ExplainedVariance             0.878363
+2017-02-24 23:16:25.098411 CET | NumTrajs                    204
+2017-02-24 23:16:25.098638 CET | Entropy                       1.46384
+2017-02-24 23:16:25.098865 CET | Perplexity                    4.32254
+2017-02-24 23:16:25.099091 CET | StdReturn                    33.8518
+2017-02-24 23:16:25.099318 CET | MaxReturn                  -168.284
+2017-02-24 23:16:25.099544 CET | MinReturn                  -325.39
+2017-02-24 23:16:25.099770 CET | AveragePolicyStd              1.04593
+2017-02-24 23:16:25.099995 CET | LossBefore                   -6.12821e-10
+2017-02-24 23:16:25.100220 CET | LossAfter                -35078.6
+2017-02-24 23:16:25.100445 CET | MeanKLBefore                  0
+2017-02-24 23:16:25.100670 CET | MeanKL                        0.00732621
+2017-02-24 23:16:25.100896 CET | dLoss                     35078.6
+2017-02-24 23:16:25.101121 CET | Total cost                  248.907
+2017-02-24 23:16:25.101369 CET | -----------------------  ----------------
+2017-02-24 23:16:28.351121 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | fitting baseline...
+2017-02-24 23:16:28.366272 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | fitted
+2017-02-24 23:16:28.433097 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | Three largest weights are [ 76.39579306  73.54808135  70.27412273]
+2017-02-24 23:16:28.615524 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | computing loss before
+2017-02-24 23:16:28.682550 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | performing update
+2017-02-24 23:16:28.683153 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | computing descent direction
+2017-02-24 23:16:30.051664 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | descent direction computed
+2017-02-24 23:16:30.219150 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | backtrack iters: 2
+2017-02-24 23:16:30.219733 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | computing loss after
+2017-02-24 23:16:30.220207 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | optimization finished
+2017-02-24 23:16:30.342274 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | saving snapshot...
+2017-02-24 23:16:31.118383 CET | [experiment_2017_02_24_23_15_03_0001] itr #14 | saved
+2017-02-24 23:16:31.119520 CET | -----------------------  ----------------
+2017-02-24 23:16:31.119767 CET | Iteration                    14
+2017-02-24 23:16:31.119998 CET | AverageDiscountedReturn    -151.765
+2017-02-24 23:16:31.120226 CET | AverageReturn              -231.823
+2017-02-24 23:16:31.120452 CET | ExplainedVariance             0.88035
+2017-02-24 23:16:31.120677 CET | NumTrajs                    204
+2017-02-24 23:16:31.120902 CET | Entropy                       1.45865
+2017-02-24 23:16:31.121127 CET | Perplexity                    4.30016
+2017-02-24 23:16:31.121371 CET | StdReturn                    29.1078
+2017-02-24 23:16:31.121598 CET | MaxReturn                  -156.427
+2017-02-24 23:16:31.121822 CET | MinReturn                  -301.817
+2017-02-24 23:16:31.122048 CET | AveragePolicyStd              1.04051
+2017-02-24 23:16:31.122272 CET | LossBefore                    7.63923e-09
+2017-02-24 23:16:31.122496 CET | LossAfter                -32299
+2017-02-24 23:16:31.122720 CET | MeanKLBefore                  0
+2017-02-24 23:16:31.122945 CET | MeanKL                        0.00697167
+2017-02-24 23:16:31.123169 CET | dLoss                     32299
+2017-02-24 23:16:31.123393 CET | Total cost                  240.398
+2017-02-24 23:16:31.123618 CET | -----------------------  ----------------
+2017-02-24 23:16:34.244822 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | fitting baseline...
+2017-02-24 23:16:34.261879 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | fitted
+2017-02-24 23:16:34.328133 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | Three largest weights are [ 67.04176126  62.29304533  60.98270653]
+2017-02-24 23:16:34.542920 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | computing loss before
+2017-02-24 23:16:34.606336 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | performing update
+2017-02-24 23:16:34.606898 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | computing descent direction
+2017-02-24 23:16:35.779714 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | descent direction computed
+2017-02-24 23:16:35.901723 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | backtrack iters: 1
+2017-02-24 23:16:35.902218 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | computing loss after
+2017-02-24 23:16:35.902575 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | optimization finished
+2017-02-24 23:16:36.022009 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | saving snapshot...
+2017-02-24 23:16:36.802776 CET | [experiment_2017_02_24_23_15_03_0001] itr #15 | saved
+2017-02-24 23:16:36.804897 CET | -----------------------  ----------------
+2017-02-24 23:16:36.805400 CET | Iteration                    15
+2017-02-24 23:16:36.805861 CET | AverageDiscountedReturn    -152
+2017-02-24 23:16:36.806318 CET | AverageReturn              -232.562
+2017-02-24 23:16:36.806776 CET | ExplainedVariance             0.893079
+2017-02-24 23:16:36.807238 CET | NumTrajs                    204
+2017-02-24 23:16:36.807688 CET | Entropy                       1.45359
+2017-02-24 23:16:36.808143 CET | Perplexity                    4.27845
+2017-02-24 23:16:36.808593 CET | StdReturn                    27.8272
+2017-02-24 23:16:36.809053 CET | MaxReturn                  -166.512
+2017-02-24 23:16:36.809530 CET | MinReturn                  -305.896
+2017-02-24 23:16:36.809989 CET | AveragePolicyStd              1.03526
+2017-02-24 23:16:36.810438 CET | LossBefore                    5.31513e-09
+2017-02-24 23:16:36.810893 CET | LossAfter                -29555.9
+2017-02-24 23:16:36.811340 CET | MeanKLBefore                  0
+2017-02-24 23:16:36.811795 CET | MeanKL                        0.00599915
+2017-02-24 23:16:36.812243 CET | dLoss                     29555.9
+2017-02-24 23:16:36.812699 CET | Total cost                  242.357
+2017-02-24 23:16:36.813145 CET | -----------------------  ----------------
+2017-02-24 23:16:39.865760 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | fitting baseline...
+2017-02-24 23:16:39.882310 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | fitted
+2017-02-24 23:16:39.954184 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | Three largest weights are [ 66.83552117  63.9848946   62.90395179]
+2017-02-24 23:16:40.134755 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | computing loss before
+2017-02-24 23:16:40.195794 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | performing update
+2017-02-24 23:16:40.196168 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | computing descent direction
+2017-02-24 23:16:41.376577 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | descent direction computed
+2017-02-24 23:16:41.575574 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | backtrack iters: 3
+2017-02-24 23:16:41.576250 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | computing loss after
+2017-02-24 23:16:41.576773 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | optimization finished
+2017-02-24 23:16:41.698347 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | saving snapshot...
+2017-02-24 23:16:42.588285 CET | [experiment_2017_02_24_23_15_03_0001] itr #16 | saved
+2017-02-24 23:16:42.589411 CET | -----------------------  ----------------
+2017-02-24 23:16:42.589662 CET | Iteration                    16
+2017-02-24 23:16:42.589894 CET | AverageDiscountedReturn    -151.169
+2017-02-24 23:16:42.590123 CET | AverageReturn              -231.516
+2017-02-24 23:16:42.590351 CET | ExplainedVariance             0.89711
+2017-02-24 23:16:42.590577 CET | NumTrajs                    204
+2017-02-24 23:16:42.590802 CET | Entropy                       1.44452
+2017-02-24 23:16:42.591028 CET | Perplexity                    4.23984
+2017-02-24 23:16:42.591252 CET | StdReturn                    26.206
+2017-02-24 23:16:42.591477 CET | MaxReturn                  -161.584
+2017-02-24 23:16:42.591703 CET | MinReturn                  -290.909
+2017-02-24 23:16:42.591928 CET | AveragePolicyStd              1.02592
+2017-02-24 23:16:42.592152 CET | LossBefore                    3.77524e-09
+2017-02-24 23:16:42.592377 CET | LossAfter                -34859.6
+2017-02-24 23:16:42.592602 CET | MeanKLBefore                  0
+2017-02-24 23:16:42.592827 CET | MeanKL                        0.00616967
+2017-02-24 23:16:42.593051 CET | dLoss                     34859.6
+2017-02-24 23:16:42.593275 CET | Total cost                  241.336
+2017-02-24 23:16:42.593527 CET | -----------------------  ----------------
+2017-02-24 23:16:45.698406 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | fitting baseline...
+2017-02-24 23:16:45.712354 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | fitted
+2017-02-24 23:16:45.769581 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | Three largest weights are [ 72.29335098  66.76565328  65.45709731]
+2017-02-24 23:16:45.965169 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | computing loss before
+2017-02-24 23:16:46.026493 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | performing update
+2017-02-24 23:16:46.027074 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | computing descent direction
+2017-02-24 23:16:47.269009 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | descent direction computed
+2017-02-24 23:16:47.457053 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | backtrack iters: 2
+2017-02-24 23:16:47.457674 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | computing loss after
+2017-02-24 23:16:47.458155 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | optimization finished
+2017-02-24 23:16:47.587925 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | saving snapshot...
+2017-02-24 23:16:48.429411 CET | [experiment_2017_02_24_23_15_03_0001] itr #17 | saved
+2017-02-24 23:16:48.431540 CET | -----------------------  ----------------
+2017-02-24 23:16:48.432040 CET | Iteration                    17
+2017-02-24 23:16:48.432493 CET | AverageDiscountedReturn    -152.608
+2017-02-24 23:16:48.432956 CET | AverageReturn              -232.783
+2017-02-24 23:16:48.433459 CET | ExplainedVariance             0.885827
+2017-02-24 23:16:48.433918 CET | NumTrajs                    203
+2017-02-24 23:16:48.434369 CET | Entropy                       1.43122
+2017-02-24 23:16:48.434830 CET | Perplexity                    4.18378
+2017-02-24 23:16:48.435287 CET | StdReturn                    30.2987
+2017-02-24 23:16:48.435762 CET | MaxReturn                  -168.906
+2017-02-24 23:16:48.436223 CET | MinReturn                  -304.536
+2017-02-24 23:16:48.436691 CET | AveragePolicyStd              1.01235
+2017-02-24 23:16:48.437157 CET | LossBefore                    9.91813e-09
+2017-02-24 23:16:48.437645 CET | LossAfter                -38144.8
+2017-02-24 23:16:48.438108 CET | MeanKLBefore                  0
+2017-02-24 23:16:48.438572 CET | MeanKL                        0.0073272
+2017-02-24 23:16:48.439039 CET | dLoss                     38144.8
+2017-02-24 23:16:48.439503 CET | Total cost                  243.142
+2017-02-24 23:16:48.439960 CET | -----------------------  ----------------
+2017-02-24 23:16:51.741005 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | fitting baseline...
+2017-02-24 23:16:51.753540 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | fitted
+2017-02-24 23:16:51.819563 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | Three largest weights are [ 68.30415533  64.88558961  62.81730926]
+2017-02-24 23:16:51.991557 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | computing loss before
+2017-02-24 23:16:52.050546 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | performing update
+2017-02-24 23:16:52.050991 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | computing descent direction
+2017-02-24 23:16:53.332414 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | descent direction computed
+2017-02-24 23:16:53.513849 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | backtrack iters: 2
+2017-02-24 23:16:53.514300 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | computing loss after
+2017-02-24 23:16:53.514645 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | optimization finished
+2017-02-24 23:16:53.635517 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | saving snapshot...
+2017-02-24 23:16:54.201320 CET | [experiment_2017_02_24_23_15_03_0001] itr #18 | saved
+2017-02-24 23:16:54.202492 CET | -----------------------  ----------------
+2017-02-24 23:16:54.202743 CET | Iteration                    18
+2017-02-24 23:16:54.202978 CET | AverageDiscountedReturn    -148.688
+2017-02-24 23:16:54.203208 CET | AverageReturn              -227.448
+2017-02-24 23:16:54.203437 CET | ExplainedVariance             0.894781
+2017-02-24 23:16:54.203664 CET | NumTrajs                    204
+2017-02-24 23:16:54.203892 CET | Entropy                       1.4251
+2017-02-24 23:16:54.204118 CET | Perplexity                    4.15828
+2017-02-24 23:16:54.204346 CET | StdReturn                    25.501
+2017-02-24 23:16:54.204573 CET | MaxReturn                  -171.447
+2017-02-24 23:16:54.204799 CET | MinReturn                  -297.562
+2017-02-24 23:16:54.205025 CET | AveragePolicyStd              1.00618
+2017-02-24 23:16:54.205259 CET | LossBefore                   -2.17826e-11
+2017-02-24 23:16:54.205511 CET | LossAfter                -45577.8
+2017-02-24 23:16:54.205738 CET | MeanKLBefore                  0
+2017-02-24 23:16:54.205965 CET | MeanKL                        0.00719951
+2017-02-24 23:16:54.206190 CET | dLoss                     45577.8
+2017-02-24 23:16:54.206417 CET | Total cost                  238.449
+2017-02-24 23:16:54.206643 CET | -----------------------  ----------------
+2017-02-24 23:16:57.181424 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | fitting baseline...
+2017-02-24 23:16:57.197142 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | fitted
+2017-02-24 23:16:57.263189 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | Three largest weights are [ 67.24079685  55.88167448  55.55242121]
+2017-02-24 23:16:57.439691 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | computing loss before
+2017-02-24 23:16:57.499505 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | performing update
+2017-02-24 23:16:57.499957 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | computing descent direction
+2017-02-24 23:16:58.805665 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | descent direction computed
+2017-02-24 23:16:58.988988 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | backtrack iters: 2
+2017-02-24 23:16:58.989578 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | computing loss after
+2017-02-24 23:16:58.990035 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | optimization finished
+2017-02-24 23:16:59.109715 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | saving snapshot...
+2017-02-24 23:16:59.668016 CET | [experiment_2017_02_24_23_15_03_0001] itr #19 | saved
+2017-02-24 23:16:59.669162 CET | -----------------------  ----------------
+2017-02-24 23:16:59.669437 CET | Iteration                    19
+2017-02-24 23:16:59.669670 CET | AverageDiscountedReturn    -148.073
+2017-02-24 23:16:59.669899 CET | AverageReturn              -226.36
+2017-02-24 23:16:59.670125 CET | ExplainedVariance             0.901218
+2017-02-24 23:16:59.670350 CET | NumTrajs                    204
+2017-02-24 23:16:59.670574 CET | Entropy                       1.42424
+2017-02-24 23:16:59.670797 CET | Perplexity                    4.15468
+2017-02-24 23:16:59.671022 CET | StdReturn                    23.6549
+2017-02-24 23:16:59.671246 CET | MaxReturn                  -163.213
+2017-02-24 23:16:59.671470 CET | MinReturn                  -281.998
+2017-02-24 23:16:59.671694 CET | AveragePolicyStd              1.00531
+2017-02-24 23:16:59.671918 CET | LossBefore                    2.64677e-09
+2017-02-24 23:16:59.672142 CET | LossAfter                -48763.6
+2017-02-24 23:16:59.672365 CET | MeanKLBefore                  0
+2017-02-24 23:16:59.672588 CET | MeanKL                        0.00750265
+2017-02-24 23:16:59.672812 CET | dLoss                     48763.6
+2017-02-24 23:16:59.673036 CET | Total cost                  238.277
+2017-02-24 23:16:59.673260 CET | -----------------------  ----------------
+2017-02-24 23:17:02.575744 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | fitting baseline...
+2017-02-24 23:17:02.590194 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | fitted
+2017-02-24 23:17:02.642270 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | Three largest weights are [ 73.39832549  60.46022389  60.27093789]
+2017-02-24 23:17:02.819735 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | computing loss before
+2017-02-24 23:17:02.880655 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | performing update
+2017-02-24 23:17:02.881210 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | computing descent direction
+2017-02-24 23:17:04.064576 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | descent direction computed
+2017-02-24 23:17:04.185710 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | backtrack iters: 1
+2017-02-24 23:17:04.186169 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | computing loss after
+2017-02-24 23:17:04.186587 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | optimization finished
+2017-02-24 23:17:04.307427 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | saving snapshot...
+2017-02-24 23:17:04.988529 CET | [experiment_2017_02_24_23_15_03_0001] itr #20 | saved
+2017-02-24 23:17:04.989703 CET | -----------------------  ----------------
+2017-02-24 23:17:04.989950 CET | Iteration                    20
+2017-02-24 23:17:04.990186 CET | AverageDiscountedReturn    -150.064
+2017-02-24 23:17:04.990415 CET | AverageReturn              -229.304
+2017-02-24 23:17:04.990642 CET | ExplainedVariance             0.897456
+2017-02-24 23:17:04.990869 CET | NumTrajs                    204
+2017-02-24 23:17:04.991094 CET | Entropy                       1.41984
+2017-02-24 23:17:04.991318 CET | Perplexity                    4.13647
+2017-02-24 23:17:04.991543 CET | StdReturn                    24.6817
+2017-02-24 23:17:04.991767 CET | MaxReturn                  -170.938
+2017-02-24 23:17:04.991994 CET | MinReturn                  -307.197
+2017-02-24 23:17:04.992219 CET | AveragePolicyStd              1.0009
+2017-02-24 23:17:04.992444 CET | LossBefore                   -4.78622e-09
+2017-02-24 23:17:04.992668 CET | LossAfter                -41947.9
+2017-02-24 23:17:04.992892 CET | MeanKLBefore                  0
+2017-02-24 23:17:04.993116 CET | MeanKL                        0.00641391
+2017-02-24 23:17:04.993359 CET | dLoss                     41947.9
+2017-02-24 23:17:04.993585 CET | Total cost                  240.697
+2017-02-24 23:17:04.993809 CET | -----------------------  ----------------
+2017-02-24 23:17:08.151805 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | fitting baseline...
+2017-02-24 23:17:08.174177 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | fitted
+2017-02-24 23:17:08.236257 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | Three largest weights are [ 77.78018896  70.58311533  61.66834916]
+2017-02-24 23:17:08.410716 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | computing loss before
+2017-02-24 23:17:08.474501 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | performing update
+2017-02-24 23:17:08.475082 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | computing descent direction
+2017-02-24 23:17:09.769487 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | descent direction computed
+2017-02-24 23:17:09.953770 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | backtrack iters: 2
+2017-02-24 23:17:09.954364 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | computing loss after
+2017-02-24 23:17:09.954913 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | optimization finished
+2017-02-24 23:17:10.096622 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | saving snapshot...
+2017-02-24 23:17:10.863846 CET | [experiment_2017_02_24_23_15_03_0001] itr #21 | saved
+2017-02-24 23:17:10.864966 CET | -----------------------  ----------------
+2017-02-24 23:17:10.865214 CET | Iteration                    21
+2017-02-24 23:17:10.865469 CET | AverageDiscountedReturn    -150.673
+2017-02-24 23:17:10.865697 CET | AverageReturn              -231.151
+2017-02-24 23:17:10.865924 CET | ExplainedVariance             0.892047
+2017-02-24 23:17:10.866149 CET | NumTrajs                    204
+2017-02-24 23:17:10.866375 CET | Entropy                       1.40861
+2017-02-24 23:17:10.866599 CET | Perplexity                    4.09027
+2017-02-24 23:17:10.866822 CET | StdReturn                    27.3264
+2017-02-24 23:17:10.867048 CET | MaxReturn                  -155.119
+2017-02-24 23:17:10.867273 CET | MinReturn                  -303.309
+2017-02-24 23:17:10.867498 CET | AveragePolicyStd              0.989726
+2017-02-24 23:17:10.867722 CET | LossBefore                   -3.13222e-09
+2017-02-24 23:17:10.867949 CET | LossAfter                -36531.6
+2017-02-24 23:17:10.868173 CET | MeanKLBefore                  0
+2017-02-24 23:17:10.868398 CET | MeanKL                        0.00721245
+2017-02-24 23:17:10.868622 CET | dLoss                     36531.6
+2017-02-24 23:17:10.868847 CET | Total cost                  242.024
+2017-02-24 23:17:10.869072 CET | -----------------------  ----------------
+2017-02-24 23:17:13.961215 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | fitting baseline...
+2017-02-24 23:17:13.973829 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | fitted
+2017-02-24 23:17:14.027423 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | Three largest weights are [ 72.47531252  69.64174022  64.36448214]
+2017-02-24 23:17:14.146840 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | computing loss before
+2017-02-24 23:17:14.186107 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | performing update
+2017-02-24 23:17:14.186465 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | computing descent direction
+2017-02-24 23:17:15.378088 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | descent direction computed
+2017-02-24 23:17:15.498836 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | backtrack iters: 1
+2017-02-24 23:17:15.499282 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | computing loss after
+2017-02-24 23:17:15.499632 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | optimization finished
+2017-02-24 23:17:15.617762 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | saving snapshot...
+2017-02-24 23:17:16.114484 CET | [experiment_2017_02_24_23_15_03_0001] itr #22 | saved
+2017-02-24 23:17:16.115632 CET | -----------------------  ----------------
+2017-02-24 23:17:16.115876 CET | Iteration                    22
+2017-02-24 23:17:16.116113 CET | AverageDiscountedReturn    -155.235
+2017-02-24 23:17:16.116358 CET | AverageReturn              -238.087
+2017-02-24 23:17:16.116599 CET | ExplainedVariance             0.877648
+2017-02-24 23:17:16.116841 CET | NumTrajs                    204
+2017-02-24 23:17:16.117077 CET | Entropy                       1.41715
+2017-02-24 23:17:16.117317 CET | Perplexity                    4.12533
+2017-02-24 23:17:16.117581 CET | StdReturn                    31.1163
+2017-02-24 23:17:16.117819 CET | MaxReturn                  -172.534
+2017-02-24 23:17:16.118065 CET | MinReturn                  -315.313
+2017-02-24 23:17:16.118303 CET | AveragePolicyStd              0.998209
+2017-02-24 23:17:16.118542 CET | LossBefore                   -1.04905e-09
+2017-02-24 23:17:16.118777 CET | LossAfter                -37451
+2017-02-24 23:17:16.119001 CET | MeanKLBefore                  0
+2017-02-24 23:17:16.119243 CET | MeanKL                        0.00786454
+2017-02-24 23:17:16.119481 CET | dLoss                     37451
+2017-02-24 23:17:16.119727 CET | Total cost                  248.165
+2017-02-24 23:17:16.119966 CET | -----------------------  ----------------
+2017-02-24 23:17:19.244174 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | fitting baseline...
+2017-02-24 23:17:19.260612 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | fitted
+2017-02-24 23:17:19.326187 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | Three largest weights are [ 71.03374387  69.04738363  62.08621442]
+2017-02-24 23:17:19.492335 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | computing loss before
+2017-02-24 23:17:19.531518 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | performing update
+2017-02-24 23:17:19.531878 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | computing descent direction
+2017-02-24 23:17:20.659332 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | descent direction computed
+2017-02-24 23:17:20.780032 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | backtrack iters: 1
+2017-02-24 23:17:20.780585 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | computing loss after
+2017-02-24 23:17:20.780982 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | optimization finished
+2017-02-24 23:17:20.899099 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | saving snapshot...
+2017-02-24 23:17:21.445612 CET | [experiment_2017_02_24_23_15_03_0001] itr #23 | saved
+2017-02-24 23:17:21.446769 CET | -----------------------  ---------------
+2017-02-24 23:17:21.447017 CET | Iteration                    23
+2017-02-24 23:17:21.447255 CET | AverageDiscountedReturn    -151.511
+2017-02-24 23:17:21.447485 CET | AverageReturn              -232.139
+2017-02-24 23:17:21.447725 CET | ExplainedVariance             0.886534
+2017-02-24 23:17:21.447953 CET | NumTrajs                    204
+2017-02-24 23:17:21.448180 CET | Entropy                       1.3953
+2017-02-24 23:17:21.448407 CET | Perplexity                    4.03618
+2017-02-24 23:17:21.448634 CET | StdReturn                    28.0038
+2017-02-24 23:17:21.448859 CET | MaxReturn                  -163.62
+2017-02-24 23:17:21.449087 CET | MinReturn                  -311.413
+2017-02-24 23:17:21.449313 CET | AveragePolicyStd              0.976638
+2017-02-24 23:17:21.449582 CET | LossBefore                    1.1382e-09
+2017-02-24 23:17:21.449809 CET | LossAfter                -44909.5
+2017-02-24 23:17:21.450035 CET | MeanKLBefore                  0
+2017-02-24 23:17:21.450262 CET | MeanKL                        0.00798639
+2017-02-24 23:17:21.450490 CET | dLoss                     44909.5
+2017-02-24 23:17:21.450716 CET | Total cost                  242.216
+2017-02-24 23:17:21.450943 CET | -----------------------  ---------------
+2017-02-24 23:17:24.502540 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | fitting baseline...
+2017-02-24 23:17:24.519425 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | fitted
+2017-02-24 23:17:24.586447 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | Three largest weights are [ 79.41826429  72.5246409   70.93451388]
+2017-02-24 23:17:24.771636 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | computing loss before
+2017-02-24 23:17:24.835044 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | performing update
+2017-02-24 23:17:24.835600 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | computing descent direction
+2017-02-24 23:17:26.102345 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | descent direction computed
+2017-02-24 23:17:26.223498 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | backtrack iters: 1
+2017-02-24 23:17:26.224037 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | computing loss after
+2017-02-24 23:17:26.224436 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | optimization finished
+2017-02-24 23:17:26.342923 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | saving snapshot...
+2017-02-24 23:17:26.850155 CET | [experiment_2017_02_24_23_15_03_0001] itr #24 | saved
+2017-02-24 23:17:26.851302 CET | -----------------------  ----------------
+2017-02-24 23:17:26.851551 CET | Iteration                    24
+2017-02-24 23:17:26.851784 CET | AverageDiscountedReturn    -151.097
+2017-02-24 23:17:26.852013 CET | AverageReturn              -231.503
+2017-02-24 23:17:26.852242 CET | ExplainedVariance             0.87199
+2017-02-24 23:17:26.852469 CET | NumTrajs                    204
+2017-02-24 23:17:26.852695 CET | Entropy                       1.37124
+2017-02-24 23:17:26.852920 CET | Perplexity                    3.94023
+2017-02-24 23:17:26.853145 CET | StdReturn                    32.3776
+2017-02-24 23:17:26.853401 CET | MaxReturn                  -151.114
+2017-02-24 23:17:26.853627 CET | MinReturn                  -304.871
+2017-02-24 23:17:26.853853 CET | AveragePolicyStd              0.95342
+2017-02-24 23:17:26.854079 CET | LossBefore                    1.43836e-09
+2017-02-24 23:17:26.854304 CET | LossAfter                -31030.7
+2017-02-24 23:17:26.854528 CET | MeanKLBefore                  0
+2017-02-24 23:17:26.854754 CET | MeanKL                        0.006898
+2017-02-24 23:17:26.854979 CET | dLoss                     31030.7
+2017-02-24 23:17:26.855204 CET | Total cost                  240.373
+2017-02-24 23:17:26.855431 CET | -----------------------  ----------------
+2017-02-24 23:17:30.165244 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | fitting baseline...
+2017-02-24 23:17:30.182052 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | fitted
+2017-02-24 23:17:30.247988 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | Three largest weights are [ 83.17613509  81.60846953  70.64964594]
+2017-02-24 23:17:30.379603 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | computing loss before
+2017-02-24 23:17:30.420976 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | performing update
+2017-02-24 23:17:30.421368 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | computing descent direction
+2017-02-24 23:17:31.539633 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | descent direction computed
+2017-02-24 23:17:31.634470 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | backtrack iters: 1
+2017-02-24 23:17:31.634810 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | computing loss after
+2017-02-24 23:17:31.635085 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | optimization finished
+2017-02-24 23:17:31.717139 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | saving snapshot...
+2017-02-24 23:17:32.140753 CET | [experiment_2017_02_24_23_15_03_0001] itr #25 | saved
+2017-02-24 23:17:32.141980 CET | -----------------------  ----------------
+2017-02-24 23:17:32.142233 CET | Iteration                    25
+2017-02-24 23:17:32.142466 CET | AverageDiscountedReturn    -151.628
+2017-02-24 23:17:32.142712 CET | AverageReturn              -232.358
+2017-02-24 23:17:32.142954 CET | ExplainedVariance             0.87743
+2017-02-24 23:17:32.143193 CET | NumTrajs                    204
+2017-02-24 23:17:32.143432 CET | Entropy                       1.34599
+2017-02-24 23:17:32.143670 CET | Perplexity                    3.84197
+2017-02-24 23:17:32.143909 CET | StdReturn                    31.2745
+2017-02-24 23:17:32.144148 CET | MaxReturn                  -147.967
+2017-02-24 23:17:32.144405 CET | MinReturn                  -299.16
+2017-02-24 23:17:32.144643 CET | AveragePolicyStd              0.929644
+2017-02-24 23:17:32.144882 CET | LossBefore                    2.08082e-09
+2017-02-24 23:17:32.145114 CET | LossAfter                -39530.2
+2017-02-24 23:17:32.145368 CET | MeanKLBefore                  0
+2017-02-24 23:17:32.145597 CET | MeanKL                        0.00819469
+2017-02-24 23:17:32.145837 CET | dLoss                     39530.2
+2017-02-24 23:17:32.146073 CET | Total cost                  242.339
+2017-02-24 23:17:32.146300 CET | -----------------------  ----------------
+2017-02-24 23:17:35.380247 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | fitting baseline...
+2017-02-24 23:17:35.395200 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | fitted
+2017-02-24 23:17:35.462393 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | Three largest weights are [ 74.45203934  74.29272438  72.84672436]
+2017-02-24 23:17:35.644144 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | computing loss before
+2017-02-24 23:17:35.709224 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | performing update
+2017-02-24 23:17:35.709924 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | computing descent direction
+2017-02-24 23:17:36.988849 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | descent direction computed
+2017-02-24 23:17:37.050151 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | backtrack iters: 0
+2017-02-24 23:17:37.050686 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | computing loss after
+2017-02-24 23:17:37.051095 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | optimization finished
+2017-02-24 23:17:37.172855 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | saving snapshot...
+2017-02-24 23:17:37.821218 CET | [experiment_2017_02_24_23_15_03_0001] itr #26 | saved
+2017-02-24 23:17:37.822373 CET | -----------------------  ----------------
+2017-02-24 23:17:37.822619 CET | Iteration                    26
+2017-02-24 23:17:37.822856 CET | AverageDiscountedReturn    -151.356
+2017-02-24 23:17:37.823102 CET | AverageReturn              -230.557
+2017-02-24 23:17:37.823344 CET | ExplainedVariance             0.867038
+2017-02-24 23:17:37.823583 CET | NumTrajs                    204
+2017-02-24 23:17:37.823824 CET | Entropy                       1.35324
+2017-02-24 23:17:37.824064 CET | Perplexity                    3.86996
+2017-02-24 23:17:37.824302 CET | StdReturn                    34.1205
+2017-02-24 23:17:37.824541 CET | MaxReturn                  -149.404
+2017-02-24 23:17:37.824787 CET | MinReturn                  -301.259
+2017-02-24 23:17:37.825021 CET | AveragePolicyStd              0.936417
+2017-02-24 23:17:37.825248 CET | LossBefore                   -3.98822e-09
+2017-02-24 23:17:37.825497 CET | LossAfter                -42471.6
+2017-02-24 23:17:37.825723 CET | MeanKLBefore                  0
+2017-02-24 23:17:37.825949 CET | MeanKL                        0.00993191
+2017-02-24 23:17:37.826176 CET | dLoss                     42471.6
+2017-02-24 23:17:37.826402 CET | Total cost                  241.296
+2017-02-24 23:17:37.826629 CET | -----------------------  ----------------
+2017-02-24 23:17:41.093818 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | fitting baseline...
+2017-02-24 23:17:41.110498 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | fitted
+2017-02-24 23:17:41.177372 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | Three largest weights are [ 80.8157682   80.25238282  79.45469613]
+2017-02-24 23:17:41.402654 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | computing loss before
+2017-02-24 23:17:41.441159 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | performing update
+2017-02-24 23:17:41.441513 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | computing descent direction
+2017-02-24 23:17:42.555559 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | descent direction computed
+2017-02-24 23:17:42.676104 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | backtrack iters: 1
+2017-02-24 23:17:42.676668 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | computing loss after
+2017-02-24 23:17:42.677133 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | optimization finished
+2017-02-24 23:17:42.794911 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | saving snapshot...
+2017-02-24 23:17:43.415850 CET | [experiment_2017_02_24_23_15_03_0001] itr #27 | saved
+2017-02-24 23:17:43.417005 CET | -----------------------  ----------------
+2017-02-24 23:17:43.417252 CET | Iteration                    27
+2017-02-24 23:17:43.417506 CET | AverageDiscountedReturn    -150.237
+2017-02-24 23:17:43.417734 CET | AverageReturn              -226.912
+2017-02-24 23:17:43.417959 CET | ExplainedVariance             0.87472
+2017-02-24 23:17:43.418185 CET | NumTrajs                    204
+2017-02-24 23:17:43.418409 CET | Entropy                       1.37563
+2017-02-24 23:17:43.418636 CET | Perplexity                    3.95758
+2017-02-24 23:17:43.418860 CET | StdReturn                    32.9143
+2017-02-24 23:17:43.419084 CET | MaxReturn                  -146.218
+2017-02-24 23:17:43.419313 CET | MinReturn                  -306.561
+2017-02-24 23:17:43.419536 CET | AveragePolicyStd              0.957618
+2017-02-24 23:17:43.419760 CET | LossBefore                   -5.95866e-09
+2017-02-24 23:17:43.419984 CET | LossAfter                -38471.6
+2017-02-24 23:17:43.420210 CET | MeanKLBefore                  0
+2017-02-24 23:17:43.420434 CET | MeanKL                        0.00701485
+2017-02-24 23:17:43.420659 CET | dLoss                     38471.6
+2017-02-24 23:17:43.420883 CET | Total cost                  238.89
+2017-02-24 23:17:43.421107 CET | -----------------------  ----------------
+2017-02-24 23:17:46.662731 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | fitting baseline...
+2017-02-24 23:17:46.682261 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | fitted
+2017-02-24 23:17:46.748018 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | Three largest weights are [ 80.61601485  75.13805646  72.07591328]
+2017-02-24 23:17:46.872705 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | computing loss before
+2017-02-24 23:17:46.912120 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | performing update
+2017-02-24 23:17:46.912473 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | computing descent direction
+2017-02-24 23:17:48.137753 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | descent direction computed
+2017-02-24 23:17:48.328918 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | backtrack iters: 2
+2017-02-24 23:17:48.329559 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | computing loss after
+2017-02-24 23:17:48.330046 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | optimization finished
+2017-02-24 23:17:48.447833 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | saving snapshot...
+2017-02-24 23:17:49.131421 CET | [experiment_2017_02_24_23_15_03_0001] itr #28 | saved
+2017-02-24 23:17:49.132601 CET | -----------------------  ---------------
+2017-02-24 23:17:49.132848 CET | Iteration                    28
+2017-02-24 23:17:49.133083 CET | AverageDiscountedReturn    -141.732
+2017-02-24 23:17:49.133329 CET | AverageReturn              -213.326
+2017-02-24 23:17:49.133590 CET | ExplainedVariance             0.841195
+2017-02-24 23:17:49.133829 CET | NumTrajs                    204
+2017-02-24 23:17:49.134068 CET | Entropy                       1.35084
+2017-02-24 23:17:49.134305 CET | Perplexity                    3.86068
+2017-02-24 23:17:49.134545 CET | StdReturn                    33.4118
+2017-02-24 23:17:49.134784 CET | MaxReturn                  -143.311
+2017-02-24 23:17:49.135023 CET | MinReturn                  -298.944
+2017-02-24 23:17:49.135254 CET | AveragePolicyStd              0.934171
+2017-02-24 23:17:49.135479 CET | LossBefore                   -5.3347e-09
+2017-02-24 23:17:49.135704 CET | LossAfter                -38046.2
+2017-02-24 23:17:49.135929 CET | MeanKLBefore                  0
+2017-02-24 23:17:49.136153 CET | MeanKL                        0.00746876
+2017-02-24 23:17:49.136380 CET | dLoss                     38046.2
+2017-02-24 23:17:49.136606 CET | Total cost                  226.412
+2017-02-24 23:17:49.136863 CET | -----------------------  ---------------
+2017-02-24 23:17:52.140154 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | fitting baseline...
+2017-02-24 23:17:52.152391 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | fitted
+2017-02-24 23:17:52.218640 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | Three largest weights are [ 80.29734115  78.86413539  72.11004654]
+2017-02-24 23:17:52.398525 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | computing loss before
+2017-02-24 23:17:52.462709 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | performing update
+2017-02-24 23:17:52.463262 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | computing descent direction
+2017-02-24 23:17:53.748918 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | descent direction computed
+2017-02-24 23:17:53.869007 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | backtrack iters: 1
+2017-02-24 23:17:53.869485 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | computing loss after
+2017-02-24 23:17:53.869834 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | optimization finished
+2017-02-24 23:17:53.987207 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | saving snapshot...
+2017-02-24 23:17:54.538557 CET | [experiment_2017_02_24_23_15_03_0001] itr #29 | saved
+2017-02-24 23:17:54.539716 CET | -----------------------  ----------------
+2017-02-24 23:17:54.539961 CET | Iteration                    29
+2017-02-24 23:17:54.540198 CET | AverageDiscountedReturn    -138.621
+2017-02-24 23:17:54.540427 CET | AverageReturn              -207.414
+2017-02-24 23:17:54.540654 CET | ExplainedVariance             0.84692
+2017-02-24 23:17:54.540881 CET | NumTrajs                    204
+2017-02-24 23:17:54.541107 CET | Entropy                       1.35345
+2017-02-24 23:17:54.541332 CET | Perplexity                    3.87075
+2017-02-24 23:17:54.541597 CET | StdReturn                    30.4524
+2017-02-24 23:17:54.541825 CET | MaxReturn                  -136.496
+2017-02-24 23:17:54.542050 CET | MinReturn                  -297.509
+2017-02-24 23:17:54.542276 CET | AveragePolicyStd              0.936608
+2017-02-24 23:17:54.542504 CET | LossBefore                   -2.54738e-09
+2017-02-24 23:17:54.542730 CET | LossAfter                -52392.5
+2017-02-24 23:17:54.542956 CET | MeanKLBefore                  0
+2017-02-24 23:17:54.543180 CET | MeanKL                        0.00995541
+2017-02-24 23:17:54.543406 CET | dLoss                     52392.5
+2017-02-24 23:17:54.543638 CET | Total cost                  220.347
+2017-02-24 23:17:54.543864 CET | -----------------------  ----------------
+2017-02-24 23:17:57.518785 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | fitting baseline...
+2017-02-24 23:17:57.547094 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | fitted
+2017-02-24 23:17:57.622334 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | Three largest weights are [ 76.49359695  71.35402752  69.97840326]
+2017-02-24 23:17:57.736462 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | computing loss before
+2017-02-24 23:17:57.776066 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | performing update
+2017-02-24 23:17:57.776399 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | computing descent direction
+2017-02-24 23:17:59.049380 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | descent direction computed
+2017-02-24 23:17:59.110725 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | backtrack iters: 0
+2017-02-24 23:17:59.111292 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | computing loss after
+2017-02-24 23:17:59.111760 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | optimization finished
+2017-02-24 23:17:59.230132 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | saving snapshot...
+2017-02-24 23:17:59.890176 CET | [experiment_2017_02_24_23_15_03_0001] itr #30 | saved
+2017-02-24 23:17:59.891309 CET | -----------------------  ----------------
+2017-02-24 23:17:59.891556 CET | Iteration                    30
+2017-02-24 23:17:59.891788 CET | AverageDiscountedReturn    -137.161
+2017-02-24 23:17:59.892017 CET | AverageReturn              -205.711
+2017-02-24 23:17:59.892242 CET | ExplainedVariance             0.849874
+2017-02-24 23:17:59.892481 CET | NumTrajs                    204
+2017-02-24 23:17:59.892723 CET | Entropy                       1.35155
+2017-02-24 23:17:59.892964 CET | Perplexity                    3.86342
+2017-02-24 23:17:59.893202 CET | StdReturn                    31.3454
+2017-02-24 23:17:59.893464 CET | MaxReturn                  -133.883
+2017-02-24 23:17:59.893706 CET | MinReturn                  -297.721
+2017-02-24 23:17:59.893947 CET | AveragePolicyStd              0.934835
+2017-02-24 23:17:59.894188 CET | LossBefore                   -4.37248e-09
+2017-02-24 23:17:59.894428 CET | LossAfter                -51248
+2017-02-24 23:17:59.894673 CET | MeanKLBefore                  0
+2017-02-24 23:17:59.894912 CET | MeanKL                        0.00916787
+2017-02-24 23:17:59.895152 CET | dLoss                     51248
+2017-02-24 23:17:59.895397 CET | Total cost                  220.204
+2017-02-24 23:17:59.895638 CET | -----------------------  ----------------
+2017-02-24 23:18:02.915657 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | fitting baseline...
+2017-02-24 23:18:02.941245 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | fitted
+2017-02-24 23:18:03.014283 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | Three largest weights are [ 72.47572817  66.7872315   61.11880703]
+2017-02-24 23:18:03.187717 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | computing loss before
+2017-02-24 23:18:03.239573 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | performing update
+2017-02-24 23:18:03.239927 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | computing descent direction
+2017-02-24 23:18:04.409960 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | descent direction computed
+2017-02-24 23:18:04.470723 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | backtrack iters: 0
+2017-02-24 23:18:04.471166 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | computing loss after
+2017-02-24 23:18:04.471513 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | optimization finished
+2017-02-24 23:18:04.587888 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | saving snapshot...
+2017-02-24 23:18:05.267803 CET | [experiment_2017_02_24_23_15_03_0001] itr #31 | saved
+2017-02-24 23:18:05.268908 CET | -----------------------  ----------------
+2017-02-24 23:18:05.269155 CET | Iteration                    31
+2017-02-24 23:18:05.269420 CET | AverageDiscountedReturn    -130.376
+2017-02-24 23:18:05.269649 CET | AverageReturn              -193.411
+2017-02-24 23:18:05.269875 CET | ExplainedVariance             0.855097
+2017-02-24 23:18:05.270101 CET | NumTrajs                    204
+2017-02-24 23:18:05.270326 CET | Entropy                       1.35658
+2017-02-24 23:18:05.270551 CET | Perplexity                    3.88288
+2017-02-24 23:18:05.270775 CET | StdReturn                    25.3446
+2017-02-24 23:18:05.270998 CET | MaxReturn                  -132.027
+2017-02-24 23:18:05.271222 CET | MinReturn                  -267.53
+2017-02-24 23:18:05.271447 CET | AveragePolicyStd              0.939544
+2017-02-24 23:18:05.271671 CET | LossBefore                    9.22749e-10
+2017-02-24 23:18:05.271894 CET | LossAfter                -53422.9
+2017-02-24 23:18:05.272120 CET | MeanKLBefore                  0
+2017-02-24 23:18:05.272344 CET | MeanKL                        0.00821369
+2017-02-24 23:18:05.272569 CET | dLoss                     53422.9
+2017-02-24 23:18:05.272795 CET | Total cost                  207.314
+2017-02-24 23:18:05.273021 CET | -----------------------  ----------------
+2017-02-24 23:18:08.341444 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | fitting baseline...
+2017-02-24 23:18:08.358286 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | fitted
+2017-02-24 23:18:08.423338 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | Three largest weights are [ 67.29151828  66.59845277  64.34393725]
+2017-02-24 23:18:08.604078 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | computing loss before
+2017-02-24 23:18:08.668342 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | performing update
+2017-02-24 23:18:08.668798 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | computing descent direction
+2017-02-24 23:18:09.944988 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | descent direction computed
+2017-02-24 23:18:10.066352 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | backtrack iters: 1
+2017-02-24 23:18:10.066930 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | computing loss after
+2017-02-24 23:18:10.067398 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | optimization finished
+2017-02-24 23:18:10.172845 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | saving snapshot...
+2017-02-24 23:18:10.666869 CET | [experiment_2017_02_24_23_15_03_0001] itr #32 | saved
+2017-02-24 23:18:10.668016 CET | -----------------------  ----------------
+2017-02-24 23:18:10.668260 CET | Iteration                    32
+2017-02-24 23:18:10.668495 CET | AverageDiscountedReturn    -134.347
+2017-02-24 23:18:10.668724 CET | AverageReturn              -202.05
+2017-02-24 23:18:10.668950 CET | ExplainedVariance             0.834145
+2017-02-24 23:18:10.669177 CET | NumTrajs                    204
+2017-02-24 23:18:10.669422 CET | Entropy                       1.35274
+2017-02-24 23:18:10.669649 CET | Perplexity                    3.868
+2017-02-24 23:18:10.669873 CET | StdReturn                    30.1097
+2017-02-24 23:18:10.670098 CET | MaxReturn                  -130.655
+2017-02-24 23:18:10.670323 CET | MinReturn                  -277.155
+2017-02-24 23:18:10.670547 CET | AveragePolicyStd              0.935943
+2017-02-24 23:18:10.670772 CET | LossBefore                   -5.21396e-09
+2017-02-24 23:18:10.670995 CET | LossAfter                -45311.8
+2017-02-24 23:18:10.671219 CET | MeanKLBefore                  0
+2017-02-24 23:18:10.671443 CET | MeanKL                        0.0075011
+2017-02-24 23:18:10.671667 CET | dLoss                     45311.8
+2017-02-24 23:18:10.671892 CET | Total cost                  216.014
+2017-02-24 23:18:10.672115 CET | -----------------------  ----------------
+2017-02-24 23:18:13.836697 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | fitting baseline...
+2017-02-24 23:18:13.854053 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | fitted
+2017-02-24 23:18:13.922520 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | Three largest weights are [ 86.40559905  84.58274783  79.3182561 ]
+2017-02-24 23:18:14.121141 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | computing loss before
+2017-02-24 23:18:14.181481 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | performing update
+2017-02-24 23:18:14.182031 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | computing descent direction
+2017-02-24 23:18:15.395371 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | descent direction computed
+2017-02-24 23:18:15.517577 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | backtrack iters: 1
+2017-02-24 23:18:15.518258 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | computing loss after
+2017-02-24 23:18:15.518784 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | optimization finished
+2017-02-24 23:18:15.638612 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | saving snapshot...
+2017-02-24 23:18:16.380781 CET | [experiment_2017_02_24_23_15_03_0001] itr #33 | saved
+2017-02-24 23:18:16.382079 CET | -----------------------  ----------------
+2017-02-24 23:18:16.382337 CET | Iteration                    33
+2017-02-24 23:18:16.382576 CET | AverageDiscountedReturn    -130.865
+2017-02-24 23:18:16.382806 CET | AverageReturn              -195.549
+2017-02-24 23:18:16.383032 CET | ExplainedVariance             0.811297
+2017-02-24 23:18:16.383261 CET | NumTrajs                    204
+2017-02-24 23:18:16.383486 CET | Entropy                       1.35414
+2017-02-24 23:18:16.383712 CET | Perplexity                    3.87344
+2017-02-24 23:18:16.383937 CET | StdReturn                    33.0494
+2017-02-24 23:18:16.384161 CET | MaxReturn                  -113.774
+2017-02-24 23:18:16.384386 CET | MinReturn                  -285.497
+2017-02-24 23:18:16.384612 CET | AveragePolicyStd              0.937259
+2017-02-24 23:18:16.384837 CET | LossBefore                    3.59306e-09
+2017-02-24 23:18:16.385062 CET | LossAfter                -47921.3
+2017-02-24 23:18:16.385286 CET | MeanKLBefore                  0
+2017-02-24 23:18:16.385532 CET | MeanKL                        0.00952681
+2017-02-24 23:18:16.385758 CET | dLoss                     47921.3
+2017-02-24 23:18:16.386000 CET | Total cost                  211.82
+2017-02-24 23:18:16.386225 CET | -----------------------  ----------------
+2017-02-24 23:18:19.693884 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | fitting baseline...
+2017-02-24 23:18:19.710279 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | fitted
+2017-02-24 23:18:19.763697 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | Three largest weights are [ 69.55931119  66.14310576  63.26554692]
+2017-02-24 23:18:19.879028 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | computing loss before
+2017-02-24 23:18:19.918945 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | performing update
+2017-02-24 23:18:19.919282 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | computing descent direction
+2017-02-24 23:18:21.097021 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | descent direction computed
+2017-02-24 23:18:21.217807 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | backtrack iters: 1
+2017-02-24 23:18:21.218476 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | computing loss after
+2017-02-24 23:18:21.219001 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | optimization finished
+2017-02-24 23:18:21.336696 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | saving snapshot...
+2017-02-24 23:18:21.976155 CET | [experiment_2017_02_24_23_15_03_0001] itr #34 | saved
+2017-02-24 23:18:21.977329 CET | -----------------------  ----------------
+2017-02-24 23:18:21.977617 CET | Iteration                    34
+2017-02-24 23:18:21.977874 CET | AverageDiscountedReturn    -124.549
+2017-02-24 23:18:21.978126 CET | AverageReturn              -184.974
+2017-02-24 23:18:21.978385 CET | ExplainedVariance             0.821766
+2017-02-24 23:18:21.978632 CET | NumTrajs                    204
+2017-02-24 23:18:21.978878 CET | Entropy                       1.3147
+2017-02-24 23:18:21.979125 CET | Perplexity                    3.72363
+2017-02-24 23:18:21.979373 CET | StdReturn                    26.6856
+2017-02-24 23:18:21.979634 CET | MaxReturn                  -103.629
+2017-02-24 23:18:21.979874 CET | MinReturn                  -253.678
+2017-02-24 23:18:21.980125 CET | AveragePolicyStd              0.90101
+2017-02-24 23:18:21.980371 CET | LossBefore                   -3.15785e-10
+2017-02-24 23:18:21.980615 CET | LossAfter                -46889.6
+2017-02-24 23:18:21.980860 CET | MeanKLBefore                  0
+2017-02-24 23:18:21.981107 CET | MeanKL                        0.00730238
+2017-02-24 23:18:21.981380 CET | dLoss                     46889.6
+2017-02-24 23:18:21.981639 CET | Total cost                  202.616
+2017-02-24 23:18:21.981882 CET | -----------------------  ----------------
+2017-02-24 23:18:25.040435 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | fitting baseline...
+2017-02-24 23:18:25.055834 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | fitted
+2017-02-24 23:18:25.102299 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | Three largest weights are [ 83.13684505  81.79920246  81.18114466]
+2017-02-24 23:18:25.251990 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | computing loss before
+2017-02-24 23:18:25.312870 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | performing update
+2017-02-24 23:18:25.313307 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | computing descent direction
+2017-02-24 23:18:26.542961 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | descent direction computed
+2017-02-24 23:18:26.663806 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | backtrack iters: 1
+2017-02-24 23:18:26.664340 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | computing loss after
+2017-02-24 23:18:26.664738 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | optimization finished
+2017-02-24 23:18:26.781678 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | saving snapshot...
+2017-02-24 23:18:27.283100 CET | [experiment_2017_02_24_23_15_03_0001] itr #35 | saved
+2017-02-24 23:18:27.284252 CET | -----------------------  ----------------
+2017-02-24 23:18:27.284496 CET | Iteration                    35
+2017-02-24 23:18:27.284731 CET | AverageDiscountedReturn    -127.611
+2017-02-24 23:18:27.284960 CET | AverageReturn              -188.76
+2017-02-24 23:18:27.285185 CET | ExplainedVariance             0.80844
+2017-02-24 23:18:27.285435 CET | NumTrajs                    204
+2017-02-24 23:18:27.285661 CET | Entropy                       1.33743
+2017-02-24 23:18:27.285884 CET | Perplexity                    3.80924
+2017-02-24 23:18:27.286108 CET | StdReturn                    31.0862
+2017-02-24 23:18:27.286332 CET | MaxReturn                  -133.254
+2017-02-24 23:18:27.286556 CET | MinReturn                  -280.021
+2017-02-24 23:18:27.286779 CET | AveragePolicyStd              0.921726
+2017-02-24 23:18:27.287003 CET | LossBefore                    8.60134e-10
+2017-02-24 23:18:27.287227 CET | LossAfter                -46742.5
+2017-02-24 23:18:27.287451 CET | MeanKLBefore                  0
+2017-02-24 23:18:27.287674 CET | MeanKL                        0.00827228
+2017-02-24 23:18:27.287898 CET | dLoss                     46742.5
+2017-02-24 23:18:27.288121 CET | Total cost                  205.254
+2017-02-24 23:18:27.288344 CET | -----------------------  ----------------
+2017-02-24 23:18:30.329758 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | fitting baseline...
+2017-02-24 23:18:30.370705 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | fitted
+2017-02-24 23:18:30.437950 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | Three largest weights are [ 95.38431795  84.18453353  71.79752918]
+2017-02-24 23:18:30.623224 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | computing loss before
+2017-02-24 23:18:30.689666 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | performing update
+2017-02-24 23:18:30.690171 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | computing descent direction
+2017-02-24 23:18:32.004338 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | descent direction computed
+2017-02-24 23:18:32.124054 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | backtrack iters: 1
+2017-02-24 23:18:32.124569 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | computing loss after
+2017-02-24 23:18:32.124928 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | optimization finished
+2017-02-24 23:18:32.241551 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | saving snapshot...
+2017-02-24 23:18:32.913958 CET | [experiment_2017_02_24_23_15_03_0001] itr #36 | saved
+2017-02-24 23:18:32.915089 CET | -----------------------  ---------------
+2017-02-24 23:18:32.915339 CET | Iteration                    36
+2017-02-24 23:18:32.915572 CET | AverageDiscountedReturn    -125.571
+2017-02-24 23:18:32.915816 CET | AverageReturn              -182.243
+2017-02-24 23:18:32.916058 CET | ExplainedVariance             0.828406
+2017-02-24 23:18:32.916299 CET | NumTrajs                    204
+2017-02-24 23:18:32.916538 CET | Entropy                       1.31367
+2017-02-24 23:18:32.916777 CET | Perplexity                    3.71982
+2017-02-24 23:18:32.917015 CET | StdReturn                    30.2678
+2017-02-24 23:18:32.917252 CET | MaxReturn                  -111.592
+2017-02-24 23:18:32.917512 CET | MinReturn                  -276.609
+2017-02-24 23:18:32.917744 CET | AveragePolicyStd              0.900087
+2017-02-24 23:18:32.917968 CET | LossBefore                   -5.6167e-09
+2017-02-24 23:18:32.918222 CET | LossAfter                -41730.3
+2017-02-24 23:18:32.918468 CET | MeanKLBefore                  0
+2017-02-24 23:18:32.918707 CET | MeanKL                        0.00701277
+2017-02-24 23:18:32.918961 CET | dLoss                     41730.3
+2017-02-24 23:18:32.919234 CET | Total cost                  201.806
+2017-02-24 23:18:32.919483 CET | -----------------------  ---------------
+2017-02-24 23:18:35.977482 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | fitting baseline...
+2017-02-24 23:18:35.999465 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | fitted
+2017-02-24 23:18:36.077899 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | Three largest weights are [ 71.88097814  71.70704989  61.41590813]
+2017-02-24 23:18:36.285531 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | computing loss before
+2017-02-24 23:18:36.349410 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | performing update
+2017-02-24 23:18:36.349969 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | computing descent direction
+2017-02-24 23:18:37.612089 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | descent direction computed
+2017-02-24 23:18:37.790809 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | backtrack iters: 2
+2017-02-24 23:18:37.791359 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | computing loss after
+2017-02-24 23:18:37.791754 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | optimization finished
+2017-02-24 23:18:37.909147 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | saving snapshot...
+2017-02-24 23:18:38.451597 CET | [experiment_2017_02_24_23_15_03_0001] itr #37 | saved
+2017-02-24 23:18:38.452768 CET | -----------------------  ----------------
+2017-02-24 23:18:38.453029 CET | Iteration                    37
+2017-02-24 23:18:38.453273 CET | AverageDiscountedReturn    -122.498
+2017-02-24 23:18:38.453582 CET | AverageReturn              -176.788
+2017-02-24 23:18:38.453825 CET | ExplainedVariance             0.811391
+2017-02-24 23:18:38.454080 CET | NumTrajs                    204
+2017-02-24 23:18:38.454326 CET | Entropy                       1.30996
+2017-02-24 23:18:38.454574 CET | Perplexity                    3.70603
+2017-02-24 23:18:38.454817 CET | StdReturn                    29.9018
+2017-02-24 23:18:38.455065 CET | MaxReturn                  -117.118
+2017-02-24 23:18:38.455312 CET | MinReturn                  -259.081
+2017-02-24 23:18:38.455559 CET | AveragePolicyStd              0.896752
+2017-02-24 23:18:38.455803 CET | LossBefore                    1.22097e-09
+2017-02-24 23:18:38.456048 CET | LossAfter                -40343.8
+2017-02-24 23:18:38.456294 CET | MeanKLBefore                  0
+2017-02-24 23:18:38.456548 CET | MeanKL                        0.00640949
+2017-02-24 23:18:38.456790 CET | dLoss                     40343.8
+2017-02-24 23:18:38.457040 CET | Total cost                  196.294
+2017-02-24 23:18:38.457287 CET | -----------------------  ----------------
+2017-02-24 23:18:41.792782 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | fitting baseline...
+2017-02-24 23:18:41.807694 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | fitted
+2017-02-24 23:18:41.866777 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | Three largest weights are [ 136.5979949   118.00577244  113.50832176]
+2017-02-24 23:18:42.087583 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | computing loss before
+2017-02-24 23:18:42.145720 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | performing update
+2017-02-24 23:18:42.146201 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | computing descent direction
+2017-02-24 23:18:43.215296 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | descent direction computed
+2017-02-24 23:18:43.276314 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | backtrack iters: 0
+2017-02-24 23:18:43.277015 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | computing loss after
+2017-02-24 23:18:43.277579 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | optimization finished
+2017-02-24 23:18:43.397904 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | saving snapshot...
+2017-02-24 23:18:44.173824 CET | [experiment_2017_02_24_23_15_03_0001] itr #38 | saved
+2017-02-24 23:18:44.174981 CET | -----------------------  ----------------
+2017-02-24 23:18:44.175227 CET | Iteration                    38
+2017-02-24 23:18:44.175462 CET | AverageDiscountedReturn    -120.737
+2017-02-24 23:18:44.175692 CET | AverageReturn              -174.144
+2017-02-24 23:18:44.175919 CET | ExplainedVariance             0.804208
+2017-02-24 23:18:44.176145 CET | NumTrajs                    204
+2017-02-24 23:18:44.176370 CET | Entropy                       1.31452
+2017-02-24 23:18:44.176601 CET | Perplexity                    3.72298
+2017-02-24 23:18:44.176826 CET | StdReturn                    34.8764
+2017-02-24 23:18:44.177053 CET | MaxReturn                  -116.491
+2017-02-24 23:18:44.177279 CET | MinReturn                  -310.71
+2017-02-24 23:18:44.177533 CET | AveragePolicyStd              0.900853
+2017-02-24 23:18:44.177760 CET | LossBefore                   -1.18745e-09
+2017-02-24 23:18:44.177985 CET | LossAfter                -44758.1
+2017-02-24 23:18:44.178212 CET | MeanKLBefore                  0
+2017-02-24 23:18:44.178438 CET | MeanKL                        0.00831239
+2017-02-24 23:18:44.178664 CET | dLoss                     44758.1
+2017-02-24 23:18:44.178889 CET | Total cost                  195.887
+2017-02-24 23:18:44.179114 CET | -----------------------  ----------------
+2017-02-24 23:18:47.233699 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | fitting baseline...
+2017-02-24 23:18:47.247334 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | fitted
+2017-02-24 23:18:47.314857 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | Three largest weights are [ 108.06780145   76.1026568    72.07485567]
+2017-02-24 23:18:47.497481 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | computing loss before
+2017-02-24 23:18:47.561519 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | performing update
+2017-02-24 23:18:47.562030 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | computing descent direction
+2017-02-24 23:18:48.865814 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | descent direction computed
+2017-02-24 23:18:49.045319 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | backtrack iters: 2
+2017-02-24 23:18:49.045932 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | computing loss after
+2017-02-24 23:18:49.046354 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | optimization finished
+2017-02-24 23:18:49.164642 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | saving snapshot...
+2017-02-24 23:18:49.683013 CET | [experiment_2017_02_24_23_15_03_0001] itr #39 | saved
+2017-02-24 23:18:49.684166 CET | -----------------------  ----------------
+2017-02-24 23:18:49.684413 CET | Iteration                    39
+2017-02-24 23:18:49.684644 CET | AverageDiscountedReturn    -115.418
+2017-02-24 23:18:49.684887 CET | AverageReturn              -166.798
+2017-02-24 23:18:49.685125 CET | ExplainedVariance             0.785903
+2017-02-24 23:18:49.685389 CET | NumTrajs                    204
+2017-02-24 23:18:49.685629 CET | Entropy                       1.2885
+2017-02-24 23:18:49.685867 CET | Perplexity                    3.62733
+2017-02-24 23:18:49.686105 CET | StdReturn                    28.4181
+2017-02-24 23:18:49.686343 CET | MaxReturn                  -103.798
+2017-02-24 23:18:49.686581 CET | MinReturn                  -250.476
+2017-02-24 23:18:49.686813 CET | AveragePolicyStd              0.877708
+2017-02-24 23:18:49.687037 CET | LossBefore                    1.18228e-09
+2017-02-24 23:18:49.687261 CET | LossAfter                -39277
+2017-02-24 23:18:49.687485 CET | MeanKLBefore                  0
+2017-02-24 23:18:49.687709 CET | MeanKL                        0.00581928
+2017-02-24 23:18:49.687933 CET | dLoss                     39277
+2017-02-24 23:18:49.688156 CET | Total cost                  190.133
+2017-02-24 23:18:49.688381 CET | -----------------------  ----------------
+2017-02-24 23:18:52.770778 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | fitting baseline...
+2017-02-24 23:18:52.786381 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | fitted
+2017-02-24 23:18:52.855686 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | Three largest weights are [ 92.52218787  77.31308388  72.98795339]
+2017-02-24 23:18:53.035882 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | computing loss before
+2017-02-24 23:18:53.097029 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | performing update
+2017-02-24 23:18:53.097654 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | computing descent direction
+2017-02-24 23:18:54.348619 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | descent direction computed
+2017-02-24 23:18:54.468475 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | backtrack iters: 1
+2017-02-24 23:18:54.469002 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | computing loss after
+2017-02-24 23:18:54.469420 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | optimization finished
+2017-02-24 23:18:54.586513 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | saving snapshot...
+2017-02-24 23:18:55.105724 CET | [experiment_2017_02_24_23_15_03_0001] itr #40 | saved
+2017-02-24 23:18:55.106877 CET | -----------------------  ----------------
+2017-02-24 23:18:55.107123 CET | Iteration                    40
+2017-02-24 23:18:55.107360 CET | AverageDiscountedReturn    -115.942
+2017-02-24 23:18:55.107589 CET | AverageReturn              -166.842
+2017-02-24 23:18:55.107816 CET | ExplainedVariance             0.837098
+2017-02-24 23:18:55.108044 CET | NumTrajs                    204
+2017-02-24 23:18:55.108269 CET | Entropy                       1.28419
+2017-02-24 23:18:55.108495 CET | Perplexity                    3.61173
+2017-02-24 23:18:55.108720 CET | StdReturn                    25.9412
+2017-02-24 23:18:55.108947 CET | MaxReturn                  -104.268
+2017-02-24 23:18:55.109173 CET | MinReturn                  -262.002
+2017-02-24 23:18:55.109422 CET | AveragePolicyStd              0.873934
+2017-02-24 23:18:55.109648 CET | LossBefore                   -2.90057e-10
+2017-02-24 23:18:55.109874 CET | LossAfter                -64084.7
+2017-02-24 23:18:55.110099 CET | MeanKLBefore                  0
+2017-02-24 23:18:55.110325 CET | MeanKL                        0.00863158
+2017-02-24 23:18:55.110551 CET | dLoss                     64084.7
+2017-02-24 23:18:55.110776 CET | Total cost                  186.088
+2017-02-24 23:18:55.111001 CET | -----------------------  ----------------
+2017-02-24 23:18:58.035047 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | fitting baseline...
+2017-02-24 23:18:58.048352 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | fitted
+2017-02-24 23:18:58.093496 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | Three largest weights are [ 93.14940343  71.88414561  57.58448813]
+2017-02-24 23:18:58.280381 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | computing loss before
+2017-02-24 23:18:58.345698 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | performing update
+2017-02-24 23:18:58.346231 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | computing descent direction
+2017-02-24 23:18:59.631485 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | descent direction computed
+2017-02-24 23:18:59.709002 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | backtrack iters: 1
+2017-02-24 23:18:59.709398 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | computing loss after
+2017-02-24 23:18:59.709667 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | optimization finished
+2017-02-24 23:18:59.785225 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | saving snapshot...
+2017-02-24 23:19:00.389187 CET | [experiment_2017_02_24_23_15_03_0001] itr #41 | saved
+2017-02-24 23:19:00.390467 CET | -----------------------  ---------------
+2017-02-24 23:19:00.390721 CET | Iteration                    41
+2017-02-24 23:19:00.390958 CET | AverageDiscountedReturn    -113.714
+2017-02-24 23:19:00.391188 CET | AverageReturn              -162.763
+2017-02-24 23:19:00.391415 CET | ExplainedVariance             0.842166
+2017-02-24 23:19:00.391641 CET | NumTrajs                    204
+2017-02-24 23:19:00.391867 CET | Entropy                       1.25469
+2017-02-24 23:19:00.392093 CET | Perplexity                    3.50673
+2017-02-24 23:19:00.392319 CET | StdReturn                    24.4439
+2017-02-24 23:19:00.392543 CET | MaxReturn                  -112.51
+2017-02-24 23:19:00.392768 CET | MinReturn                  -256.604
+2017-02-24 23:19:00.392995 CET | AveragePolicyStd              0.848527
+2017-02-24 23:19:00.393218 CET | LossBefore                   -7.579e-09
+2017-02-24 23:19:00.393483 CET | LossAfter                -62376.9
+2017-02-24 23:19:00.393709 CET | MeanKLBefore                  0
+2017-02-24 23:19:00.393933 CET | MeanKL                        0.00984002
+2017-02-24 23:19:00.394157 CET | dLoss                     62376.9
+2017-02-24 23:19:00.394382 CET | Total cost                  185.506
+2017-02-24 23:19:00.394606 CET | -----------------------  ---------------
+2017-02-24 23:19:03.423080 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | fitting baseline...
+2017-02-24 23:19:03.435775 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | fitted
+2017-02-24 23:19:03.502613 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | Three largest weights are [ 84.53452889  83.79354414  78.47541906]
+2017-02-24 23:19:03.688110 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | computing loss before
+2017-02-24 23:19:03.757621 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | performing update
+2017-02-24 23:19:03.758191 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | computing descent direction
+2017-02-24 23:19:05.066917 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | descent direction computed
+2017-02-24 23:19:05.202920 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | backtrack iters: 1
+2017-02-24 23:19:05.203379 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | computing loss after
+2017-02-24 23:19:05.203726 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | optimization finished
+2017-02-24 23:19:05.338468 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | saving snapshot...
+2017-02-24 23:19:05.826814 CET | [experiment_2017_02_24_23_15_03_0001] itr #42 | saved
+2017-02-24 23:19:05.827913 CET | -----------------------  ----------------
+2017-02-24 23:19:05.828152 CET | Iteration                    42
+2017-02-24 23:19:05.828377 CET | AverageDiscountedReturn    -115.554
+2017-02-24 23:19:05.828600 CET | AverageReturn              -166.097
+2017-02-24 23:19:05.828819 CET | ExplainedVariance             0.860653
+2017-02-24 23:19:05.829039 CET | NumTrajs                    204
+2017-02-24 23:19:05.829258 CET | Entropy                       1.26736
+2017-02-24 23:19:05.829498 CET | Perplexity                    3.55146
+2017-02-24 23:19:05.829719 CET | StdReturn                    24.2117
+2017-02-24 23:19:05.829939 CET | MaxReturn                   -98.7629
+2017-02-24 23:19:05.830158 CET | MinReturn                  -246.849
+2017-02-24 23:19:05.830378 CET | AveragePolicyStd              0.85935
+2017-02-24 23:19:05.830598 CET | LossBefore                    2.06524e-10
+2017-02-24 23:19:05.830817 CET | LossAfter                -46104.4
+2017-02-24 23:19:05.831051 CET | MeanKLBefore                  0
+2017-02-24 23:19:05.831276 CET | MeanKL                        0.00676949
+2017-02-24 23:19:05.831513 CET | dLoss                     46104.4
+2017-02-24 23:19:05.831731 CET | Total cost                  186.268
+2017-02-24 23:19:05.831951 CET | -----------------------  ----------------
+2017-02-24 23:19:08.978270 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | fitting baseline...
+2017-02-24 23:19:09.005763 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | fitted
+2017-02-24 23:19:09.062559 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | Three largest weights are [ 97.18411892  82.57274832  72.00525272]
+2017-02-24 23:19:09.236754 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | computing loss before
+2017-02-24 23:19:09.299625 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | performing update
+2017-02-24 23:19:09.300246 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | computing descent direction
+2017-02-24 23:19:10.639872 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | descent direction computed
+2017-02-24 23:19:10.762540 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | backtrack iters: 1
+2017-02-24 23:19:10.763086 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | computing loss after
+2017-02-24 23:19:10.763479 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | optimization finished
+2017-02-24 23:19:10.883807 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | saving snapshot...
+2017-02-24 23:19:11.538533 CET | [experiment_2017_02_24_23_15_03_0001] itr #43 | saved
+2017-02-24 23:19:11.539646 CET | -----------------------  ----------------
+2017-02-24 23:19:11.539889 CET | Iteration                    43
+2017-02-24 23:19:11.540114 CET | AverageDiscountedReturn    -117.725
+2017-02-24 23:19:11.540354 CET | AverageReturn              -170.56
+2017-02-24 23:19:11.540589 CET | ExplainedVariance             0.822594
+2017-02-24 23:19:11.540823 CET | NumTrajs                    204
+2017-02-24 23:19:11.541057 CET | Entropy                       1.26734
+2017-02-24 23:19:11.541289 CET | Perplexity                    3.55138
+2017-02-24 23:19:11.541538 CET | StdReturn                    28.2422
+2017-02-24 23:19:11.541771 CET | MaxReturn                  -102.326
+2017-02-24 23:19:11.542003 CET | MinReturn                  -277.207
+2017-02-24 23:19:11.542227 CET | AveragePolicyStd              0.85933
+2017-02-24 23:19:11.542448 CET | LossBefore                    3.30723e-09
+2017-02-24 23:19:11.542667 CET | LossAfter                -49566.7
+2017-02-24 23:19:11.542915 CET | MeanKLBefore                  0
+2017-02-24 23:19:11.543147 CET | MeanKL                        0.00756083
+2017-02-24 23:19:11.543374 CET | dLoss                     49566.7
+2017-02-24 23:19:11.543614 CET | Total cost                  190.072
+2017-02-24 23:19:11.543846 CET | -----------------------  ----------------
+2017-02-24 23:19:14.875209 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | fitting baseline...
+2017-02-24 23:19:14.896878 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | fitted
+2017-02-24 23:19:14.996957 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | Three largest weights are [ 91.01296239  86.09258982  84.44551269]
+2017-02-24 23:19:15.186287 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | computing loss before
+2017-02-24 23:19:15.256088 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | performing update
+2017-02-24 23:19:15.256473 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | computing descent direction
+2017-02-24 23:19:16.681856 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | descent direction computed
+2017-02-24 23:19:16.741929 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | backtrack iters: 0
+2017-02-24 23:19:16.742403 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | computing loss after
+2017-02-24 23:19:16.742758 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | optimization finished
+2017-02-24 23:19:16.821106 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | saving snapshot...
+2017-02-24 23:19:17.288638 CET | [experiment_2017_02_24_23_15_03_0001] itr #44 | saved
+2017-02-24 23:19:17.289832 CET | -----------------------  ----------------
+2017-02-24 23:19:17.290079 CET | Iteration                    44
+2017-02-24 23:19:17.290314 CET | AverageDiscountedReturn    -112.826
+2017-02-24 23:19:17.290559 CET | AverageReturn              -164.257
+2017-02-24 23:19:17.290800 CET | ExplainedVariance             0.807589
+2017-02-24 23:19:17.291039 CET | NumTrajs                    204
+2017-02-24 23:19:17.291278 CET | Entropy                       1.2676
+2017-02-24 23:19:17.291517 CET | Perplexity                    3.55232
+2017-02-24 23:19:17.291770 CET | StdReturn                    28.1174
+2017-02-24 23:19:17.292013 CET | MaxReturn                   -97.7115
+2017-02-24 23:19:17.292251 CET | MinReturn                  -270.866
+2017-02-24 23:19:17.292491 CET | AveragePolicyStd              0.859558
+2017-02-24 23:19:17.292732 CET | LossBefore                    1.92257e-09
+2017-02-24 23:19:17.292968 CET | LossAfter                -50158.3
+2017-02-24 23:19:17.293193 CET | MeanKLBefore                  0
+2017-02-24 23:19:17.293443 CET | MeanKL                        0.00787694
+2017-02-24 23:19:17.293668 CET | dLoss                     50158.3
+2017-02-24 23:19:17.293893 CET | Total cost                  185.139
+2017-02-24 23:19:17.294117 CET | -----------------------  ----------------
+2017-02-24 23:19:20.510771 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | fitting baseline...
+2017-02-24 23:19:20.527945 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | fitted
+2017-02-24 23:19:20.595473 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | Three largest weights are [ 86.07345175  68.59928044  51.34079118]
+2017-02-24 23:19:20.776550 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | computing loss before
+2017-02-24 23:19:20.846018 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | performing update
+2017-02-24 23:19:20.846601 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | computing descent direction
+2017-02-24 23:19:22.206914 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | descent direction computed
+2017-02-24 23:19:22.326427 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | backtrack iters: 1
+2017-02-24 23:19:22.326976 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | computing loss after
+2017-02-24 23:19:22.327377 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | optimization finished
+2017-02-24 23:19:22.430239 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | saving snapshot...
+2017-02-24 23:19:22.983604 CET | [experiment_2017_02_24_23_15_03_0001] itr #45 | saved
+2017-02-24 23:19:22.984779 CET | -----------------------  ----------------
+2017-02-24 23:19:22.985026 CET | Iteration                    45
+2017-02-24 23:19:22.985258 CET | AverageDiscountedReturn    -110.09
+2017-02-24 23:19:22.985523 CET | AverageReturn              -157.852
+2017-02-24 23:19:22.985763 CET | ExplainedVariance             0.839382
+2017-02-24 23:19:22.986002 CET | NumTrajs                    204
+2017-02-24 23:19:22.986242 CET | Entropy                       1.26462
+2017-02-24 23:19:22.986484 CET | Perplexity                    3.54175
+2017-02-24 23:19:22.986725 CET | StdReturn                    22.9557
+2017-02-24 23:19:22.986964 CET | MaxReturn                  -111.061
+2017-02-24 23:19:22.987202 CET | MinReturn                  -246.739
+2017-02-24 23:19:22.987437 CET | AveragePolicyStd              0.857
+2017-02-24 23:19:22.987668 CET | LossBefore                   -1.71669e-09
+2017-02-24 23:19:22.987909 CET | LossAfter                -66338.7
+2017-02-24 23:19:22.988157 CET | MeanKLBefore                  0
+2017-02-24 23:19:22.988392 CET | MeanKL                        0.00917926
+2017-02-24 23:19:22.988615 CET | dLoss                     66338.7
+2017-02-24 23:19:22.988840 CET | Total cost                  179.318
+2017-02-24 23:19:22.989064 CET | -----------------------  ----------------
+2017-02-24 23:19:26.125611 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | fitting baseline...
+2017-02-24 23:19:26.143841 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | fitted
+2017-02-24 23:19:26.219989 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | Three largest weights are [ 95.67006938  92.25977231  79.19612165]
+2017-02-24 23:19:26.412725 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | computing loss before
+2017-02-24 23:19:26.481401 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | performing update
+2017-02-24 23:19:26.481995 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | computing descent direction
+2017-02-24 23:19:27.845556 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | descent direction computed
+2017-02-24 23:19:27.905874 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | backtrack iters: 0
+2017-02-24 23:19:27.906433 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | computing loss after
+2017-02-24 23:19:27.906838 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | optimization finished
+2017-02-24 23:19:28.001939 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | saving snapshot...
+2017-02-24 23:19:28.610695 CET | [experiment_2017_02_24_23_15_03_0001] itr #46 | saved
+2017-02-24 23:19:28.611805 CET | -----------------------  ----------------
+2017-02-24 23:19:28.612052 CET | Iteration                    46
+2017-02-24 23:19:28.612283 CET | AverageDiscountedReturn    -109.635
+2017-02-24 23:19:28.612512 CET | AverageReturn              -157.516
+2017-02-24 23:19:28.612739 CET | ExplainedVariance             0.826924
+2017-02-24 23:19:28.612964 CET | NumTrajs                    204
+2017-02-24 23:19:28.613190 CET | Entropy                       1.26137
+2017-02-24 23:19:28.613435 CET | Perplexity                    3.53026
+2017-02-24 23:19:28.613660 CET | StdReturn                    25.3096
+2017-02-24 23:19:28.613885 CET | MaxReturn                  -107.637
+2017-02-24 23:19:28.614111 CET | MinReturn                  -255.355
+2017-02-24 23:19:28.614337 CET | AveragePolicyStd              0.854219
+2017-02-24 23:19:28.614561 CET | LossBefore                    1.07958e-10
+2017-02-24 23:19:28.614786 CET | LossAfter                -58573.2
+2017-02-24 23:19:28.615012 CET | MeanKLBefore                  0
+2017-02-24 23:19:28.615236 CET | MeanKL                        0.00822969
+2017-02-24 23:19:28.615461 CET | dLoss                     58573.2
+2017-02-24 23:19:28.615685 CET | Total cost                  181.312
+2017-02-24 23:19:28.615909 CET | -----------------------  ----------------
+2017-02-24 23:19:31.780173 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | fitting baseline...
+2017-02-24 23:19:31.798179 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | fitted
+2017-02-24 23:19:31.865060 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | Three largest weights are [ 84.72004769  76.86748411  70.67349814]
+2017-02-24 23:19:32.054910 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | computing loss before
+2017-02-24 23:19:32.119746 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | performing update
+2017-02-24 23:19:32.120114 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | computing descent direction
+2017-02-24 23:19:33.594969 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | descent direction computed
+2017-02-24 23:19:33.708833 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | backtrack iters: 1
+2017-02-24 23:19:33.709281 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | computing loss after
+2017-02-24 23:19:33.709657 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | optimization finished
+2017-02-24 23:19:33.787839 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | saving snapshot...
+2017-02-24 23:19:34.430035 CET | [experiment_2017_02_24_23_15_03_0001] itr #47 | saved
+2017-02-24 23:19:34.431194 CET | -----------------------  ----------------
+2017-02-24 23:19:34.431440 CET | Iteration                    47
+2017-02-24 23:19:34.431678 CET | AverageDiscountedReturn    -111.625
+2017-02-24 23:19:34.431924 CET | AverageReturn              -162.1
+2017-02-24 23:19:34.432167 CET | ExplainedVariance             0.829769
+2017-02-24 23:19:34.432407 CET | NumTrajs                    204
+2017-02-24 23:19:34.432647 CET | Entropy                       1.25099
+2017-02-24 23:19:34.432888 CET | Perplexity                    3.4938
+2017-02-24 23:19:34.433128 CET | StdReturn                    24.266
+2017-02-24 23:19:34.433392 CET | MaxReturn                  -110.45
+2017-02-24 23:19:34.433633 CET | MinReturn                  -246.823
+2017-02-24 23:19:34.433869 CET | AveragePolicyStd              0.845398
+2017-02-24 23:19:34.434096 CET | LossBefore                   -2.26074e-09
+2017-02-24 23:19:34.434322 CET | LossAfter                -45498.8
+2017-02-24 23:19:34.434548 CET | MeanKLBefore                  0
+2017-02-24 23:19:34.434799 CET | MeanKL                        0.00723732
+2017-02-24 23:19:34.435040 CET | dLoss                     45498.8
+2017-02-24 23:19:34.435277 CET | Total cost                  183.885
+2017-02-24 23:19:34.435510 CET | -----------------------  ----------------
+2017-02-24 23:19:37.655418 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | fitting baseline...
+2017-02-24 23:19:37.667774 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | fitted
+2017-02-24 23:19:37.734343 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | Three largest weights are [ 79.82767335  76.60486565  76.06785653]
+2017-02-24 23:19:37.923672 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | computing loss before
+2017-02-24 23:19:37.993817 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | performing update
+2017-02-24 23:19:37.994385 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | computing descent direction
+2017-02-24 23:19:39.334764 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | descent direction computed
+2017-02-24 23:19:39.458222 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | backtrack iters: 1
+2017-02-24 23:19:39.458698 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | computing loss after
+2017-02-24 23:19:39.459053 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | optimization finished
+2017-02-24 23:19:39.577221 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | saving snapshot...
+2017-02-24 23:19:40.092498 CET | [experiment_2017_02_24_23_15_03_0001] itr #48 | saved
+2017-02-24 23:19:40.093672 CET | -----------------------  ----------------
+2017-02-24 23:19:40.093928 CET | Iteration                    48
+2017-02-24 23:19:40.094167 CET | AverageDiscountedReturn    -111.273
+2017-02-24 23:19:40.094402 CET | AverageReturn              -162.629
+2017-02-24 23:19:40.094635 CET | ExplainedVariance             0.83977
+2017-02-24 23:19:40.094873 CET | NumTrajs                    204
+2017-02-24 23:19:40.095104 CET | Entropy                       1.24958
+2017-02-24 23:19:40.095335 CET | Perplexity                    3.48888
+2017-02-24 23:19:40.095567 CET | StdReturn                    24.5447
+2017-02-24 23:19:40.095803 CET | MaxReturn                  -109.023
+2017-02-24 23:19:40.096036 CET | MinReturn                  -245.779
+2017-02-24 23:19:40.096270 CET | AveragePolicyStd              0.844207
+2017-02-24 23:19:40.096502 CET | LossBefore                   -1.95916e-10
+2017-02-24 23:19:40.096736 CET | LossAfter                -45803.5
+2017-02-24 23:19:40.096969 CET | MeanKLBefore                  0
+2017-02-24 23:19:40.097202 CET | MeanKL                        0.00669819
+2017-02-24 23:19:40.097456 CET | dLoss                     45803.5
+2017-02-24 23:19:40.097688 CET | Total cost                  184.067
+2017-02-24 23:19:40.097920 CET | -----------------------  ----------------
+2017-02-24 23:19:43.325952 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | fitting baseline...
+2017-02-24 23:19:43.342451 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | fitted
+2017-02-24 23:19:43.454934 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | Three largest weights are [ 81.2336135   80.78809678  66.66203518]
+2017-02-24 23:19:43.642061 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | computing loss before
+2017-02-24 23:19:43.706030 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | performing update
+2017-02-24 23:19:43.706615 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | computing descent direction
+2017-02-24 23:19:44.944969 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | descent direction computed
+2017-02-24 23:19:45.070501 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | backtrack iters: 1
+2017-02-24 23:19:45.071064 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | computing loss after
+2017-02-24 23:19:45.071527 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | optimization finished
+2017-02-24 23:19:45.189869 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | saving snapshot...
+2017-02-24 23:19:45.820282 CET | [experiment_2017_02_24_23_15_03_0001] itr #49 | saved
+2017-02-24 23:19:45.821454 CET | -----------------------  ----------------
+2017-02-24 23:19:45.821702 CET | Iteration                    49
+2017-02-24 23:19:45.821937 CET | AverageDiscountedReturn    -113.197
+2017-02-24 23:19:45.822167 CET | AverageReturn              -166.111
+2017-02-24 23:19:45.822395 CET | ExplainedVariance             0.796626
+2017-02-24 23:19:45.822621 CET | NumTrajs                    204
+2017-02-24 23:19:45.822846 CET | Entropy                       1.2507
+2017-02-24 23:19:45.823072 CET | Perplexity                    3.49278
+2017-02-24 23:19:45.823297 CET | StdReturn                    29.3284
+2017-02-24 23:19:45.823520 CET | MaxReturn                  -100.849
+2017-02-24 23:19:45.823745 CET | MinReturn                  -248.976
+2017-02-24 23:19:45.823972 CET | AveragePolicyStd              0.845151
+2017-02-24 23:19:45.824198 CET | LossBefore                    8.77631e-10
+2017-02-24 23:19:45.824423 CET | LossAfter                -50337.8
+2017-02-24 23:19:45.824648 CET | MeanKLBefore                  0
+2017-02-24 23:19:45.824874 CET | MeanKL                        0.00923689
+2017-02-24 23:19:45.825098 CET | dLoss                     50337.8
+2017-02-24 23:19:45.825323 CET | Total cost                  186.615
+2017-02-24 23:19:45.825570 CET | -----------------------  ----------------
+2017-02-24 23:19:49.062973 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | fitting baseline...
+2017-02-24 23:19:49.085954 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | fitted
+2017-02-24 23:19:49.153332 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | Three largest weights are [ 80.67393868  63.31282528  62.27515594]
+2017-02-24 23:19:49.348909 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | computing loss before
+2017-02-24 23:19:49.413975 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | performing update
+2017-02-24 23:19:49.414525 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | computing descent direction
+2017-02-24 23:19:50.588411 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | descent direction computed
+2017-02-24 23:19:50.711171 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | backtrack iters: 1
+2017-02-24 23:19:50.711715 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | computing loss after
+2017-02-24 23:19:50.712111 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | optimization finished
+2017-02-24 23:19:50.829452 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | saving snapshot...
+2017-02-24 23:19:51.349177 CET | [experiment_2017_02_24_23_15_03_0001] itr #50 | saved
+2017-02-24 23:19:51.350361 CET | -----------------------  ----------------
+2017-02-24 23:19:51.350614 CET | Iteration                    50
+2017-02-24 23:19:51.350849 CET | AverageDiscountedReturn    -110.791
+2017-02-24 23:19:51.351078 CET | AverageReturn              -160.882
+2017-02-24 23:19:51.351303 CET | ExplainedVariance             0.80141
+2017-02-24 23:19:51.351539 CET | NumTrajs                    204
+2017-02-24 23:19:51.351765 CET | Entropy                       1.24299
+2017-02-24 23:19:51.351990 CET | Perplexity                    3.46597
+2017-02-24 23:19:51.352215 CET | StdReturn                    25.6977
+2017-02-24 23:19:51.352440 CET | MaxReturn                  -107.148
+2017-02-24 23:19:51.352665 CET | MinReturn                  -255.161
+2017-02-24 23:19:51.352890 CET | AveragePolicyStd              0.838664
+2017-02-24 23:19:51.353116 CET | LossBefore                    4.34454e-09
+2017-02-24 23:19:51.353362 CET | LossAfter                -55853.6
+2017-02-24 23:19:51.353590 CET | MeanKLBefore                  0
+2017-02-24 23:19:51.353815 CET | MeanKL                        0.00700706
+2017-02-24 23:19:51.354041 CET | dLoss                     55853.6
+2017-02-24 23:19:51.354266 CET | Total cost                  183.305
+2017-02-24 23:19:51.354491 CET | -----------------------  ----------------
+2017-02-24 23:19:54.449207 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | fitting baseline...
+2017-02-24 23:19:54.478373 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | fitted
+2017-02-24 23:19:54.547428 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | Three largest weights are [ 80.30497612  68.42012321  66.25003284]
+2017-02-24 23:19:54.750307 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | computing loss before
+2017-02-24 23:19:54.816542 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | performing update
+2017-02-24 23:19:54.817120 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | computing descent direction
+2017-02-24 23:19:56.078908 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | descent direction computed
+2017-02-24 23:19:56.319047 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | backtrack iters: 3
+2017-02-24 23:19:56.319574 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | computing loss after
+2017-02-24 23:19:56.319960 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | optimization finished
+2017-02-24 23:19:56.437644 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | saving snapshot...
+2017-02-24 23:19:57.077283 CET | [experiment_2017_02_24_23_15_03_0001] itr #51 | saved
+2017-02-24 23:19:57.078430 CET | -----------------------  ----------------
+2017-02-24 23:19:57.078679 CET | Iteration                    51
+2017-02-24 23:19:57.078917 CET | AverageDiscountedReturn    -108.295
+2017-02-24 23:19:57.079147 CET | AverageReturn              -157.7
+2017-02-24 23:19:57.079374 CET | ExplainedVariance             0.81825
+2017-02-24 23:19:57.079601 CET | NumTrajs                    204
+2017-02-24 23:19:57.079827 CET | Entropy                       1.2323
+2017-02-24 23:19:57.080053 CET | Perplexity                    3.42912
+2017-02-24 23:19:57.080280 CET | StdReturn                    24.287
+2017-02-24 23:19:57.080506 CET | MaxReturn                  -108.494
+2017-02-24 23:19:57.080733 CET | MinReturn                  -237.681
+2017-02-24 23:19:57.080960 CET | AveragePolicyStd              0.829748
+2017-02-24 23:19:57.081189 CET | LossBefore                    9.85119e-09
+2017-02-24 23:19:57.081450 CET | LossAfter                -51776.1
+2017-02-24 23:19:57.081676 CET | MeanKLBefore                  0
+2017-02-24 23:19:57.081903 CET | MeanKL                        0.00984137
+2017-02-24 23:19:57.082130 CET | dLoss                     51776.1
+2017-02-24 23:19:57.082356 CET | Total cost                  180.4
+2017-02-24 23:19:57.082582 CET | -----------------------  ----------------
+2017-02-24 23:20:00.172178 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | fitting baseline...
+2017-02-24 23:20:00.187088 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | fitted
+2017-02-24 23:20:00.232106 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | Three largest weights are [ 80.59912171  65.89354361  65.70442529]
+2017-02-24 23:20:00.421527 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | computing loss before
+2017-02-24 23:20:00.484974 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | performing update
+2017-02-24 23:20:00.485583 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | computing descent direction
+2017-02-24 23:20:01.782582 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | descent direction computed
+2017-02-24 23:20:01.843436 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | backtrack iters: 0
+2017-02-24 23:20:01.843886 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | computing loss after
+2017-02-24 23:20:01.844230 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | optimization finished
+2017-02-24 23:20:01.963102 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | saving snapshot...
+2017-02-24 23:20:02.688597 CET | [experiment_2017_02_24_23_15_03_0001] itr #52 | saved
+2017-02-24 23:20:02.689775 CET | -----------------------  ---------------
+2017-02-24 23:20:02.690028 CET | Iteration                    52
+2017-02-24 23:20:02.690272 CET | AverageDiscountedReturn    -107.691
+2017-02-24 23:20:02.690509 CET | AverageReturn              -157.571
+2017-02-24 23:20:02.690746 CET | ExplainedVariance             0.829513
+2017-02-24 23:20:02.690981 CET | NumTrajs                    204
+2017-02-24 23:20:02.691214 CET | Entropy                       1.21533
+2017-02-24 23:20:02.691448 CET | Perplexity                    3.3714
+2017-02-24 23:20:02.691681 CET | StdReturn                    23.2389
+2017-02-24 23:20:02.691916 CET | MaxReturn                   -96.5487
+2017-02-24 23:20:02.692150 CET | MinReturn                  -234.187
+2017-02-24 23:20:02.692385 CET | AveragePolicyStd              0.815781
+2017-02-24 23:20:02.692618 CET | LossBefore                    2.4635e-09
+2017-02-24 23:20:02.692851 CET | LossAfter                -51865.4
+2017-02-24 23:20:02.693092 CET | MeanKLBefore                  0
+2017-02-24 23:20:02.693373 CET | MeanKL                        0.00776405
+2017-02-24 23:20:02.693634 CET | dLoss                     51865.4
+2017-02-24 23:20:02.693913 CET | Total cost                  180.919
+2017-02-24 23:20:02.694166 CET | -----------------------  ---------------
+2017-02-24 23:20:06.008880 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | fitting baseline...
+2017-02-24 23:20:06.025979 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | fitted
+2017-02-24 23:20:06.093688 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | Three largest weights are [ 95.84303637  82.9958751   81.75937399]
+2017-02-24 23:20:06.273975 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | computing loss before
+2017-02-24 23:20:06.337630 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | performing update
+2017-02-24 23:20:06.338080 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | computing descent direction
+2017-02-24 23:20:07.613541 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | descent direction computed
+2017-02-24 23:20:07.733389 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | backtrack iters: 1
+2017-02-24 23:20:07.733841 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | computing loss after
+2017-02-24 23:20:07.734193 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | optimization finished
+2017-02-24 23:20:07.850726 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | saving snapshot...
+2017-02-24 23:20:08.380784 CET | [experiment_2017_02_24_23_15_03_0001] itr #53 | saved
+2017-02-24 23:20:08.381992 CET | -----------------------  ----------------
+2017-02-24 23:20:08.382279 CET | Iteration                    53
+2017-02-24 23:20:08.382524 CET | AverageDiscountedReturn    -111.681
+2017-02-24 23:20:08.382814 CET | AverageReturn              -165.424
+2017-02-24 23:20:08.383079 CET | ExplainedVariance             0.785933
+2017-02-24 23:20:08.383324 CET | NumTrajs                    204
+2017-02-24 23:20:08.383578 CET | Entropy                       1.2156
+2017-02-24 23:20:08.383826 CET | Perplexity                    3.3723
+2017-02-24 23:20:08.384077 CET | StdReturn                    29.3977
+2017-02-24 23:20:08.384325 CET | MaxReturn                  -107.843
+2017-02-24 23:20:08.384584 CET | MinReturn                  -265.098
+2017-02-24 23:20:08.384835 CET | AveragePolicyStd              0.815999
+2017-02-24 23:20:08.385099 CET | LossBefore                   -2.42042e-09
+2017-02-24 23:20:08.385378 CET | LossAfter                -52337.3
+2017-02-24 23:20:08.385621 CET | MeanKLBefore                  0
+2017-02-24 23:20:08.385866 CET | MeanKL                        0.00966779
+2017-02-24 23:20:08.386108 CET | dLoss                     52337.3
+2017-02-24 23:20:08.386355 CET | Total cost                  187.316
+2017-02-24 23:20:08.386599 CET | -----------------------  ----------------
+2017-02-24 23:20:11.446548 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | fitting baseline...
+2017-02-24 23:20:11.459103 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | fitted
+2017-02-24 23:20:11.524662 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | Three largest weights are [ 67.67094008  60.73741114  60.62629417]
+2017-02-24 23:20:11.709822 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | computing loss before
+2017-02-24 23:20:11.777494 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | performing update
+2017-02-24 23:20:11.777943 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | computing descent direction
+2017-02-24 23:20:13.062673 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | descent direction computed
+2017-02-24 23:20:13.171904 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | backtrack iters: 1
+2017-02-24 23:20:13.172250 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | computing loss after
+2017-02-24 23:20:13.172538 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | optimization finished
+2017-02-24 23:20:13.280951 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | saving snapshot...
+2017-02-24 23:20:13.801667 CET | [experiment_2017_02_24_23_15_03_0001] itr #54 | saved
+2017-02-24 23:20:13.802846 CET | -----------------------  ----------------
+2017-02-24 23:20:13.803092 CET | Iteration                    54
+2017-02-24 23:20:13.803368 CET | AverageDiscountedReturn    -113.492
+2017-02-24 23:20:13.803616 CET | AverageReturn              -168.991
+2017-02-24 23:20:13.803893 CET | ExplainedVariance             0.785954
+2017-02-24 23:20:13.804137 CET | NumTrajs                    204
+2017-02-24 23:20:13.804407 CET | Entropy                       1.22024
+2017-02-24 23:20:13.804650 CET | Perplexity                    3.38799
+2017-02-24 23:20:13.804922 CET | StdReturn                    29.6631
+2017-02-24 23:20:13.805177 CET | MaxReturn                  -105.177
+2017-02-24 23:20:13.805459 CET | MinReturn                  -237.164
+2017-02-24 23:20:13.805698 CET | AveragePolicyStd              0.819794
+2017-02-24 23:20:13.805948 CET | LossBefore                    7.11975e-10
+2017-02-24 23:20:13.806193 CET | LossAfter                -40079.6
+2017-02-24 23:20:13.806527 CET | MeanKLBefore                  0
+2017-02-24 23:20:13.806781 CET | MeanKL                        0.0065321
+2017-02-24 23:20:13.807032 CET | dLoss                     40079.6
+2017-02-24 23:20:13.807277 CET | Total cost                  190.375
+2017-02-24 23:20:13.807526 CET | -----------------------  ----------------
+2017-02-24 23:20:16.870460 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | fitting baseline...
+2017-02-24 23:20:16.887298 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | fitted
+2017-02-24 23:20:16.953973 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | Three largest weights are [ 71.07280126  63.55832682  61.70745939]
+2017-02-24 23:20:17.126305 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | computing loss before
+2017-02-24 23:20:17.167787 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | performing update
+2017-02-24 23:20:17.168126 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | computing descent direction
+2017-02-24 23:20:18.349672 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | descent direction computed
+2017-02-24 23:20:18.474481 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | backtrack iters: 1
+2017-02-24 23:20:18.475039 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | computing loss after
+2017-02-24 23:20:18.475493 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | optimization finished
+2017-02-24 23:20:18.594257 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | saving snapshot...
+2017-02-24 23:20:19.217928 CET | [experiment_2017_02_24_23_15_03_0001] itr #55 | saved
+2017-02-24 23:20:19.219083 CET | -----------------------  ----------------
+2017-02-24 23:20:19.219332 CET | Iteration                    55
+2017-02-24 23:20:19.219567 CET | AverageDiscountedReturn    -113.591
+2017-02-24 23:20:19.219795 CET | AverageReturn              -168.311
+2017-02-24 23:20:19.220021 CET | ExplainedVariance             0.781646
+2017-02-24 23:20:19.220247 CET | NumTrajs                    204
+2017-02-24 23:20:19.220472 CET | Entropy                       1.21985
+2017-02-24 23:20:19.220697 CET | Perplexity                    3.38667
+2017-02-24 23:20:19.220923 CET | StdReturn                    29.197
+2017-02-24 23:20:19.221149 CET | MaxReturn                  -109.393
+2017-02-24 23:20:19.221399 CET | MinReturn                  -236.551
+2017-02-24 23:20:19.221625 CET | AveragePolicyStd              0.819475
+2017-02-24 23:20:19.221849 CET | LossBefore                    3.59275e-09
+2017-02-24 23:20:19.222074 CET | LossAfter                -45695.4
+2017-02-24 23:20:19.222298 CET | MeanKLBefore                  0
+2017-02-24 23:20:19.222523 CET | MeanKL                        0.00643701
+2017-02-24 23:20:19.222746 CET | dLoss                     45695.4
+2017-02-24 23:20:19.222971 CET | Total cost                  188.744
+2017-02-24 23:20:19.223195 CET | -----------------------  ----------------
+2017-02-24 23:20:22.325496 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | fitting baseline...
+2017-02-24 23:20:22.342471 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | fitted
+2017-02-24 23:20:22.409999 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | Three largest weights are [ 87.90944013  74.07744921  65.52035533]
+2017-02-24 23:20:22.598104 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | computing loss before
+2017-02-24 23:20:22.668378 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | performing update
+2017-02-24 23:20:22.668928 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | computing descent direction
+2017-02-24 23:20:23.949863 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | descent direction computed
+2017-02-24 23:20:24.072503 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | backtrack iters: 1
+2017-02-24 23:20:24.073063 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | computing loss after
+2017-02-24 23:20:24.073558 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | optimization finished
+2017-02-24 23:20:24.192840 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | saving snapshot...
+2017-02-24 23:20:25.048991 CET | [experiment_2017_02_24_23_15_03_0001] itr #56 | saved
+2017-02-24 23:20:25.050130 CET | -----------------------  ----------------
+2017-02-24 23:20:25.050376 CET | Iteration                    56
+2017-02-24 23:20:25.050612 CET | AverageDiscountedReturn    -109.344
+2017-02-24 23:20:25.050855 CET | AverageReturn              -161.979
+2017-02-24 23:20:25.051096 CET | ExplainedVariance             0.756086
+2017-02-24 23:20:25.051337 CET | NumTrajs                    204
+2017-02-24 23:20:25.051577 CET | Entropy                       1.19398
+2017-02-24 23:20:25.051815 CET | Perplexity                    3.30018
+2017-02-24 23:20:25.052055 CET | StdReturn                    30.4524
+2017-02-24 23:20:25.052295 CET | MaxReturn                   -99.8219
+2017-02-24 23:20:25.052533 CET | MinReturn                  -252.48
+2017-02-24 23:20:25.052764 CET | AveragePolicyStd              0.798547
+2017-02-24 23:20:25.052989 CET | LossBefore                   -3.58188e-09
+2017-02-24 23:20:25.053214 CET | LossAfter                -45966.9
+2017-02-24 23:20:25.053459 CET | MeanKLBefore                  0
+2017-02-24 23:20:25.053684 CET | MeanKL                        0.0090842
+2017-02-24 23:20:25.053910 CET | dLoss                     45966.9
+2017-02-24 23:20:25.054134 CET | Total cost                  184.038
+2017-02-24 23:20:25.054359 CET | -----------------------  ----------------
+2017-02-24 23:20:28.112478 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | fitting baseline...
+2017-02-24 23:20:28.129904 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | fitted
+2017-02-24 23:20:28.198156 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | Three largest weights are [ 93.94919501  74.40665884  73.66107157]
+2017-02-24 23:20:28.382976 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | computing loss before
+2017-02-24 23:20:28.454307 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | performing update
+2017-02-24 23:20:28.454778 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | computing descent direction
+2017-02-24 23:20:29.753786 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | descent direction computed
+2017-02-24 23:20:29.814744 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | backtrack iters: 0
+2017-02-24 23:20:29.815272 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | computing loss after
+2017-02-24 23:20:29.815667 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | optimization finished
+2017-02-24 23:20:29.935439 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | saving snapshot...
+2017-02-24 23:20:30.497412 CET | [experiment_2017_02_24_23_15_03_0001] itr #57 | saved
+2017-02-24 23:20:30.498545 CET | -----------------------  ----------------
+2017-02-24 23:20:30.498792 CET | Iteration                    57
+2017-02-24 23:20:30.499024 CET | AverageDiscountedReturn    -105.291
+2017-02-24 23:20:30.499251 CET | AverageReturn              -153.401
+2017-02-24 23:20:30.499477 CET | ExplainedVariance             0.760638
+2017-02-24 23:20:30.499703 CET | NumTrajs                    204
+2017-02-24 23:20:30.499928 CET | Entropy                       1.1947
+2017-02-24 23:20:30.500152 CET | Perplexity                    3.30256
+2017-02-24 23:20:30.500377 CET | StdReturn                    28.8482
+2017-02-24 23:20:30.500602 CET | MaxReturn                   -97.5359
+2017-02-24 23:20:30.500827 CET | MinReturn                  -243.588
+2017-02-24 23:20:30.501052 CET | AveragePolicyStd              0.799123
+2017-02-24 23:20:30.501276 CET | LossBefore                    8.29364e-10
+2017-02-24 23:20:30.501528 CET | LossAfter                -55301.3
+2017-02-24 23:20:30.501754 CET | MeanKLBefore                  0
+2017-02-24 23:20:30.501979 CET | MeanKL                        0.00971356
+2017-02-24 23:20:30.502205 CET | dLoss                     55301.3
+2017-02-24 23:20:30.502430 CET | Total cost                  176.85
+2017-02-24 23:20:30.502656 CET | -----------------------  ----------------
+2017-02-24 23:20:33.774216 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | fitting baseline...
+2017-02-24 23:20:33.786442 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | fitted
+2017-02-24 23:20:33.829747 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | Three largest weights are [ 76.06425737  70.39334049  60.69538714]
+2017-02-24 23:20:33.948480 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | computing loss before
+2017-02-24 23:20:33.992402 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | performing update
+2017-02-24 23:20:33.992935 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | computing descent direction
+2017-02-24 23:20:35.244518 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | descent direction computed
+2017-02-24 23:20:35.363939 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | backtrack iters: 1
+2017-02-24 23:20:35.364384 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | computing loss after
+2017-02-24 23:20:35.364731 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | optimization finished
+2017-02-24 23:20:35.481612 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | saving snapshot...
+2017-02-24 23:20:35.990311 CET | [experiment_2017_02_24_23_15_03_0001] itr #58 | saved
+2017-02-24 23:20:35.991466 CET | -----------------------  ----------------
+2017-02-24 23:20:35.991713 CET | Iteration                    58
+2017-02-24 23:20:35.991945 CET | AverageDiscountedReturn    -101.356
+2017-02-24 23:20:35.992180 CET | AverageReturn              -145.995
+2017-02-24 23:20:35.992407 CET | ExplainedVariance             0.800241
+2017-02-24 23:20:35.992633 CET | NumTrajs                    204
+2017-02-24 23:20:35.992859 CET | Entropy                       1.18709
+2017-02-24 23:20:35.993084 CET | Perplexity                    3.27752
+2017-02-24 23:20:35.993308 CET | StdReturn                    22.2687
+2017-02-24 23:20:35.993558 CET | MaxReturn                   -89.3089
+2017-02-24 23:20:35.993784 CET | MinReturn                  -231.088
+2017-02-24 23:20:35.994008 CET | AveragePolicyStd              0.793065
+2017-02-24 23:20:35.994235 CET | LossBefore                   -3.99332e-09
+2017-02-24 23:20:35.994460 CET | LossAfter                -65225.7
+2017-02-24 23:20:35.994686 CET | MeanKLBefore                  0
+2017-02-24 23:20:35.994911 CET | MeanKL                        0.0089384
+2017-02-24 23:20:35.995136 CET | dLoss                     65225.7
+2017-02-24 23:20:35.995361 CET | Total cost                  170.841
+2017-02-24 23:20:35.995586 CET | -----------------------  ----------------
+2017-02-24 23:20:39.022609 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | fitting baseline...
+2017-02-24 23:20:39.041571 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | fitted
+2017-02-24 23:20:39.101986 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | Three largest weights are [ 85.85431316  77.77113976  76.39131918]
+2017-02-24 23:20:39.278768 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | computing loss before
+2017-02-24 23:20:39.338586 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | performing update
+2017-02-24 23:20:39.339074 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | computing descent direction
+2017-02-24 23:20:40.600154 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | descent direction computed
+2017-02-24 23:20:40.720030 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | backtrack iters: 1
+2017-02-24 23:20:40.720471 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | computing loss after
+2017-02-24 23:20:40.720820 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | optimization finished
+2017-02-24 23:20:40.837862 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | saving snapshot...
+2017-02-24 23:20:41.414868 CET | [experiment_2017_02_24_23_15_03_0001] itr #59 | saved
+2017-02-24 23:20:41.416012 CET | -----------------------  ----------------
+2017-02-24 23:20:41.416257 CET | Iteration                    59
+2017-02-24 23:20:41.416491 CET | AverageDiscountedReturn    -101.729
+2017-02-24 23:20:41.416718 CET | AverageReturn              -147.155
+2017-02-24 23:20:41.416944 CET | ExplainedVariance             0.785027
+2017-02-24 23:20:41.417167 CET | NumTrajs                    204
+2017-02-24 23:20:41.417412 CET | Entropy                       1.18417
+2017-02-24 23:20:41.417637 CET | Perplexity                    3.26798
+2017-02-24 23:20:41.417860 CET | StdReturn                    25.4204
+2017-02-24 23:20:41.418082 CET | MaxReturn                  -101.38
+2017-02-24 23:20:41.418305 CET | MinReturn                  -232.976
+2017-02-24 23:20:41.418529 CET | AveragePolicyStd              0.790755
+2017-02-24 23:20:41.418752 CET | LossBefore                   -4.23725e-09
+2017-02-24 23:20:41.418976 CET | LossAfter                -53203.4
+2017-02-24 23:20:41.419197 CET | MeanKLBefore                  0
+2017-02-24 23:20:41.419419 CET | MeanKL                        0.00726384
+2017-02-24 23:20:41.419642 CET | dLoss                     53203.4
+2017-02-24 23:20:41.419865 CET | Total cost                  171.98
+2017-02-24 23:20:41.420088 CET | -----------------------  ----------------
+2017-02-24 23:20:44.620939 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | fitting baseline...
+2017-02-24 23:20:44.633506 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | fitted
+2017-02-24 23:20:44.687742 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | Three largest weights are [ 82.8364601   76.89314415  64.71642413]
+2017-02-24 23:20:44.885949 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | computing loss before
+2017-02-24 23:20:44.949706 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | performing update
+2017-02-24 23:20:44.950406 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | computing descent direction
+2017-02-24 23:20:46.202145 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | descent direction computed
+2017-02-24 23:20:46.285926 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | backtrack iters: 1
+2017-02-24 23:20:46.286275 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | computing loss after
+2017-02-24 23:20:46.286550 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | optimization finished
+2017-02-24 23:20:46.364286 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | saving snapshot...
+2017-02-24 23:20:47.089383 CET | [experiment_2017_02_24_23_15_03_0001] itr #60 | saved
+2017-02-24 23:20:47.090576 CET | -----------------------  ----------------
+2017-02-24 23:20:47.090830 CET | Iteration                    60
+2017-02-24 23:20:47.091064 CET | AverageDiscountedReturn     -99.3165
+2017-02-24 23:20:47.091295 CET | AverageReturn              -142.167
+2017-02-24 23:20:47.091524 CET | ExplainedVariance             0.795945
+2017-02-24 23:20:47.091752 CET | NumTrajs                    204
+2017-02-24 23:20:47.091980 CET | Entropy                       1.18265
+2017-02-24 23:20:47.092207 CET | Perplexity                    3.26301
+2017-02-24 23:20:47.092435 CET | StdReturn                    21.6864
+2017-02-24 23:20:47.092663 CET | MaxReturn                   -94.6972
+2017-02-24 23:20:47.092891 CET | MinReturn                  -223.225
+2017-02-24 23:20:47.093118 CET | AveragePolicyStd              0.789552
+2017-02-24 23:20:47.093379 CET | LossBefore                    5.24178e-09
+2017-02-24 23:20:47.093611 CET | LossAfter                -55351
+2017-02-24 23:20:47.093840 CET | MeanKLBefore                  0
+2017-02-24 23:20:47.094086 CET | MeanKL                        0.0066172
+2017-02-24 23:20:47.094319 CET | dLoss                     55351
+2017-02-24 23:20:47.094567 CET | Total cost                  169.333
+2017-02-24 23:20:47.094795 CET | -----------------------  ----------------
+2017-02-24 23:20:50.084578 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | fitting baseline...
+2017-02-24 23:20:50.097034 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | fitted
+2017-02-24 23:20:50.162817 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | Three largest weights are [ 59.26691563  53.3838952   51.22362505]
+2017-02-24 23:20:50.330452 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | computing loss before
+2017-02-24 23:20:50.382139 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | performing update
+2017-02-24 23:20:50.382713 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | computing descent direction
+2017-02-24 23:20:51.572058 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | descent direction computed
+2017-02-24 23:20:51.666461 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | backtrack iters: 1
+2017-02-24 23:20:51.666806 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | computing loss after
+2017-02-24 23:20:51.667078 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | optimization finished
+2017-02-24 23:20:51.744358 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | saving snapshot...
+2017-02-24 23:20:52.371026 CET | [experiment_2017_02_24_23_15_03_0001] itr #61 | saved
+2017-02-24 23:20:52.372176 CET | -----------------------  ----------------
+2017-02-24 23:20:52.372437 CET | Iteration                    61
+2017-02-24 23:20:52.372683 CET | AverageDiscountedReturn    -101.033
+2017-02-24 23:20:52.372956 CET | AverageReturn              -144.426
+2017-02-24 23:20:52.373201 CET | ExplainedVariance             0.85489
+2017-02-24 23:20:52.373474 CET | NumTrajs                    204
+2017-02-24 23:20:52.373726 CET | Entropy                       1.18776
+2017-02-24 23:20:52.373971 CET | Perplexity                    3.27973
+2017-02-24 23:20:52.374220 CET | StdReturn                    18.4656
+2017-02-24 23:20:52.374467 CET | MaxReturn                   -94.2986
+2017-02-24 23:20:52.374724 CET | MinReturn                  -204.656
+2017-02-24 23:20:52.374966 CET | AveragePolicyStd              0.793598
+2017-02-24 23:20:52.375212 CET | LossBefore                    4.40944e-09
+2017-02-24 23:20:52.375452 CET | LossAfter                -86981.1
+2017-02-24 23:20:52.375698 CET | MeanKLBefore                  0
+2017-02-24 23:20:52.375948 CET | MeanKL                        0.00929651
+2017-02-24 23:20:52.376190 CET | dLoss                     86981.1
+2017-02-24 23:20:52.376437 CET | Total cost                  170.868
+2017-02-24 23:20:52.376681 CET | -----------------------  ----------------
+2017-02-24 23:20:55.429365 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | fitting baseline...
+2017-02-24 23:20:55.441673 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | fitted
+2017-02-24 23:20:55.506775 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | Three largest weights are [ 71.84631146  53.07375411  49.22795111]
+2017-02-24 23:20:55.692861 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | computing loss before
+2017-02-24 23:20:55.763621 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | performing update
+2017-02-24 23:20:55.764077 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | computing descent direction
+2017-02-24 23:20:57.057756 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | descent direction computed
+2017-02-24 23:20:57.176004 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | backtrack iters: 1
+2017-02-24 23:20:57.176445 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | computing loss after
+2017-02-24 23:20:57.176795 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | optimization finished
+2017-02-24 23:20:57.293567 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | saving snapshot...
+2017-02-24 23:20:57.809203 CET | [experiment_2017_02_24_23_15_03_0001] itr #62 | saved
+2017-02-24 23:20:57.810379 CET | -----------------------  ----------------
+2017-02-24 23:20:57.810627 CET | Iteration                    62
+2017-02-24 23:20:57.810857 CET | AverageDiscountedReturn    -100.6
+2017-02-24 23:20:57.811100 CET | AverageReturn              -143.548
+2017-02-24 23:20:57.811339 CET | ExplainedVariance             0.841515
+2017-02-24 23:20:57.811578 CET | NumTrajs                    203
+2017-02-24 23:20:57.811816 CET | Entropy                       1.16313
+2017-02-24 23:20:57.812055 CET | Perplexity                    3.19993
+2017-02-24 23:20:57.812291 CET | StdReturn                    19.1038
+2017-02-24 23:20:57.812528 CET | MaxReturn                  -102.434
+2017-02-24 23:20:57.812775 CET | MinReturn                  -218.757
+2017-02-24 23:20:57.813014 CET | AveragePolicyStd              0.774289
+2017-02-24 23:20:57.813253 CET | LossBefore                    2.64808e-09
+2017-02-24 23:20:57.813509 CET | LossAfter                -58437.9
+2017-02-24 23:20:57.813733 CET | MeanKLBefore                  0
+2017-02-24 23:20:57.813956 CET | MeanKL                        0.00652512
+2017-02-24 23:20:57.814201 CET | dLoss                     58437.9
+2017-02-24 23:20:57.814438 CET | Total cost                  171.947
+2017-02-24 23:20:57.814685 CET | -----------------------  ----------------
+2017-02-24 23:21:00.812272 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | fitting baseline...
+2017-02-24 23:21:00.824610 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | fitted
+2017-02-24 23:21:00.867166 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | Three largest weights are [ 70.97540883  61.11900348  58.43684725]
+2017-02-24 23:21:00.978485 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | computing loss before
+2017-02-24 23:21:01.017581 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | performing update
+2017-02-24 23:21:01.017918 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | computing descent direction
+2017-02-24 23:21:01.849692 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | descent direction computed
+2017-02-24 23:21:01.963941 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | backtrack iters: 1
+2017-02-24 23:21:01.964501 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | computing loss after
+2017-02-24 23:21:01.964983 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | optimization finished
+2017-02-24 23:21:02.042683 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | saving snapshot...
+2017-02-24 23:21:02.575755 CET | [experiment_2017_02_24_23_15_03_0001] itr #63 | saved
+2017-02-24 23:21:02.576944 CET | -----------------------  ----------------
+2017-02-24 23:21:02.577194 CET | Iteration                    63
+2017-02-24 23:21:02.577444 CET | AverageDiscountedReturn    -100.735
+2017-02-24 23:21:02.577674 CET | AverageReturn              -145.168
+2017-02-24 23:21:02.577899 CET | ExplainedVariance             0.803308
+2017-02-24 23:21:02.578123 CET | NumTrajs                    204
+2017-02-24 23:21:02.578347 CET | Entropy                       1.15475
+2017-02-24 23:21:02.578571 CET | Perplexity                    3.17324
+2017-02-24 23:21:02.578795 CET | StdReturn                    22.0637
+2017-02-24 23:21:02.579018 CET | MaxReturn                   -97.6226
+2017-02-24 23:21:02.579242 CET | MinReturn                  -216.496
+2017-02-24 23:21:02.579465 CET | AveragePolicyStd              0.767831
+2017-02-24 23:21:02.579689 CET | LossBefore                   -2.78682e-09
+2017-02-24 23:21:02.579913 CET | LossAfter                -55594.7
+2017-02-24 23:21:02.580141 CET | MeanKLBefore                  0
+2017-02-24 23:21:02.580364 CET | MeanKL                        0.00714911
+2017-02-24 23:21:02.580588 CET | dLoss                     55594.7
+2017-02-24 23:21:02.580812 CET | Total cost                  173.972
+2017-02-24 23:21:02.581035 CET | -----------------------  ----------------
+2017-02-24 23:21:05.752601 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | fitting baseline...
+2017-02-24 23:21:05.770292 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | fitted
+2017-02-24 23:21:05.818360 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | Three largest weights are [ 49.61881352  35.48132261  35.40569431]
+2017-02-24 23:21:06.000450 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | computing loss before
+2017-02-24 23:21:06.066690 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | performing update
+2017-02-24 23:21:06.067050 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | computing descent direction
+2017-02-24 23:21:07.115307 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | descent direction computed
+2017-02-24 23:21:07.175707 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | backtrack iters: 0
+2017-02-24 23:21:07.176394 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | computing loss after
+2017-02-24 23:21:07.176944 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | optimization finished
+2017-02-24 23:21:07.290373 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | saving snapshot...
+2017-02-24 23:21:07.884022 CET | [experiment_2017_02_24_23_15_03_0001] itr #64 | saved
+2017-02-24 23:21:07.885171 CET | -----------------------  ----------------
+2017-02-24 23:21:07.885443 CET | Iteration                    64
+2017-02-24 23:21:07.885679 CET | AverageDiscountedReturn     -99.5003
+2017-02-24 23:21:07.885905 CET | AverageReturn              -141.653
+2017-02-24 23:21:07.886129 CET | ExplainedVariance             0.841191
+2017-02-24 23:21:07.886354 CET | NumTrajs                    204
+2017-02-24 23:21:07.886579 CET | Entropy                       1.14474
+2017-02-24 23:21:07.886801 CET | Perplexity                    3.14163
+2017-02-24 23:21:07.887026 CET | StdReturn                    18.5203
+2017-02-24 23:21:07.887249 CET | MaxReturn                   -90.7032
+2017-02-24 23:21:07.887472 CET | MinReturn                  -187.432
+2017-02-24 23:21:07.887696 CET | AveragePolicyStd              0.760183
+2017-02-24 23:21:07.887919 CET | LossBefore                    9.12381e-11
+2017-02-24 23:21:07.888143 CET | LossAfter                -80847.4
+2017-02-24 23:21:07.888366 CET | MeanKLBefore                  0
+2017-02-24 23:21:07.888589 CET | MeanKL                        0.00900352
+2017-02-24 23:21:07.888812 CET | dLoss                     80847.4
+2017-02-24 23:21:07.889044 CET | Total cost                  172.695
+2017-02-24 23:21:07.889267 CET | -----------------------  ----------------
+2017-02-24 23:21:10.952479 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | fitting baseline...
+2017-02-24 23:21:10.967698 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | fitted
+2017-02-24 23:21:11.030834 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | Three largest weights are [ 66.9717543   52.3182407   49.50786492]
+2017-02-24 23:21:11.204820 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | computing loss before
+2017-02-24 23:21:11.263033 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | performing update
+2017-02-24 23:21:11.263633 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | computing descent direction
+2017-02-24 23:21:12.220634 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | descent direction computed
+2017-02-24 23:21:12.336510 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | backtrack iters: 1
+2017-02-24 23:21:12.337082 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | computing loss after
+2017-02-24 23:21:12.337583 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | optimization finished
+2017-02-24 23:21:12.450762 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | saving snapshot...
+2017-02-24 23:21:13.150227 CET | [experiment_2017_02_24_23_15_03_0001] itr #65 | saved
+2017-02-24 23:21:13.151694 CET | -----------------------  ----------------
+2017-02-24 23:21:13.151963 CET | Iteration                    65
+2017-02-24 23:21:13.152340 CET | AverageDiscountedReturn    -100.352
+2017-02-24 23:21:13.152714 CET | AverageReturn              -143.23
+2017-02-24 23:21:13.152981 CET | ExplainedVariance             0.849122
+2017-02-24 23:21:13.153313 CET | NumTrajs                    204
+2017-02-24 23:21:13.153628 CET | Entropy                       1.1668
+2017-02-24 23:21:13.153954 CET | Perplexity                    3.21171
+2017-02-24 23:21:13.154319 CET | StdReturn                    18.0069
+2017-02-24 23:21:13.154555 CET | MaxReturn                   -97.2419
+2017-02-24 23:21:13.154788 CET | MinReturn                  -215.497
+2017-02-24 23:21:13.155060 CET | AveragePolicyStd              0.777139
+2017-02-24 23:21:13.155365 CET | LossBefore                   -1.10489e-09
+2017-02-24 23:21:13.155593 CET | LossAfter                -73502
+2017-02-24 23:21:13.155828 CET | MeanKLBefore                  0
+2017-02-24 23:21:13.156081 CET | MeanKL                        0.00711085
+2017-02-24 23:21:13.156321 CET | dLoss                     73502
+2017-02-24 23:21:13.156569 CET | Total cost                  171.845
+2017-02-24 23:21:13.156809 CET | -----------------------  ----------------
+2017-02-24 23:21:16.332085 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | fitting baseline...
+2017-02-24 23:21:16.350319 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | fitted
+2017-02-24 23:21:16.413968 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | Three largest weights are [ 56.69979677  41.51380373  38.63719487]
+2017-02-24 23:21:16.528568 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | computing loss before
+2017-02-24 23:21:16.587510 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | performing update
+2017-02-24 23:21:16.587952 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | computing descent direction
+2017-02-24 23:21:17.430427 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | descent direction computed
+2017-02-24 23:21:17.517525 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | backtrack iters: 1
+2017-02-24 23:21:17.517849 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | computing loss after
+2017-02-24 23:21:17.518089 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | optimization finished
+2017-02-24 23:21:17.591414 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | saving snapshot...
+2017-02-24 23:21:18.191505 CET | [experiment_2017_02_24_23_15_03_0001] itr #66 | saved
+2017-02-24 23:21:18.193614 CET | -----------------------  ----------------
+2017-02-24 23:21:18.194095 CET | Iteration                    66
+2017-02-24 23:21:18.194570 CET | AverageDiscountedReturn     -99.4542
+2017-02-24 23:21:18.195024 CET | AverageReturn              -141.306
+2017-02-24 23:21:18.195481 CET | ExplainedVariance             0.827228
+2017-02-24 23:21:18.195936 CET | NumTrajs                    204
+2017-02-24 23:21:18.196393 CET | Entropy                       1.15957
+2017-02-24 23:21:18.196842 CET | Perplexity                    3.18857
+2017-02-24 23:21:18.197299 CET | StdReturn                    20.2365
+2017-02-24 23:21:18.197779 CET | MaxReturn                   -90.2585
+2017-02-24 23:21:18.198235 CET | MinReturn                  -195.235
+2017-02-24 23:21:18.198678 CET | AveragePolicyStd              0.77154
+2017-02-24 23:21:18.199136 CET | LossBefore                    7.25326e-09
+2017-02-24 23:21:18.199582 CET | LossAfter                -60069.9
+2017-02-24 23:21:18.200040 CET | MeanKLBefore                  0
+2017-02-24 23:21:18.200484 CET | MeanKL                        0.00668761
+2017-02-24 23:21:18.200935 CET | dLoss                     60069.9
+2017-02-24 23:21:18.201405 CET | Total cost                  169.691
+2017-02-24 23:21:18.201856 CET | -----------------------  ----------------
+2017-02-24 23:21:21.422136 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | fitting baseline...
+2017-02-24 23:21:21.438264 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | fitted
+2017-02-24 23:21:21.507038 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | Three largest weights are [ 86.20806313  78.70024953  75.44596503]
+2017-02-24 23:21:21.678721 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | computing loss before
+2017-02-24 23:21:21.736162 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | performing update
+2017-02-24 23:21:21.736734 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | computing descent direction
+2017-02-24 23:21:22.883496 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | descent direction computed
+2017-02-24 23:21:22.940763 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | backtrack iters: 0
+2017-02-24 23:21:22.941288 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | computing loss after
+2017-02-24 23:21:22.941720 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | optimization finished
+2017-02-24 23:21:23.053136 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | saving snapshot...
+2017-02-24 23:21:23.572462 CET | [experiment_2017_02_24_23_15_03_0001] itr #67 | saved
+2017-02-24 23:21:23.573644 CET | -----------------------  ----------------
+2017-02-24 23:21:23.573906 CET | Iteration                    67
+2017-02-24 23:21:23.574164 CET | AverageDiscountedReturn     -99.266
+2017-02-24 23:21:23.574417 CET | AverageReturn              -140.877
+2017-02-24 23:21:23.574671 CET | ExplainedVariance             0.800389
+2017-02-24 23:21:23.574917 CET | NumTrajs                    204
+2017-02-24 23:21:23.575170 CET | Entropy                       1.15716
+2017-02-24 23:21:23.575413 CET | Perplexity                    3.18089
+2017-02-24 23:21:23.575661 CET | StdReturn                    22.5134
+2017-02-24 23:21:23.575905 CET | MaxReturn                   -90.2077
+2017-02-24 23:21:23.576148 CET | MinReturn                  -232.876
+2017-02-24 23:21:23.576390 CET | AveragePolicyStd              0.769683
+2017-02-24 23:21:23.576640 CET | LossBefore                   -9.47353e-10
+2017-02-24 23:21:23.576880 CET | LossAfter                -75030
+2017-02-24 23:21:23.577184 CET | MeanKLBefore                  0
+2017-02-24 23:21:23.577447 CET | MeanKL                        0.009665
+2017-02-24 23:21:23.577715 CET | dLoss                     75030
+2017-02-24 23:21:23.577957 CET | Total cost                  169.928
+2017-02-24 23:21:23.578200 CET | -----------------------  ----------------
