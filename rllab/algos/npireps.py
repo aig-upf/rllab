@@ -49,8 +49,6 @@ class NPIREPS(BatchPolopt):
         
         # N is number of rollouts
         self.N = int(self.batch_size/self.max_path_length)
-        # effective num of rollouts (depends on iteration)
-        self.Neff = self.N
         # T is number of time-steps
         self.T = self.max_path_length
         logger.log("With " + str(self.N) + " rollouts per iteration")
@@ -98,8 +96,8 @@ class NPIREPS(BatchPolopt):
         logq = dist.log_likelihood_sym(U_var, udist_info_vars)
 #        logq = TT.log(1/TT.sqrt(2*self.std_uncontrolled*np.pi))
 
-        logptheta_reshaped = logptheta.reshape((self.Neff,self.T))
-        logq_reshaped = logq.reshape((self.Neff,self.T))
+        logptheta_reshaped = logptheta.reshape((self.N,self.T))
+        logq_reshaped = logq.reshape((self.N,self.T))
 
         if self.kl_trpo :
             # we run here our TRPO variant 
@@ -109,17 +107,17 @@ class NPIREPS(BatchPolopt):
             S_min = TT.min(S)
             S_sum = TT.sum(S - S_min)
             w = S - TT.mean(S)
-            w = TT.reshape(w,(self.Neff,1))
+            w = TT.reshape(w,(self.N,1))
         else :
             # we run here natural PIREPS
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
-            w = (w/Z).reshape((self.Neff,1))
+            w = (w/Z).reshape((self.N,1))
             S_min = Z*0
             S_sum = Z*0
             
-        norm_entropy = -(1/TT.log(self.Neff)) * TT.tensordot(w, TT.log(w))
+        norm_entropy = -(1/TT.log(self.N)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
         input = [X_var, U_var, V_var, param_eta]
 
@@ -184,14 +182,14 @@ class NPIREPS(BatchPolopt):
         
         if self.kl_trpo:
             lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-            lr_reshaped = lr.reshape((self.Neff,self.T)) 
+            lr_reshaped = lr.reshape((self.N,self.T)) 
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.Neff,1)) - S_min_var)/S_sum_var
+            S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*S_rep)
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-            lr_reshaped = lr.reshape((self.Neff,self.T)) 
+            lr_reshaped = lr.reshape((self.N,self.T)) 
             weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)
             surr_loss = - TT.sum(lr_reshaped*weights_rep)
 
@@ -220,12 +218,12 @@ class NPIREPS(BatchPolopt):
 
         # collect data from samples
         # get effective number of rollouts
-        self.Neff = len(samples_data["V"])
+        self.N = len(samples_data["V"])
         all_input_values = [samples_data["X"], samples_data["U"],
                             samples_data["V"]]
         input_values = all_input_values + [self.param_eta]
 
-        print("------------ arrived " + str(self.Neff) + " rollouts")
+        print("------------ arrived " + str(self.N) + " rollouts")
         if not self.kl_trpo :
 
             #############
@@ -303,8 +301,8 @@ class NPIREPS(BatchPolopt):
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
-        S_min_v = np.ones((self.Neff,1))*S_min
-        S_sum_v = np.ones((self.Neff,1))*S_sum
+        S_min_v = np.ones((self.N,1))*S_min
+        S_sum_v = np.ones((self.N,1))*S_sum
         all_input_values += tuple(dist_info_list) + tuple([weights]) + tuple([S_min_v]) + tuple([S_sum_v]) 
 
         loss_before = self.optimizer.loss(all_input_values)
