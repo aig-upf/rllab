@@ -3,7 +3,7 @@ from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.npireps import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
-from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
+from rllab.envs.mujoco.kl_hopper_env import KLHopperEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
@@ -28,7 +28,7 @@ else :
     plot = False 
     
     def run_task(*_):
-        env = normalize(DoublePendulumEnv())
+        env = normalize(KLHopperEnv())
     
         print("Action dims = " + str(env.action_dim))
         print("obs dim = " + str(env.observation_space.flat_dim))
@@ -59,7 +59,7 @@ else :
     run_experiment_lite(
         run_task,
         # Number of parallel workers for sampling
-        n_parallel=5,
+        n_parallel=10,
         # Only keep the snapshot parameters for the last iteration
         snapshot_mode="last",
         # Specifies the seed for the experiment. If this is not provided, a random seed
