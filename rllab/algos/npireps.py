@@ -158,14 +158,13 @@ class NPIREPS(BatchPolopt):
             ndim=2,
             dtype=theano.config.floatX,
         )
-
         old_dist_info_vars = {
             k: ext.new_tensor(
                 'old_%s' % k,
                 ndim=2,
                 dtype=theano.config.floatX
             ) for k in dist.dist_info_keys
-            }
+        }
         old_dist_info_vars_list = [old_dist_info_vars[k] for k in dist.dist_info_keys]
         state_info_vars = {
             k: ext.new_tensor(
@@ -306,6 +305,9 @@ class NPIREPS(BatchPolopt):
         S_min_v = S_min
         S_sum_v = np.array((self.Neff,1))
         S_sum_v = S_sum
+        print(S_min_v.shape)
+        print(S_sum_v.shape)
+        print(weights.shape)
         all_input_values += tuple(dist_info_list) + tuple([weights]) + tuple([S_min_v]) + tuple([S_sum_v]) 
 
         loss_before = self.optimizer.loss(all_input_values)
