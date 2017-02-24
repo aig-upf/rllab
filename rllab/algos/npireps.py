@@ -114,9 +114,9 @@ class NPIREPS(BatchPolopt):
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
             w = (w/Z).reshape((self.Neff,1))
-            S_min = 0
-            S_sum = 0
-
+            S_min = Z*0
+            S_sum = Z*0
+            
         norm_entropy = -(1/TT.log(self.Neff)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
         input = [X_var, U_var, V_var, param_eta]
@@ -301,13 +301,8 @@ class NPIREPS(BatchPolopt):
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
-        S_min_v = np.array((self.Neff,1))
-        S_min_v = S_min
-        S_sum_v = np.array((self.Neff,1))
-        S_sum_v = S_sum
-        print(S_min_v.shape)
-        print(S_sum_v.shape)
-        print(weights.shape)
+        S_min_v = np.ones((self.Neff,1))*S_min
+        S_sum_v = np.ones((self.Neff,1))*S_sum
         all_input_values += tuple(dist_info_list) + tuple([weights]) + tuple([S_min_v]) + tuple([S_sum_v]) 
 
         loss_before = self.optimizer.loss(all_input_values)
