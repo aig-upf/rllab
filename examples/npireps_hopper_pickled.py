@@ -3,7 +3,7 @@ from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.npireps import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
-from rllab.envs.mujoco.hopper_env import HopperEnv
+from rllab.envs.mujoco.kl_hopper_env import KLHopperEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
@@ -28,7 +28,7 @@ else :
     plot = False 
     
     def run_task(*_):
-        env = normalize(HopperEnv())
+        env = normalize(KLHopperEnv())
     
         print("Action dims = " + str(env.action_dim))
         print("obs dim = " + str(env.observation_space.flat_dim))

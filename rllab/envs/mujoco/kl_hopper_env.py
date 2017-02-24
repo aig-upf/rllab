@@ -16,7 +16,7 @@ from rllab.misc.overrides import overrides
 # 7: xvel (forward = +)
 
 
-class HopperEnv(MujocoEnv, Serializable):
+class KLHopperEnv(MujocoEnv, Serializable):
 
     FILE = 'hopper.xml'
 
@@ -31,7 +31,7 @@ class HopperEnv(MujocoEnv, Serializable):
             *args, **kwargs):
         self.alive_coeff = alive_coeff
         self.ctrl_cost_coeff = ctrl_cost_coeff
-        super(HopperEnv, self).__init__(*args, **kwargs)
+        super(KLHopperEnv, self).__init__(*args, **kwargs)
         Serializable.quick_init(self, locals())
 
     @overrides
