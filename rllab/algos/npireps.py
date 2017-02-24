@@ -186,7 +186,7 @@ class NPIREPS(BatchPolopt):
             S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
             S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
             S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
-            surr_loss = - TT.sum(lr_reshaped*S_rep)
+            surr_loss = - TT.sum(lr_reshaped*S_rep)*50
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
