@@ -81,6 +81,6 @@ else :
         
         seed=10,
         plot=plot,
-        exp_prefix="sweepsex2",
+        exp_prefix="sweepsex3",
         exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)
     )

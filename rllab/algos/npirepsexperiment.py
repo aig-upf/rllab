@@ -1,7 +1,7 @@
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
-from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
+from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 import rllab.misc.logger as logger
 import numpy as np
 import theano.tensor as TT
@@ -181,22 +181,23 @@ class NPIREPS(BatchPolopt):
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         
         if self.kl_trpo:
-            #lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-            #lr_reshaped = lr.reshape((self.N,self.T)) 
-            #S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            #S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
-            #S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
-            #surr_loss = - TT.sum(lr_reshaped*S_rep)
-            lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
+            S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
+            S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
+            S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
+            surr_loss = - TT.sum(lr_reshaped*S_rep)
+            lr_log = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            lr_log_reshaped = lr_log.reshape((self.N,self.T)) 
             weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)-TT.mean(weights_var)
-            surr_loss = - TT.sum(lr_reshaped*weights_rep)/TT.std(weights_var)
+            surr_loss_d = - TT.sum(lr_log_reshaped*weights_rep)/TT.std(weights_var)
             
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
             weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)-TT.mean(weights_var)
             surr_loss = - TT.sum(lr_reshaped*weights_rep)/TT.std(weights_var)
+            surr_loss_d = surr_loss
 
 
         if self.truncate_local_is_ratio is not None:
@@ -211,6 +212,7 @@ class NPIREPS(BatchPolopt):
         # plot lr ration after optimization
         self.optimizer.update_opt(
             loss=surr_loss,
+            d_loss=surr_loss_d,
             target=self.policy,
             leq_constraint=(mean_kl, self.step_size),
             inputs=input_list,
