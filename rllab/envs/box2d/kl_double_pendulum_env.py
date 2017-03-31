@@ -33,7 +33,7 @@ class KLDoublePendulumEnv(KLBox2DEnv, Serializable):
         self._set_state(self.initial_state)
         self._invalidate_state_caches()
         stds = np.array([0.1, 0.1, 0.01, 0.01])
-        pos1, pos2, v1, v2 = np.random.randn(*stds.shape) * stds
+        pos1, pos2, v1, v2 = np.random.randn(*stds.shape) * stds*0.
         self.link1.angle = pos1
         self.link2.angle = pos2
         self.link1.angularVelocity = v1

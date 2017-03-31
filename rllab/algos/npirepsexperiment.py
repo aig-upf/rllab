@@ -114,8 +114,8 @@ class NPIREPS(BatchPolopt):
             w = TT.exp(S - TT.max(S))
             Z = TT.sum(w)
             w = (w/Z).reshape((self.N,1))
-            S_min = Z*0
-            S_sum = Z*0
+            S_min = TT.mean(S)
+            S_sum = TT.std(S - S_min)
             
         norm_entropy = -(1/TT.log(self.N)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
@@ -181,12 +181,17 @@ class NPIREPS(BatchPolopt):
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         
         if self.kl_trpo:
-            lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            #lr = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
+            #lr_reshaped = lr.reshape((self.N,self.T)) 
+            #S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
+            #S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
+            #S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
+            #surr_loss = - TT.sum(lr_reshaped*S_rep)
+            lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
-            S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))
-            S = (S.reshape((self.N,1)) - S_min_var)/S_sum_var
-            S_rep = TT.extra_ops.repeat(S,self.T,axis=1)
-            surr_loss = - TT.sum(lr_reshaped*S_rep)
+            weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)-TT.mean(weights_var)
+            surr_loss = - TT.sum(lr_reshaped*weights_rep)/TT.std(weights_var)
+            
         else:
             lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
             lr_reshaped = lr.reshape((self.N,self.T)) 
@@ -322,6 +327,8 @@ class NPIREPS(BatchPolopt):
         logger.record_tabular('Total cost', total_cost)
         logger.record_tabular('Total cost std', S_sum)
         logger.record_tabular('Total cost mean', S_min)
+        logger.record_tabular('largest weight', ws[0])
+        logger.record_tabular('smallest weight', ws[-1])
         return dict()
 
     @overrides

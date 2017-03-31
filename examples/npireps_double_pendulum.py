@@ -7,6 +7,9 @@ from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
+from rllab.sampler import parallel_sampler
+parallel_sampler.initialize(40)
+
 env = normalize(DoublePendulumEnv())
 policy = GaussianMLPPolicy(
     env_spec=env.spec,

@@ -1,6 +1,5 @@
-
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.npireps import NPIREPS
+from rllab.algos.npirepsexperiment import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
@@ -16,17 +15,20 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 5 :
-    print('Use as: python fname.py {kl_trpo|npireps} delta epsilon seed')
+if len(sys.argv) != 8 :
+    print('Use as: python fname.py {kl_trpo|npireps} keywork delta epsilon N seed n_parallel')
 else :
     variant = sys.argv[1]
-    delta = np.float(sys.argv[2])
-    epsilon = np.float(sys.argv[3])
-    seed = np.int(sys.argv[4])
-    
+    keyword = sys.argv[2]
+    delta = np.float(sys.argv[3])
+    epsilon = np.float(sys.argv[4])
+    N= np.int(sys.argv[5])
+    seed = np.int(sys.argv[6])
+    n_parallel = np.int(sys.argv[7])
+              
     kl_trpo = True if variant == 'kl_trpo' else False
     
-    plot = True 
+    plot = False 
     
     def run_task(*_):
         env = normalize(KLDoublePendulumEnv())
@@ -48,6 +50,7 @@ else :
             kl_trpo=kl_trpo,
             step_size = epsilon,
             plot=plot,
+            batch_size=N*100,
             delta=delta
         )
     
@@ -60,13 +63,14 @@ else :
     run_experiment_lite(
         run_task,
         # Number of parallel workers for sampling
-        n_parallel=1,
+        n_parallel=n_parallel,
         # Only keep the snapshot parameters for the last iteration
         snapshot_mode="last",
         # Specifies the seed for the experiment. If this is not provided, a random seed
         # will be used
+        
         seed=10,
         plot=plot,
-        exp_prefix="sweeps1",
-        exp_name='sweep'+variant+str(epsilon)+str(seed)+str(delta)
+        exp_prefix="sweepsex1",
+        exp_name='sweep'+variant+keyword+str(epsilon)+str(seed)+str(delta)+str(N)
     )
