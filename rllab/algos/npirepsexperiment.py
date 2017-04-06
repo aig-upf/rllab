@@ -22,7 +22,7 @@ class NPIREPS(BatchPolopt):
             optimizer_args=None,
             truncate_local_is_ratio=None,
             step_size=0.01,                 # epsilon for 2nd linesearch
-            log_std_uncontrolled= 0,   # log_std pasive dynamics
+            log_std_uncontrolled= 0,   # log_std passive dynamics
             delta = 0.2,                    # threshold 1st linesearch
             lambd = 1,                      # divides state-cost
             kl_trpo = False,
@@ -89,6 +89,8 @@ class NPIREPS(BatchPolopt):
         dist = self.policy.distribution
         logptheta = dist.log_likelihood_sym(U_var, dist_info_vars)
         udim = self.env.action_dim
+        
+        #this defines the uncontrolled dynamics:
         udist_info_vars = dict(
             mean=np.zeros((1,udim)),
             log_std=np.ones((1,udim))*self.log_std_uncontrolled
@@ -216,7 +218,8 @@ class NPIREPS(BatchPolopt):
             target=self.policy,
             leq_constraint=(mean_kl, self.step_size),
             inputs=input_list,
-            constraint_name="mean_kl"
+            constraint_name="mean_kl",
+            cg_iters=10,
         )
         return dict()
 
@@ -228,10 +231,15 @@ class NPIREPS(BatchPolopt):
         self.N = len(samples_data["V"])
         all_input_values = [samples_data["X"], samples_data["U"],
                             samples_data["V"]]
+        self.param_eta = 0
         input_values = all_input_values + [self.param_eta]
 
         print("------------ arrived " + str(self.N) + " rollouts")
         if not self.kl_trpo :
+            
+            #save rel entropy
+            rel_entropy, weights, logq, S, S_min, S_sum = self.f_dual(*input_values)
+            logger.log("rel_entropy_before " + str(rel_entropy))
 
             #############
             # line search

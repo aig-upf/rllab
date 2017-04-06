@@ -85,6 +85,7 @@ class KL_GaussianMLPPolicy(StochasticPolicy, LasagnePowered, Serializable):
                     hidden_sizes=std_hidden_sizes,
                     hidden_nonlinearity=std_hidden_nonlinearity,
                     output_nonlinearity=None,
+                    #hidden_W_init=LI.Orthogonal('relu')
                 )
                 l_log_std = std_network.output_layer
             else:

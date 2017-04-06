@@ -5,6 +5,7 @@ from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
 from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
+#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
@@ -27,7 +28,7 @@ else :
     delta = np.float(sys.argv[3])
     epsilon = np.float(sys.argv[4])
     N= np.int(sys.argv[5])
-    seed = np.int(sys.argv[6])
+    seed = np.int(np.float(sys.argv[6])+delta*10000000000.)
     n_parallel = np.int(sys.argv[7])
               
     kl_trpo = True if variant == 'kl_trpo' else False
@@ -79,8 +80,8 @@ else :
         # Specifies the seed for the experiment. If this is not provided, a random seed
         # will be used
         
-        seed=10,
+        seed=seed,
         plot=plot,
-        exp_prefix="sweepsex3",
+        exp_prefix="newsweeps2",
         exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)
     )

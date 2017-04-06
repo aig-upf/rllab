@@ -49,7 +49,7 @@ class PISampler(BatchSampler):
 
         for i in range(0,Neff) :
             steps = paths[i]["rewards"].size
-            if steps == T :
+            if steps == T : #TODO: I think we should remove this if-clause. It is not necessary
                 U[i,0:steps,:] = paths[i]["actions"]
                 X[i,0:steps,:] = paths[i]["observations"]
                 V[i,0:steps] = -paths[i]["rewards"]

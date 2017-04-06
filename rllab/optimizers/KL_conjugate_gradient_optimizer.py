@@ -13,6 +13,21 @@ def cg(f_Ax, b, x0=0, cg_iters=10, callback=None, verbose=False, residual_tol=1e
     Demmel p 312
     """
     x = np.zeros_like(b) + x0
+    
+    ### normalize the initial guess properly ###
+    bx = b.dot(x)
+    if bx<=0:
+        x = -x
+    
+    #Ax = f_Ax(x)
+    #xAx = Ax.dot(Ax)
+    #alpha = b.dot(Ax)/(xAx+1e-10)
+    #print("alpha "+str(alpha))
+    #x=x*alpha
+    
+    ###
+    
+    
     r = b.copy() -f_Ax(x)
     p = r.copy()
     
@@ -291,7 +306,7 @@ class ConjugateGradientOptimizer(Serializable):
         Hx = self._hvp_approach.build_eval(subsample_inputs + extra_inputs)
 
         descent_direction = cg(Hx, flat_g, x0 = self.last_congrad, cg_iters=self._cg_iters) #uses last descent direction as initialization.
-        self.last_congrad = 0.5*(flat_g + descent_direction) #saves descent direction for next round
+        self.last_congrad = descent_direction #saves descent direction for next round
 
         initial_step_size = np.sqrt(
             2.0 * self._max_constraint_val *
