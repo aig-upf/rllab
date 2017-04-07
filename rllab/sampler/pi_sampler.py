@@ -46,17 +46,20 @@ class PISampler(BatchSampler):
         # tensor of NxTxu, where u is action dimensions
         udim = self.algo.env.action_dim
         U = np.zeros((Neff,T,udim))
+        mask = np.zeros((Neff,T))
 
         for i in range(0,Neff) :
             steps = paths[i]["rewards"].size
-            if steps == T : #TODO: I think we should remove this if-clause. It is not necessary
-                U[i,0:steps,:] = paths[i]["actions"]
-                X[i,0:steps,:] = paths[i]["observations"]
-                V[i,0:steps] = -paths[i]["rewards"]
+            U[i,0:steps,:] = paths[i]["actions"]
+            X[i,0:steps,:] = paths[i]["observations"]
+            V[i,0:steps] = -paths[i]["rewards"]
+            mask[i,0:steps] = 1.
 
         samples_data["V"] = V
         samples_data["X"] = X.reshape(Neff*T,xdim)
         samples_data["U"] = U.reshape(Neff*T,udim)
+        samples_data["mask"] = mask
+        
 
         D = dict()
         agent_infos2 = dict()

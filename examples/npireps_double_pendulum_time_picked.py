@@ -1,11 +1,12 @@
+
 from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.kl_trpo import KLTRPO
-from rllab.algos.npirepsexperiment import NPIREPS
+from rllab.algos.npireps import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
-from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
-#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
+#from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
+from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
@@ -21,16 +22,18 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 7 :
-    print('Use as: python fname.py keyword epsilon N seed n_parallel')
+if len(sys.argv) != 8 :
+    print('Use as: python fname.py keyword delta epsilon N seed n_parallel whichpolicy')
 else :
-    variant = 'kl_trpo'
+    variant = 'npireps'
     keyword = sys.argv[1]
-    epsilon = np.float(sys.argv[2])
-    N= np.int(sys.argv[3])
-    seed = np.int(np.float(sys.argv[4]))
-    n_parallel = np.int(sys.argv[5])
-    which_policy = sys.argv[6]
+    delta = np.float(sys.argv[2])
+    epsilon = np.float(sys.argv[3])
+    N= np.int(sys.argv[4])
+    seed = np.int(np.float(sys.argv[5])+delta*10000000000.)
+    n_parallel = np.int(sys.argv[6])
+    
+    which_policy = sys.argv[7]
               
     kl_trpo = True if variant == 'kl_trpo' else False
     
@@ -73,15 +76,15 @@ else :
     
         baseline = LinearFeatureBaseline(env_spec=env.spec)
     
-        algo = KLTRPO(
+        algo = NPIREPS(
             env=env,
             policy=policy,
             baseline=baseline,
             sampler_cls=PISampler,
-            kl_trpo=kl_trpo,
             step_size = epsilon,
             plot=plot,
             batch_size=N*100,
+            delta=delta
         )
     
         logger.log("    variant " + variant)
@@ -103,6 +106,6 @@ else :
         
         seed=seed,
         plot=plot,
-        exp_prefix="npirepstests",
-        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'N '+str(N)+which_policy
+        exp_prefix="newsweep3differentNN",
+        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)+which_policy
     )

@@ -79,6 +79,12 @@ class NPIREPS(BatchPolopt):
             ndim=2,
             dtype=theano.config.floatX,
         )   # corresponds to V
+        
+        mask_var = ext.new_tensor(
+            'mask',
+            ndim=2,
+            dtype=theano.config.floatX,
+        )   # corresponds to the mask
         param_eta = TT.scalar('eta')
 
         dist_info_vars = self.policy.dist_info_sym(X_var)
@@ -98,7 +104,7 @@ class NPIREPS(BatchPolopt):
         logq_reshaped = logq.reshape((self.N,self.T))
         
         # we run here natural PIREPS
-        S = -(TT.sum(V_var/self.lambd + logptheta_reshaped - logq_reshaped,1))*(1/(1+param_eta))
+        S = -(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped - logq_reshaped),1))*(1/(1+param_eta))
         w = TT.exp(S - TT.max(S))
         Z = TT.sum(w)
         w = (w/Z).reshape((self.N,1))
@@ -107,7 +113,7 @@ class NPIREPS(BatchPolopt):
             
         norm_entropy = -(1/TT.log(self.N)) * TT.tensordot(w, TT.log(w))
         rel_entropy = 1-norm_entropy
-        input = [X_var, U_var, V_var, param_eta]
+        input = [X_var, U_var, V_var, mask_var, param_eta]
 
         # This is the first optimization (corresponds to the line search)
         #############
@@ -119,8 +125,8 @@ class NPIREPS(BatchPolopt):
         )
             #outputs=[norm_entropy,w,logq]
 
-        total_cost = TT.mean(TT.sum(V_var/self.lambd + logptheta_reshaped -
-                                    logq_reshaped,1))
+        total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped -
+                                    logq_reshaped),1))
         self.f_total_cost = ext.compile_function( 
             inputs=input,         
             outputs=total_cost
@@ -169,7 +175,7 @@ class NPIREPS(BatchPolopt):
         kl = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         
         lr = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-        lr_reshaped = lr.reshape((self.N,self.T)) 
+        lr_reshaped = mask_var*lr.reshape((self.N,self.T)) 
         weights_rep = TT.extra_ops.repeat(weights_var,self.T,axis=1)-TT.mean(weights_var)
         surr_loss = - TT.sum(lr_reshaped*weights_rep)/TT.std(weights_var)
         surr_loss_d = surr_loss
@@ -179,7 +185,7 @@ class NPIREPS(BatchPolopt):
             lr = TT.minimum(self.truncate_local_is_ratio, lr)
         mean_kl = TT.mean(kl)
 
-        input_list = [ X_var, U_var, V_var] + old_dist_info_vars_list + [weights_var] + [S_min_var] + [S_sum_var]
+        input_list = [ X_var, U_var, V_var, mask_var] + old_dist_info_vars_list + [weights_var] + [S_min_var] + [S_sum_var]
 #        self.f_opt = ext.compile_function(
 #            inputs = input_list,
 #            outputs = [surr_loss, lr_reshaped]
@@ -203,7 +209,7 @@ class NPIREPS(BatchPolopt):
         # get effective number of rollouts
         self.N = len(samples_data["V"])
         all_input_values = [samples_data["X"], samples_data["U"],
-                            samples_data["V"]]
+                            samples_data["V"], samples_data["mask"]]
         self.param_eta = 0
         input_values = all_input_values + [self.param_eta]
 
@@ -273,7 +279,7 @@ class NPIREPS(BatchPolopt):
         #######################
         all_input_values = tuple(ext.extract(
             samples_data,
-            "X", "U", "V"
+            "X", "U", "V", "mask"
         ))
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]

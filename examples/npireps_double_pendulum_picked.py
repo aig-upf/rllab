@@ -33,7 +33,7 @@ else :
     seed = np.int(np.float(sys.argv[5])+delta*10000000000.)
     n_parallel = np.int(sys.argv[6])
     
-    which_policy = np.int(sys.argv[6])
+    which_policy = sys.argv[7]
               
     kl_trpo = True if variant == 'kl_trpo' else False
     
@@ -91,6 +91,7 @@ else :
         logger.log("    eps " + str(epsilon))
         logger.log("    seed " + str(seed))
         logger.log("    keyword " + keyword)
+        logger.log("    policy " + which_policy)
     
         algo.train()
     
@@ -106,5 +107,5 @@ else :
         seed=seed,
         plot=plot,
         exp_prefix="npirepstests",
-        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)
+        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)+which_policy
     )
