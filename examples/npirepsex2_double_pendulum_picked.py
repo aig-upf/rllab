@@ -1,6 +1,7 @@
 
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.npirepsexperiment import NPIREPS #NOTE THAT HERE THEKL_TRPO is actually not TRPO but the true limit of the PIREPS
+from rllab.algos.kl_trpo import KLTRPO
+from rllab.algos.npirepsexperiment import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv

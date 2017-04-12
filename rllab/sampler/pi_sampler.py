@@ -25,19 +25,8 @@ class PISampler(BatchSampler):
 
         # For the moment, we discard those rollouts that not reach the
         # time-horizon, which means they have infinite cost
-        Neff = 0;
-        for i in range(0,N) :
-            steps = paths[i]["rewards"].size
-            if steps < T :
-                logger.log("----------- truncated episode "
-                    + str(steps) + " < "
-                    + str(T)
-                )
-            else :
-                Neff += 1
-        if Neff != N :
-            logger.log("Using " + str(Neff) + " out of " + str(N) + " rollouts")
-
+        Neff = N;
+        
         # tensor of NxTxs, where s is state dimensions
         xdim = self.algo.policy.observation_space.flat_dim
         X = np.zeros((Neff,T,xdim))

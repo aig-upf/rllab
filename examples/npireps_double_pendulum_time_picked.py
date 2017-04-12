@@ -1,4 +1,3 @@
-
 from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.kl_trpo import KLTRPO
 from rllab.algos.npireps import NPIREPS
@@ -22,8 +21,8 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 8 :
-    print('Use as: python fname.py keyword delta epsilon N seed n_parallel whichpolicy')
+if len(sys.argv) != 11 :
+    print('Use as: python fname.py keyword delta epsilon N seed n_parallel whichpolicy logstduncontrolled lambda n_itr')
 else :
     variant = 'npireps'
     keyword = sys.argv[1]
@@ -34,6 +33,10 @@ else :
     n_parallel = np.int(sys.argv[6])
     
     which_policy = sys.argv[7]
+    
+    logstduncontrolled = np.float(sys.argv[8])
+    lambd = np.float(sys.argv[9])
+    n_itr = np.int(sys.argv[10])
               
     kl_trpo = True if variant == 'kl_trpo' else False
     
@@ -83,8 +86,12 @@ else :
             sampler_cls=PISampler,
             step_size = epsilon,
             plot=plot,
+            max_path_length=100,
+            n_itr=n_itr,
             batch_size=N*100,
-            delta=delta
+            delta=delta,
+            log_std_uncontrolled= logstduncontrolled,
+            lambd = lambd, 
         )
     
         logger.log("    variant " + variant)
@@ -92,6 +99,9 @@ else :
         logger.log("    seed " + str(seed))
         logger.log("    keyword " + keyword)
         logger.log("    policy " + which_policy)
+        logger.log("    log_std_uncontrolled " + str(logstduncontrolled))
+        logger.log("    lambda " + str(lambd))
+        logger.log("    n_itr " + str(n_itr))
     
         algo.train()
     
@@ -106,6 +116,6 @@ else :
         
         seed=seed,
         plot=plot,
-        exp_prefix="newsweep3differentNN",
+        exp_prefix=keyword,
         exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)+which_policy
     )

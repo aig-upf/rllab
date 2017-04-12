@@ -1,7 +1,8 @@
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
-from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
+#from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
+from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
 import rllab.misc.logger as logger
 import numpy as np
 import theano.tensor as TT
@@ -127,9 +128,15 @@ class NPIREPS(BatchPolopt):
 
         total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped -
                                     logq_reshaped),1))
+        total_cost_min = TT.min(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped -
+                                    logq_reshaped),1))
+        total_cost_max = TT.max(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped -
+                                    logq_reshaped),1))
+        total_cost_std = TT.std(TT.sum(mask_var*(V_var/self.lambd + logptheta_reshaped -
+                                    logq_reshaped),1))
         self.f_total_cost = ext.compile_function( 
             inputs=input,         
-            outputs=total_cost
+            outputs=[total_cost,total_cost_min,total_cost_max,total_cost_std]
         )
 
         # This is the second optimization (corresponds to the conj. grad)
@@ -272,7 +279,7 @@ class NPIREPS(BatchPolopt):
         ws = np.sort(np.squeeze(np.abs(weights)))[::-1]
         logger.log("Three largest weights are " + str(ws[0:3]))
         
-        total_cost = self.f_total_cost(*input_values)
+        total_cost,total_cost_min,total_cost_max,total_cost_std = self.f_total_cost(*input_values)
 
         #######################
         # natural PICE gradient
@@ -301,7 +308,12 @@ class NPIREPS(BatchPolopt):
         logger.record_tabular('MeanKLBefore', mean_kl_before)
         logger.record_tabular('MeanKL', mean_kl)
         logger.record_tabular('dLoss', loss_before - loss_after)
+        
         logger.record_tabular('Total cost', total_cost)
+        logger.record_tabular('Totalcostmin', total_cost_min)
+        logger.record_tabular('Totalcostmax', total_cost_max)
+        logger.record_tabular('Totalcoststd', total_cost_std)
+        
         logger.record_tabular('Total cost std', S_sum)
         logger.record_tabular('Total cost mean', S_min)
         logger.record_tabular('largest weight', ws[0])
