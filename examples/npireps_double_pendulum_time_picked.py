@@ -1,12 +1,11 @@
-
 from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.kl_trpo import KLTRPO
 from rllab.algos.npireps import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
-from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
-#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
+#from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
+from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL

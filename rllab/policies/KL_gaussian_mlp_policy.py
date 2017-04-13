@@ -35,6 +35,8 @@ class KL_GaussianMLPPolicy(StochasticPolicy, LasagnePowered, Serializable):
             mean_network=None,
             std_network=None,
             dist_cls=DiagonalGaussian,
+            hidden_W_init_mean=LI.GlorotUniform(),
+            hidden_W_init_std=LI.GlorotUniform() #LI.Orthogonal('relu')
     ):
         """
         :param env_spec:
@@ -67,7 +69,7 @@ class KL_GaussianMLPPolicy(StochasticPolicy, LasagnePowered, Serializable):
                 hidden_nonlinearity=hidden_nonlinearity,
                 output_nonlinearity=output_nonlinearity,
                 output_W_init=LI.Constant(0.),
-                #hidden_W_init=LI.Orthogonal('relu')
+                hidden_W_init=hidden_W_init_mean
             )
         self._mean_network = mean_network
 
@@ -85,7 +87,7 @@ class KL_GaussianMLPPolicy(StochasticPolicy, LasagnePowered, Serializable):
                     hidden_sizes=std_hidden_sizes,
                     hidden_nonlinearity=std_hidden_nonlinearity,
                     output_nonlinearity=None,
-                    #hidden_W_init=LI.Orthogonal('relu')
+                    hidden_W_init=hidden_W_init_std
                 )
                 l_log_std = std_network.output_layer
             else:

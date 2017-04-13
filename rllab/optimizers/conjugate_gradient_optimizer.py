@@ -262,6 +262,7 @@ class ConjugateGradientOptimizer(Serializable):
             (1. / (descent_direction.dot(Hx(descent_direction)) + 1e-8))
         )
         if np.isnan(initial_step_size):
+            logger.log("Initial stepsize is NAN ")
             initial_step_size = 1.
         flat_descent_step = initial_step_size * descent_direction
 
@@ -275,7 +276,7 @@ class ConjugateGradientOptimizer(Serializable):
             self._target.set_param_values(cur_param, trainable=True)
             loss, constraint_val = sliced_fun(
                 self._opt_fun["f_loss_constraint"], self._num_slices)(inputs, extra_inputs)
-            if loss < loss_before and constraint_val <= self._max_constraint_val:
+            if loss < loss_before and constraint_val < self._max_constraint_val:
                 break
         if (np.isnan(loss) or np.isnan(constraint_val) or loss >= loss_before or constraint_val >=
                 self._max_constraint_val) and not self._accept_violation:

@@ -1,6 +1,6 @@
-
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.npirepsexperiment import NPIREPS #NOTE THAT HERE THEKL_TRPO is actually not TRPO but the true limit of the PIREPS
+from rllab.algos.kl_trpo import KLTRPO
+from rllab.algos.npirepsexperiment import NPIREPS
 from rllab.sampler.pi_sampler import PISampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
 #from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
@@ -9,6 +9,7 @@ from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
+import lasagne.init as LI
 from time import gmtime, strftime
 
 
@@ -20,16 +21,16 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 8 :
-    print('Use as: python fname.py {kl_trpo|npireps} keyword delta epsilon N seed n_parallel')
+if len(sys.argv) != 7 :
+    print('Use as: python fname.py keyword epsilon N seed n_parallel')
 else :
-    variant = sys.argv[1]
-    keyword = sys.argv[2]
-    delta = np.float(sys.argv[3])
-    epsilon = np.float(sys.argv[4])
-    N= np.int(sys.argv[5])
-    seed = np.int(np.float(sys.argv[6])+delta*10000000000.)
-    n_parallel = np.int(sys.argv[7])
+    variant = 'kl_trpo'
+    keyword = sys.argv[1]
+    epsilon = np.float(sys.argv[2])
+    N= np.int(sys.argv[3])
+    seed = np.int(np.float(sys.argv[4]))
+    n_parallel = np.int(sys.argv[5])
+    which_policy = sys.argv[6]
               
     kl_trpo = True if variant == 'kl_trpo' else False
     
@@ -43,16 +44,36 @@ else :
         
         
     
-        policy = KL_GaussianMLPPolicy(
+        policy1 = KL_GaussianMLPPolicy(
             env_spec=env.spec,
-            hidden_sizes=(32,32),
             learn_std = True,
-            hidden_nonlinearity=NL.tanh,
+            std_hidden_sizes=(32, 32),
+            hidden_sizes=(32,32),
+            std_hidden_nonlinearity=NL.tanh,
+            hidden_nonlinearity=NL.tanh, #NL.rectify
+            hidden_W_init_mean=LI.GlorotUniform(),
+            hidden_W_init_std=LI.GlorotUniform() #LI.Orthogonal('relu')
         )
+        
+        policy2 = KL_GaussianMLPPolicy(
+            env_spec=env.spec,
+            learn_std = True,
+            std_hidden_sizes=(50,50,50,50,50),
+            hidden_sizes=(50,50,50,50,50),
+            std_hidden_nonlinearity=NL.rectify,
+            hidden_nonlinearity=NL.rectify, #NL.rectify
+            hidden_W_init_mean=LI.Orthogonal('relu'),
+            hidden_W_init_std=LI.Orthogonal('relu') #LI.Orthogonal('relu')
+        )
+        
+        if which_policy=='policy1':
+            policy = policy1
+        else:
+            policy = policy2
     
         baseline = LinearFeatureBaseline(env_spec=env.spec)
     
-        algo = NPIREPS(
+        algo = KLTRPO(
             env=env,
             policy=policy,
             baseline=baseline,
@@ -61,13 +82,13 @@ else :
             step_size = epsilon,
             plot=plot,
             batch_size=N*100,
-            delta=delta
         )
     
         logger.log("    variant " + variant)
         logger.log("    eps " + str(epsilon))
         logger.log("    seed " + str(seed))
         logger.log("    keyword " + keyword)
+        logger.log("    policy " + which_policy)
     
         algo.train()
     
@@ -82,6 +103,6 @@ else :
         
         seed=seed,
         plot=plot,
-        exp_prefix="newsweeps2",
-        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)
+        exp_prefix="npirepstests",
+        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'variant '+variant+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'N '+str(N)+which_policy
     )
