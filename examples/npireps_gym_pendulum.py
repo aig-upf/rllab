@@ -23,10 +23,10 @@ else :
     
     kl_trpo = True if variant == 'kl_trpo' else False
     
-    plot = True 
+    plot = False 
     
     def run_task(*_):
-        env = normalize(GymEnv("Pendulum-v0"))
+        env = normalize(GymEnv("BipedalWalker-v2")) #Pendulum-v0"))
 
         print("Action dims = " + str(env.action_dim))
         print("obs dim = " + str(env.observation_space.flat_dim))
