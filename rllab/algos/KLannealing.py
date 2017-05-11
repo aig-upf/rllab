@@ -3,7 +3,7 @@ from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
 from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
-#from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
+from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
 import rllab.misc.logger as logger
 import numpy as np
@@ -29,15 +29,22 @@ class KLANNEAL(BatchPolopt):
             delta = 0.2,                    # threshold 1st linesearch
             lambd = 1,                      # divides state-cost
             cg_iters = 10,
-            algorithm = 'Algorithm1', #which PoD to take
+            algorithm = 'Algorithm3', #which PoD to take
             PoF = 'KL_CE', #which PoF to take
+            optim = 'cg',
             **kwargs
     ):
         if optimizer_args is None:
             optimizer_args = dict()
-        #optimizer = ConjugateGradientOptimizer(**optimizer_args)
-        optimizer = LbfgsOptimizer(**optimizer_args)
-        #optimizer = FirstOrderOptimizer(**optimizer_args)
+        
+        self.optim=optim
+        if self.optim == "Lbfgs":
+            optimizer = LbfgsOptimizer(**optimizer_args)
+        elif self.optim=="cg":
+            optimizer = ConjugateGradientOptimizer(cg_iters=cg_iters,**optimizer_args)
+        else:
+            optimizer = FirstOrderOptimizer(max_epochs=100,
+            tolerance=1e-6,batch_size=None,**optimizer_args)
         
         
         self.optimizer = optimizer
@@ -107,8 +114,8 @@ class KLANNEAL(BatchPolopt):
         ###############
         # create PoDs #
         ###############
-        log_p_star_p_old_1 = -(TT.sum(mask_var*(V_var/self.lambd + log_pold_reshaped - log_q_reshaped),1))*(1/(1+param_eta))
-        log_p_star_p_old_2 = -(TT.sum(mask_var*(V_var/self.lambd),1))*(1/(1+param_eta))
+        log_p_star_p_old_1 = -(TT.sum((1/(1+param_eta))*mask_var*(V_var/self.lambd + log_pold_reshaped - log_q_reshaped),1))
+        log_p_star_p_old_2 = -(TT.sum((1/(1+param_eta))*mask_var*(V_var/self.lambd),1))
         log_p_star_p_old_3 = -(TT.sum(mask_var*(V_var/self.lambd*(1/(1+param_eta)) + log_pold_reshaped - log_q_reshaped),1))
         
         switcher_algo = {
@@ -135,32 +142,36 @@ class KLANNEAL(BatchPolopt):
         log_pold_pnew_reshaped_summed = TT.sum(mask_var*log_pold_pnew_reshaped,1) #summing over time
         pnew_pold_reshaped_summed = TT.sum(mask_var*pnew_pold_reshaped,1) #summing over time
         
-        prop_KL_variational = -(pnew_pold_reshaped_summed*(S-logZ+log_pold_pnew_reshaped_summed)) 
+        log_pold_pnew_reshaped_summed_disconnected=theano.gradient.disconnected_grad(log_pold_pnew_reshaped_summed) #this makes sure that the derivative of this log-likelihood-ratio is not taken
+        prop_KL_variational = -(pnew_pold_reshaped_summed*(S-logZ+log_pold_pnew_reshaped_summed_disconnected)) 
         prop_KL_variational_averaged = TT.mean(prop_KL_variational)
         
         prop_KL_CE = TT.exp(S-logZ)*(S-logZ + log_pold_pnew_reshaped_summed)
         prop_KL_CE_averaged = TT.mean(prop_KL_CE)
         
+        #log_pnew_reshaped_summed =  TT.sum(mask_var*log_pnew_reshaped,1) #summing over time
+        #weights_var = TT.exp(S - TT.max(S))
+        #surr_loss = - TT.sum(log_pnew_reshaped_summed*(weights_var.T - TT.mean(weights_var))) 
+        #surr_loss = surr_loss/TT.std(weights_var)
+        #prop_KL_CE_averaged = surr_loss
+        
+        #prop_KL_CE_averaged = TT.mean(mask_var*pnew_pold_reshaped*V_var)
+        #prop_KL_CE_averaged  = prop_KL_CE_averaged -  TT.mean(mask_var*V_var)
+        #prop_KL_CE_averaged  = prop_KL_CE_averaged/TT.std(mask_var*V_var)
+        
         
 
-        
-        
-        # here we create the gradients of the PoFs. (ToDo: here several variance reduction techniques like baseline, rao-blackwellisation and thermodynamic integration can be implemented)
-        grad_prop_KL_variational_averaged_pure = theano.grad(prop_KL_variational_averaged,self.policy.get_params(trainable=True), disconnected_inputs='ignore')
-         
-        correction_term = theano.grad(TT.mean((pnew_pold_reshaped_summed*(log_pold_pnew_reshaped_summed))),self.policy.get_params(trainable=True), disconnected_inputs='ignore')
-        grad_prop_KL_variational_averaged = grad_prop_KL_variational_averaged_pure + correction_term #here I make a lower variance version of that gradient by substrating a term which is zero on average
-
-        grad_prop_KL_CE_averaged = theano.grad(prop_KL_CE_averaged,self.policy.get_params(trainable=True), disconnected_inputs='ignore')
-        
-        
+                
         switcher_PoF = {
-            'KL_var': tuple([prop_KL_variational_averaged,grad_prop_KL_variational_averaged]),
-            'KL_CE': tuple([prop_KL_CE_averaged,grad_prop_KL_CE_averaged]),
-            'KL_sym': tuple([prop_KL_variational_averaged+prop_KL_CE_averaged,grad_prop_KL_variational_averaged+grad_prop_KL_CE_averaged]),
+            'KL_var': prop_KL_variational_averaged,
+            'KL_var2': prop_KL_variational_averaged**2,
+            'KL_CE': prop_KL_CE_averaged,
+            'KL_CE2': prop_KL_CE_averaged**2,
+            'KL_sym': prop_KL_variational_averaged+prop_KL_CE_averaged,
+            'KL_sym2': prop_KL_variational_averaged**2+prop_KL_CE_averaged**2,
         }
         
-        PoF, grad_PoF = switcher_PoF[self.PoF]
+        PoF = switcher_PoF[self.PoF]
         
         ################################################
         # normalized Cross entropy for the line search #
@@ -259,25 +270,24 @@ class KLANNEAL(BatchPolopt):
         
         #create the input list for the optimizer
         input_list = input
-        
-        #configure the optimizer
-        self.optimizer.update_opt(
-            loss=PoF,
-            target=self.policy,
-            inputs=input_with_eta,
-            gradients=grad_PoF
-        )
-        #mean_kl = TT.mean(kl_pold_pnew)
-        #self.optimizer.update_opt(
-        #    loss=PoF,
-        #    d_loss=PoF,
-        #    target=self.policy,
-        #    leq_constraint=(mean_kl, self.step_size),
-        #    inputs=input,
-        #    extra_inputs = [param_eta],
-        #    constraint_name="mean_kl",
-        #    cg_iters=self.cg_iters,
-        #)
+        if self.optim == "cg":
+            mean_kl = TT.mean(kl_pold_pnew)
+            self.optimizer.update_opt(
+                loss=PoF,
+                d_loss=PoF,
+                target=self.policy,
+                leq_constraint=(mean_kl, self.step_size),
+                inputs=input_with_eta,
+                constraint_name="mean_kl",
+            )
+        else:
+            #configure the optimizer
+            self.optimizer.update_opt(
+                loss=PoF,
+                target=self.policy,
+                inputs=input_with_eta,
+            )
+
         
         return dict()
 
@@ -315,6 +325,8 @@ class KLANNEAL(BatchPolopt):
         #compute statistics
         weights_max,weights_min, logZ, S_mean,S_std,state_cost,state_cost_min,state_cost_max,state_cost_std,total_cost,total_cost_min,total_cost_max,total_cost_std = self.f_statistics(*input_values_with_eta)
         
+        logger.record_tabular('State Cost', state_cost)
+        
         logger.record_tabular('LossBefore', loss_before)
         logger.record_tabular('LossAfter', loss_after)
         logger.record_tabular('dLoss', loss_before - loss_after)
@@ -331,8 +343,9 @@ class KLANNEAL(BatchPolopt):
         
         logger.record_tabular('logZ', logZ)
         #logger.record_tabular('var_measure_gradient', var_measure_gradient)
-        
-        logger.record_tabular('eta', param_eta)
+        print("ETA")
+        print(param_eta[0,0])
+        logger.record_tabular('eta', param_eta[0,0]) #param_eta is a matrix with identical entries (because of the cg optimzier this has to be like this... does not take scalar inputs...)
         return dict()
 
     @overrides
@@ -363,7 +376,7 @@ class KLANNEAL(BatchPolopt):
     
     def compute_eta(self,input_values, input_values_with_agent):
         #save rel entropy
-        param_eta = 0.
+        param_eta = np.zeros((self.N,self.T))
         input_values_with_eta = input_values + [param_eta]
         
         rel_entropy = self.f_dual(*input_values_with_eta)
@@ -389,17 +402,18 @@ class KLANNEAL(BatchPolopt):
             i = 0
             while (i<nit) :
                 #print("it = " + str(it) + " i = " + str(i))
-                param_eta = rang[i]
+                eta = rang[i]
+                param_eta = np.ones((self.N,self.T))*eta #bring eta into a form which is possible to subsample as the extra_inputs of the cg-optimizer is buggy
                 input_values_with_eta = input_values + [param_eta]
                 rel_entropy = self.f_dual(*input_values_with_eta)
                 final_rel_entropy = rel_entropy
                 #print("it " + str(it) + " i " + str(i) + ": entropy " +
                 #    str(rel_entropy))
-                veta[i] = param_eta
+                veta[i] = eta
                 vent[i] = rel_entropy
                 if rel_entropy < self.param_delta and i > 0:
                     #print("passed")
-                    param_eta = rang[i]
+                    eta = rang[i]
                     final_rel_entropy = vent[i]
                     min_eta = rang[i-1]
                     max_eta = rang[i]
@@ -407,7 +421,7 @@ class KLANNEAL(BatchPolopt):
                 i += 1
             dif = abs(self.param_delta-final_rel_entropy);
             converged = dif < 1e-5
-            print("it " + str(it) + " eta " + str(param_eta) + str(i)
+            print("it " + str(it) + " eta " + str(eta) + str(i)
                   + ": entropy " + str(final_rel_entropy) + " diff " +
                   str(dif))
             it += 1
@@ -420,7 +434,7 @@ class KLANNEAL(BatchPolopt):
         if rel_entropy > self.param_delta : 
             logger.log("------------------ Line search for eta failed (2) !!!")
 
-        logger.log("eta is      " + str(param_eta))
+        logger.log("eta is      " + str(eta))
         logger.log("rel_entropy " + str(rel_entropy))
         
         return param_eta
@@ -450,7 +464,12 @@ class KLANNEAL(BatchPolopt):
             dtype=theano.config.floatX,
         )   # corresponds to the mask which tells how long the rollout actually was
         
-        param_eta = TT.scalar('eta') #the lagrange multiplier
+        #param_eta = TT.scalar('eta') #the lagrange multiplier
+        param_eta = ext.new_tensor(
+            'eta',
+            ndim=2,
+            dtype=theano.config.floatX,
+        )
         
         weights_var = ext.new_tensor(
             'W',
@@ -482,7 +501,7 @@ class KLANNEAL(BatchPolopt):
         log_q = dist.log_likelihood_sym(U_var, self.udist_info_vars) #compute the log-likelihood of the actions under the uncontrolled dynamics
         
                 
-        pnew_pold = dist.likelihood_ratio_sym(U_var, dist_info_vars, old_dist_info_vars)
+        pnew_pold = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
         pnew_pold_reshaped = pnew_pold.reshape((self.N,self.T)) 
 
         log_pnew_reshaped = log_pnew.reshape((self.N,self.T))
@@ -491,7 +510,7 @@ class KLANNEAL(BatchPolopt):
         
         kl_pold_pnew = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         
-        log_pold_pnew = dist.log_likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
-        log_pold_pnew_reshaped = mask_var*log_pold_pnew.reshape((self.N,self.T)) 
+        log_pold_pnew = dist.log_likelihood_ratio_sym(U_var, dist_info_vars,old_dist_info_vars)
+        log_pold_pnew_reshaped = log_pold_pnew.reshape((self.N,self.T)) 
         
         return log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
