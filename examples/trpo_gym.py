@@ -7,7 +7,8 @@ from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
 
 def run_task(*_):
-    env = normalize(GymEnv("Pendulum-v0"))
+    #env = normalize(GymEnv("Pendulum-v0"))
+    env = normalize(GymEnv("BipedalWalker-v2", record_video=False, record_log=False))
 
     policy = GaussianMLPPolicy(
         env_spec=env.spec,
