@@ -138,46 +138,52 @@ class KLANNEAL(BatchPolopt):
         
         # here we create the forward (variational KL) and the backward (CE). 
         # (ToDo: may be it is possible to use thermodynamic integration to reduce the variance of the KL_CE)
+        
         log_pold_pnew_reshaped_summed = TT.sum(mask_var*log_pold_pnew_reshaped,1) #summing over time
-        log_pold_pnew_reshaped_summed = TT.sum(mask_var*log_pold_pnew_reshaped,1) #summing over time
-        pnew_pold_reshaped_summed = TT.sum(mask_var*pnew_pold_reshaped,1) #summing over time
+        pnew_pold_reshaped_summed = TT.exp(-log_pold_pnew_reshaped_summed) #TT.sum(mask_var*pnew_pold_reshaped,1) #summing over time
         
         log_pold_pnew_reshaped_summed_disconnected=theano.gradient.disconnected_grad(log_pold_pnew_reshaped_summed) #this makes sure that the derivative of this log-likelihood-ratio is not taken
         prop_KL_variational = -(pnew_pold_reshaped_summed*(S-logZ+log_pold_pnew_reshaped_summed_disconnected)) 
-        prop_KL_variational_averaged = TT.mean(prop_KL_variational)
+        prop_KL_variational_averaged_pure = TT.mean(prop_KL_variational)
         
         prop_KL_CE = TT.exp(S-logZ)*(S-logZ + log_pold_pnew_reshaped_summed)
-        prop_KL_CE_averaged = TT.mean(prop_KL_CE)
-        
-        #log_pnew_reshaped_summed =  TT.sum(mask_var*log_pnew_reshaped,1) #summing over time
-        #weights_var = TT.exp(S - TT.max(S))
-        #surr_loss = - TT.sum(log_pnew_reshaped_summed*(weights_var.T - TT.mean(weights_var))) 
-        #surr_loss = surr_loss/TT.std(weights_var)
-        #prop_KL_CE_averaged = surr_loss
-        
-        #prop_KL_CE_averaged = TT.mean(mask_var*pnew_pold_reshaped*V_var)
-        #prop_KL_CE_averaged  = prop_KL_CE_averaged -  TT.mean(mask_var*V_var)
-        #prop_KL_CE_averaged  = prop_KL_CE_averaged/TT.std(mask_var*V_var)
+        prop_KL_CE_averaged_pure = TT.mean(prop_KL_CE)
         
         
+        ####
+        # make versions of the cost which have a lower variance gradient
+        ###
+        
+        prop_KL_variational = -(pnew_pold_reshaped_summed*((S-logZ+log_pold_pnew_reshaped_summed_disconnected)-TT.mean(S-logZ))) 
+        prop_KL_variational_averaged = TT.mean(prop_KL_variational)/TT.std(S-logZ)
+        #prop_KL_variational_averaged_pure = prop_KL_variational_averaged
+        
+        prop_KL_CE = (TT.exp(S-logZ)-TT.mean(TT.exp(S-logZ)))*(log_pold_pnew_reshaped_summed)
+        prop_KL_CE_averaged = TT.mean(prop_KL_CE)/TT.std(TT.exp(S-logZ))
+        #prop_KL_CE_averaged=prop_KL_CE_averaged_pure
+        
+        prop_trpo_naive = -pnew_pold_reshaped_summed*(S-TT.mean(S))/TT.std(S)
+        prop_trpo_naive_averaged = TT.mean(prop_trpo_naive)
+        prop_trpo_naive_averaged_pure = TT.mean(prop_trpo_naive)
+        
+        #prop_trpo_naive_averaged = prop_trpo_naive_averaged_pure
 
                 
         switcher_PoF = {
-            'KL_var': prop_KL_variational_averaged,
-            'KL_var2': prop_KL_variational_averaged**2,
-            'KL_CE': prop_KL_CE_averaged,
-            'KL_CE2': prop_KL_CE_averaged**2,
-            'KL_sym': prop_KL_variational_averaged+prop_KL_CE_averaged,
-            'KL_sym2': prop_KL_variational_averaged**2+prop_KL_CE_averaged**2,
+            'KL_var': tuple([prop_KL_variational_averaged_pure,prop_KL_variational_averaged]),
+            'KL_CE': tuple([prop_KL_CE_averaged_pure,prop_KL_CE_averaged]),
+            'KL_CE2': tuple([prop_KL_CE_averaged_pure**2,prop_KL_CE_averaged**2]),
+            'trpo_naive': tuple([prop_trpo_naive_averaged_pure,prop_trpo_naive_averaged]),
+            'KL_sym': tuple([prop_KL_variational_averaged_pure+prop_KL_CE_averaged_pure,prop_KL_variational_averaged+prop_KL_CE_averaged]),
         }
         
-        PoF = switcher_PoF[self.PoF]
+        PoF,PoFd = switcher_PoF[self.PoF]
         
         ################################################
         # normalized Cross entropy for the line search #
         ################################################
         
-        normalized_KL_CE = (1/TT.log(self.N))*prop_KL_CE_averaged #ranged between 0 (p*=pold and 1 (minimal overlap)
+        normalized_KL_CE = (1/TT.log(self.N))*prop_KL_CE_averaged_pure #ranged between 0 (p*=pold and 1 (minimal overlap)
         
         
         #############################
@@ -274,7 +280,7 @@ class KLANNEAL(BatchPolopt):
             mean_kl = TT.mean(kl_pold_pnew)
             self.optimizer.update_opt(
                 loss=PoF,
-                d_loss=PoF,
+                d_loss=PoFd,
                 target=self.policy,
                 leq_constraint=(mean_kl, self.step_size),
                 inputs=input_with_eta,
