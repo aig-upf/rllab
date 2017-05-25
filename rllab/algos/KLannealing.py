@@ -1,7 +1,7 @@
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
-from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
+#from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
 from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
@@ -9,6 +9,7 @@ import rllab.misc.logger as logger
 import numpy as np
 import theano.tensor as TT
 import theano
+import matplotlib.pyplot as plt
 from theano import printing
 
 import matplotlib.pyplot as plt
@@ -121,6 +122,7 @@ class KLANNEAL(BatchPolopt):
         switcher_algo = {
             'Algorithm1': log_p_star_p_old_1,
             'Algorithm2': log_p_star_p_old_2,
+            'Algorithm2_antagon': -log_p_star_p_old_2,
             'Algorithm3': log_p_star_p_old_3,
         }
         
@@ -167,14 +169,29 @@ class KLANNEAL(BatchPolopt):
         prop_trpo_naive_averaged_pure = TT.mean(prop_trpo_naive)
         
         #prop_trpo_naive_averaged = prop_trpo_naive_averaged_pure
+        
+        ##### risk seeking:       
+        
+        SJ=TT.exp(S-logZ)
+        J=-pnew_pold_reshaped_summed*(SJ-TT.mean(SJ))/TT.std(SJ)
+        
+        prop_J =  TT.mean(J)
+        prop_J_2 =  prop_J
+        
+        ##### risk averse
+        prop_J_antagon =  -TT.mean(J)
+        prop_J_antagon_2 =  -prop_J
 
                 
         switcher_PoF = {
             'KL_var': tuple([prop_KL_variational_averaged_pure,prop_KL_variational_averaged]),
             'KL_CE': tuple([prop_KL_CE_averaged_pure,prop_KL_CE_averaged]),
+            'KL_CE_antagonist': tuple([-prop_KL_CE_averaged_pure,-prop_KL_CE_averaged]),
             'KL_CE2': tuple([prop_KL_CE_averaged_pure**2,prop_KL_CE_averaged**2]),
             'trpo_naive': tuple([prop_trpo_naive_averaged_pure,prop_trpo_naive_averaged]),
             'KL_sym': tuple([prop_KL_variational_averaged_pure+prop_KL_CE_averaged_pure,prop_KL_variational_averaged+prop_KL_CE_averaged]),
+            'J': tuple([prop_J,prop_J_2]),
+            'J_antagon': tuple([prop_J_antagon,prop_J_antagon_2]),
         }
         
         PoF,PoFd = switcher_PoF[self.PoF]
@@ -520,3 +537,4 @@ class KLANNEAL(BatchPolopt):
         log_pold_pnew_reshaped = log_pold_pnew.reshape((self.N,self.T)) 
         
         return log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
+    

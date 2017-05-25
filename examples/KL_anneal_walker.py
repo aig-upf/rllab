@@ -2,6 +2,7 @@
 from rllab.misc.instrument import run_experiment_lite
 from rllab.algos.kl_trpo import KLTRPO
 from rllab.algos.KLannealing import KLANNEAL
+#from rllab.algos.KLannealing_introspection import KLANNEAL
 #from rllab.algos.npireps import NPIREPS as KLANNEAL
 from rllab.sampler.annealkl_sampler import AKLSampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
@@ -77,7 +78,8 @@ else :
             PoF = PoF, #which PoF to take
             optim = optim,#'Lbfgs',
             max_path_length=env.horizon,
-            batch_size=N*env.horizon
+            batch_size=N*env.horizon,
+            cg_iters = 10
         )
         
         logger.log("    eps " + str(epsilon))
