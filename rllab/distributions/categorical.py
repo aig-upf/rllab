@@ -77,6 +77,12 @@ class Categorical(Distribution):
         # Assume layout is N * A
         N = probs.shape[0]
         return np.log(probs[np.arange(N), from_onehot(np.asarray(xs))] + TINY)
+    
+    # For natural PIREPS
+    def log_likelihood_ratio_sym(self, x_var, old_dist_info_vars, new_dist_info_vars):
+        logli_new = self.log_likelihood_sym(x_var, new_dist_info_vars)
+        logli_old = self.log_likelihood_sym(x_var, old_dist_info_vars)
+        return (logli_new - logli_old)
 
     def sample_sym(self, dist_info):
         probs = dist_info["prob"]
