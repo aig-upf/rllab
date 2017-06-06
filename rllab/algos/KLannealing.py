@@ -3,7 +3,7 @@ from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
 #from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
-from rllab.optimizers.conjugate_gradient_optimizer import ConjugateGradientOptimizer
+from rllab.optimizers.conjugate_gradient_optimizer2 import ConjugateGradientOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
 import rllab.misc.logger as logger
 import numpy as np
@@ -185,7 +185,7 @@ class KLANNEAL(BatchPolopt):
                 
         switcher_PoF = {
             'KL_var': tuple([prop_KL_variational_averaged_pure,prop_KL_variational_averaged]),
-            'KL_CE': tuple([prop_KL_CE_averaged_pure,prop_KL_CE_averaged]),
+            'KL_CE': tuple([prop_KL_CE_averaged_pure,prop_J]),
             'KL_CE_antagonist': tuple([-prop_KL_CE_averaged_pure,-prop_KL_CE_averaged]),
             'KL_CE2': tuple([prop_KL_CE_averaged_pure**2,prop_KL_CE_averaged**2]),
             'trpo_naive': tuple([prop_trpo_naive_averaged_pure,prop_trpo_naive_averaged]),

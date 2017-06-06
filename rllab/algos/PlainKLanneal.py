@@ -70,7 +70,7 @@ class PLAINKLANNEAL(BatchPolopt):
     def init_opt(self):
 
         logger.log(str(self.env))
-        
+        small = 0.00001
         ########################################################################################
         #                                                                                      #
         # This is mainly the laboratory where the symbolic functions are composed and compiled #
@@ -143,9 +143,6 @@ class PLAINKLANNEAL(BatchPolopt):
         prop_KL_variational_averaged = TT.mean(prop_KL_variational)/TT.std(S-logZ)
         #prop_KL_variational_averaged_pure = prop_KL_variational_averaged
         
-        prop_KL_CE = (TT.exp(S-logZ)-TT.mean(TT.exp(S-logZ)))*(log_pold_pnew_reshaped_summed)
-        prop_KL_CE_averaged = TT.mean(prop_KL_CE)/TT.std(TT.exp(S-logZ))
-        
         prop_trpo_naive = -pnew_pold_reshaped_summed*(S-TT.mean(S))/TT.std(S)
         prop_trpo_naive_averaged = TT.mean(prop_trpo_naive)
         prop_trpo_naive_averaged_pure = TT.mean(prop_trpo_naive)
@@ -155,7 +152,7 @@ class PLAINKLANNEAL(BatchPolopt):
         ##### risk seeking:       
         
         SJ=TT.exp(S-logZ)
-        J=-pnew_pold_reshaped_summed*(SJ-TT.mean(SJ))/TT.std(SJ)
+        J=-pnew_pold_reshaped_summed*(SJ-TT.mean(SJ)+small)/(TT.std(SJ)+small)
         
         prop_J =  TT.mean(J)
         prop_J_2 =  prop_J
