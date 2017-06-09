@@ -4,6 +4,7 @@ from rllab.algos.batch_polopt import BatchPolopt
 #from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
 from rllab.optimizers.conjugate_gradient_optimizer2 import ConjugateGradientOptimizer
+from rllab.optimizers.hessian_optimizer import HessianOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
 import rllab.misc.logger as logger
 import numpy as np
@@ -33,21 +34,22 @@ class KLANNEAL(BatchPolopt):
             algorithm = 'Algorithm3', #which PoD to take
             PoF = 'KL_CE', #which PoF to take
             optim = 'cg',
+            introspection=0,
             **kwargs
     ):
         if optimizer_args is None:
             optimizer_args = dict()
         
         self.optim=optim
-        if self.optim == "Lbfgs":
-            optimizer = LbfgsOptimizer(**optimizer_args)
+        if self.optim == "Hessian":
+            optimizer = HessianOptimizer(cg_iters=cg_iters,**optimizer_args)
         elif self.optim=="cg":
             optimizer = ConjugateGradientOptimizer(cg_iters=cg_iters,**optimizer_args)
         else:
             optimizer = FirstOrderOptimizer(max_epochs=100,
             tolerance=1e-6,batch_size=None,**optimizer_args)
         
-        
+        self.introspection=introspection
         self.optimizer = optimizer
         self.step_size = step_size
         self.truncate_local_is_ratio = truncate_local_is_ratio
@@ -101,7 +103,7 @@ class KLANNEAL(BatchPolopt):
         ###########################################################################################################################
         # get the log-likelihoods of the uncontrolled dynamics and the current controller(given the inputs) (shared variables...) #
         ###########################################################################################################################
-        log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped = self.create_likelihoods_and_kl(mask_var,X_var,U_var,old_dist_info_vars,dist)
+        log_pold_reshaped, log_pnew_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped = self.create_likelihoods_and_kl(mask_var,X_var,U_var,old_dist_info_vars,dist)
 
         
         
@@ -158,6 +160,9 @@ class KLANNEAL(BatchPolopt):
         prop_trpo_naive_averaged_pure = TT.mean(prop_trpo_naive)
         
         #prop_trpo_naive_averaged = prop_trpo_naive_averaged_pure
+        
+        
+        CEdistance = 1-(1/TT.log(self.N))*TT.sum(pnew_pold_reshaped_summed*(log_pold_pnew_reshaped_summed+TT.log(TT.sum(pnew_pold_reshaped_summed))))/TT.sum(pnew_pold_reshaped_summed)
         
         ##### risk seeking:       
         
@@ -218,16 +223,11 @@ class KLANNEAL(BatchPolopt):
         state_cost_max =  TT.max(TT.sum(mask_var*(V_var),1))
         state_cost_std =  TT.std(TT.sum(mask_var*(V_var),1))
         
-        control_cost = log_pold_reshaped - log_q_reshaped
                 
-        total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_min = TT.min(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_max = TT.max(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_std = TT.std(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
+        total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_min = TT.min(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_max = TT.max(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_std = TT.std(TT.sum(mask_var*(V_var/self.lambd),1))
         
                 
         #ToDo:
@@ -298,6 +298,16 @@ class KLANNEAL(BatchPolopt):
                 inputs=input_with_eta,
                 constraint_name="mean_kl",
             )
+        elif self.optim == "Hessian":
+            mean_kl = TT.mean(kl_pold_pnew)
+            self.optimizer.update_opt(
+                loss=PoF,
+                d_loss=PoF,
+                target=self.policy,
+                leq_constraint=(PoF, 1),
+                inputs=input_with_eta,
+                constraint_name="hessian",
+            )
         else:
             #configure the optimizer
             self.optimizer.update_opt(
@@ -353,6 +363,10 @@ class KLANNEAL(BatchPolopt):
             outputs=[mean_kl]
         )
         
+        self.CE_constraint = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[CEdistance]
+        )
                 
         self.stat1 = ext.compile_function(
             inputs=input_with_eta,
@@ -394,44 +408,9 @@ class KLANNEAL(BatchPolopt):
         self.optimizer.optimize(input_values_with_eta)
         new_param1 = np.copy(self.policy.get_param_values(trainable=True))
         
-        
-        plt.figure()
-        self.screen_line(prev_param,self.target_J,new_param1,input_values_with_eta,color='red')
-        
-        plt.figure()
-        self.screen_line(prev_param,self.target_J_plain,new_param1,input_values_with_eta,color='blue')
-        
-        plt.figure()
-        self.screen_line(prev_param,self.target_CE,new_param1,input_values_with_eta,color='green')
-        
-        plt.figure()
-        self.screen_line(prev_param,self.target_trpocost,new_param1,input_values_with_eta,color='black')
-        
-        plt.figure()
-        self.screen_line(prev_param,self.kl_constraint,new_param1,input_values_with_eta,color='magenta')
-        
-        
-        plt.figure()
-        self.screen_line(prev_param,self.stat1,new_param1,input_values_with_eta,color='cyan')
-        
-        
-        plt.figure()
-        self.screen_line(prev_param,self.stat2,new_param1,input_values_with_eta,color='yellow')
-        
-        
-        plt.figure()
-        self.screen_line_list(prev_param,self.J_plain,new_param1,input_values_with_eta,color='blue')
-        
-        
-        
-        plt.figure()
-        self.screen_line_list(prev_param,self.CE,new_param1,input_values_with_eta,color='red')
-        
-        plt.figure()
-        self.screen_line_list(prev_param,self.pnew_old,new_param1,input_values_with_eta,color='magenta')
-        
-        plt.show()
-        
+        if self.introspection:
+            self.do_introspection(prev_param,new_param1,input_values_with_eta)
+
         # get some statistics to log
         loss_after = self.optimizer.loss(input_values_with_eta)
         
@@ -614,23 +593,19 @@ class KLANNEAL(BatchPolopt):
         log_pnew = dist.log_likelihood_sym(U_var, dist_info_vars)
         
         log_pold = dist.log_likelihood_sym(U_var, old_dist_info_vars)
-        
-        log_q = dist.log_likelihood_sym(U_var, old_dist_info_vars) #compute the log-likelihood of the actions under the uncontrolled dynamics
-        
+                
                 
         pnew_pold = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
         pnew_pold_reshaped = pnew_pold.reshape((self.N,self.T)) 
 
         log_pnew_reshaped = log_pnew.reshape((self.N,self.T))
-        log_pold_reshaped = log_pold.reshape((self.N,self.T))
-        log_q_reshaped = log_q.reshape((self.N,self.T))
-        
+        log_pold_reshaped = log_pold.reshape((self.N,self.T))        
         kl_pold_pnew = dist.kl_sym(old_dist_info_vars, dist_info_vars)
         
         log_pold_pnew = dist.log_likelihood_ratio_sym(U_var, dist_info_vars,old_dist_info_vars)
         log_pold_pnew_reshaped = log_pold_pnew.reshape((self.N,self.T)) 
         
-        return log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
+        return log_pold_reshaped, log_pnew_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
     
     
     def screen_line(self,prev_param,f,new_param,input_values_with_eta,color):
@@ -668,3 +643,45 @@ class KLANNEAL(BatchPolopt):
         plt.plot(myrange,losses,color)
         plt.figure()
         plt.plot(myrange,np.log(losses),color)
+        
+        
+        
+    def do_introspection(self,prev_param,new_param1,input_values_with_eta):
+        plt.figure()
+        self.screen_line(prev_param,self.target_J,new_param1,input_values_with_eta,color='red')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_J_plain,new_param1,input_values_with_eta,color='blue')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_CE,new_param1,input_values_with_eta,color='green')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_trpocost,new_param1,input_values_with_eta,color='black')
+
+        plt.figure()
+        self.screen_line(prev_param,self.kl_constraint,new_param1,input_values_with_eta,color='magenta')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.stat1,new_param1,input_values_with_eta,color='cyan')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.stat2,new_param1,input_values_with_eta,color='yellow')
+
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.J_plain,new_param1,input_values_with_eta,color='blue')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.CE_constraint,new_param1,input_values_with_eta,color='purple')
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.CE,new_param1,input_values_with_eta,color='red')
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.pnew_old,new_param1,input_values_with_eta,color='magenta')
+
+        plt.show()
