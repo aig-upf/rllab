@@ -4,6 +4,7 @@ from rllab.algos.batch_polopt import BatchPolopt
 #from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
 from rllab.optimizers.conjugate_gradient_optimizer2 import ConjugateGradientOptimizer
+from rllab.optimizers.hessian_optimizer import HessianOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
 import rllab.misc.logger as logger
 import numpy as np
@@ -33,21 +34,22 @@ class KLANNEAL(BatchPolopt):
             algorithm = 'Algorithm3', #which PoD to take
             PoF = 'KL_CE', #which PoF to take
             optim = 'cg',
+            introspection=0,
             **kwargs
     ):
         if optimizer_args is None:
             optimizer_args = dict()
         
         self.optim=optim
-        if self.optim == "Lbfgs":
-            optimizer = LbfgsOptimizer(**optimizer_args)
+        if self.optim == "Hessian":
+            optimizer = HessianOptimizer(cg_iters=cg_iters,**optimizer_args)
         elif self.optim=="cg":
             optimizer = ConjugateGradientOptimizer(cg_iters=cg_iters,**optimizer_args)
         else:
             optimizer = FirstOrderOptimizer(max_epochs=100,
             tolerance=1e-6,batch_size=None,**optimizer_args)
         
-        
+        self.introspection=introspection
         self.optimizer = optimizer
         self.step_size = step_size
         self.truncate_local_is_ratio = truncate_local_is_ratio
@@ -68,13 +70,6 @@ class KLANNEAL(BatchPolopt):
         # T is number of time-steps
         self.T = self.max_path_length
         
-        
-        #this defines the uncontrolled dynamics:
-        udim = self.env.action_dim #get the action dimensions
-        self.udist_info_vars = dict(
-            mean=np.zeros((1,udim)),
-            log_std=np.ones((1,udim))*self.log_std_uncontrolled
-        )
         
         logger.log("With " + str(self.N) + " rollouts per iteration")
         logger.log("With time-horizon " + str(self.T))
@@ -108,22 +103,18 @@ class KLANNEAL(BatchPolopt):
         ###########################################################################################################################
         # get the log-likelihoods of the uncontrolled dynamics and the current controller(given the inputs) (shared variables...) #
         ###########################################################################################################################
-        log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped = self.create_likelihoods_and_kl(mask_var,X_var,U_var,old_dist_info_vars,dist)
+        log_pold_reshaped, log_pnew_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped = self.create_likelihoods_and_kl(mask_var,X_var,U_var,old_dist_info_vars,dist)
 
         
         
         ###############
         # create PoDs #
         ###############
-        log_p_star_p_old_1 = -(TT.sum((1/(1+param_eta))*mask_var*(V_var/self.lambd + log_pold_reshaped - log_q_reshaped),1))
         log_p_star_p_old_2 = -(TT.sum((1/(1+param_eta))*mask_var*(V_var/self.lambd),1))
-        log_p_star_p_old_3 = -(TT.sum(mask_var*(V_var/self.lambd*(1/(1+param_eta)) + log_pold_reshaped - log_q_reshaped),1))
+
         
         switcher_algo = {
-            'Algorithm1': log_p_star_p_old_1,
             'Algorithm2': log_p_star_p_old_2,
-            'Algorithm2_antagon': -log_p_star_p_old_2,
-            'Algorithm3': log_p_star_p_old_3,
         }
         
         S = switcher_algo[self.algorithm]
@@ -148,8 +139,8 @@ class KLANNEAL(BatchPolopt):
         prop_KL_variational = -(pnew_pold_reshaped_summed*(S-logZ+log_pold_pnew_reshaped_summed_disconnected)) 
         prop_KL_variational_averaged_pure = TT.mean(prop_KL_variational)
         
-        prop_KL_CE = TT.exp(S-logZ)*(S-logZ + log_pold_pnew_reshaped_summed)
-        prop_KL_CE_averaged_pure = TT.mean(prop_KL_CE)
+        prop_KL_CE_pure = TT.exp(S-logZ)*(S-logZ + log_pold_pnew_reshaped_summed)
+        prop_KL_CE_averaged_pure = TT.mean(prop_KL_CE_pure)
         
         
         ####
@@ -170,10 +161,17 @@ class KLANNEAL(BatchPolopt):
         
         #prop_trpo_naive_averaged = prop_trpo_naive_averaged_pure
         
+        
+        CEdistance = 1-(1/TT.log(self.N))*TT.sum(pnew_pold_reshaped_summed*(log_pold_pnew_reshaped_summed+TT.log(TT.sum(pnew_pold_reshaped_summed))))/TT.sum(pnew_pold_reshaped_summed)
+        
         ##### risk seeking:       
         
         SJ=TT.exp(S-logZ)
         J=-pnew_pold_reshaped_summed*(SJ-TT.mean(SJ))/TT.std(SJ)
+        
+        
+        J_plain=-pnew_pold_reshaped_summed*(SJ)
+        prop_J_plain =  TT.mean(J_plain)
         
         prop_J =  TT.mean(J)
         prop_J_2 =  prop_J
@@ -195,6 +193,9 @@ class KLANNEAL(BatchPolopt):
         }
         
         PoF,PoFd = switcher_PoF[self.PoF]
+        
+        
+        
         
         ################################################
         # normalized Cross entropy for the line search #
@@ -222,16 +223,11 @@ class KLANNEAL(BatchPolopt):
         state_cost_max =  TT.max(TT.sum(mask_var*(V_var),1))
         state_cost_std =  TT.std(TT.sum(mask_var*(V_var),1))
         
-        control_cost = log_pold_reshaped - log_q_reshaped
                 
-        total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_min = TT.min(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_max = TT.max(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
-        total_cost_std = TT.std(TT.sum(mask_var*(V_var/self.lambd + log_pnew_reshaped -
-                                    log_q_reshaped),1))
+        total_cost = TT.mean(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_min = TT.min(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_max = TT.max(TT.sum(mask_var*(V_var/self.lambd),1))
+        total_cost_std = TT.std(TT.sum(mask_var*(V_var/self.lambd),1))
         
                 
         #ToDo:
@@ -292,7 +288,6 @@ class KLANNEAL(BatchPolopt):
         
         
         #create the input list for the optimizer
-        input_list = input
         if self.optim == "cg":
             mean_kl = TT.mean(kl_pold_pnew)
             self.optimizer.update_opt(
@@ -303,6 +298,16 @@ class KLANNEAL(BatchPolopt):
                 inputs=input_with_eta,
                 constraint_name="mean_kl",
             )
+        elif self.optim == "Hessian":
+            mean_kl = TT.mean(kl_pold_pnew)
+            self.optimizer.update_opt(
+                loss=PoF,
+                d_loss=PoF,
+                target=self.policy,
+                leq_constraint=(PoF, 1),
+                inputs=input_with_eta,
+                constraint_name="hessian",
+            )
         else:
             #configure the optimizer
             self.optimizer.update_opt(
@@ -310,7 +315,70 @@ class KLANNEAL(BatchPolopt):
                 target=self.policy,
                 inputs=input_with_eta,
             )
-
+            
+            
+        
+        ###########
+        # some pseudo targets for introspection
+        ##########
+        
+        self.target_J = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[prop_J]
+        )
+        
+        
+        self.target_J_plain = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[prop_J_plain]
+        )
+        
+        
+        self.pnew_old = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[pnew_pold_reshaped_summed]
+        )
+        
+        self.J_plain = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[J_plain]
+        )
+        self.CE = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[prop_KL_CE_pure]
+        )
+                
+        self.target_CE = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[prop_KL_CE_averaged_pure]
+        )
+        
+        self.target_trpocost = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[prop_trpo_naive_averaged_pure]
+        )
+        
+        self.kl_constraint = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[mean_kl]
+        )
+        
+        self.CE_constraint = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[CEdistance]
+        )
+                
+        self.stat1 = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[TT.sum(pnew_pold_reshaped_summed)**2/TT.sum((pnew_pold_reshaped_summed)**2)]
+        )
+        
+        self.stat2 = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[TT.sum(SJ*pnew_pold_reshaped_summed)**2/TT.sum((SJ*pnew_pold_reshaped_summed)**2)]
+        )
+        
+        
         
         return dict()
 
@@ -332,12 +400,19 @@ class KLANNEAL(BatchPolopt):
         # natural PICE gradient
         #######################
         input_values_with_eta = input_values+[param_eta]
+        
+        
         # get some statistics to log
         loss_before = self.optimizer.loss(input_values_with_eta)
 
         # call optimize
+        prev_param = np.copy(self.policy.get_param_values(trainable=True))
         self.optimizer.optimize(input_values_with_eta)
+        new_param1 = np.copy(self.policy.get_param_values(trainable=True))
         
+        if self.introspection:
+            self.do_introspection(prev_param,new_param1,input_values_with_eta)
+
         # get some statistics to log
         loss_after = self.optimizer.loss(input_values_with_eta)
         
@@ -391,6 +466,7 @@ class KLANNEAL(BatchPolopt):
         
         agent_infos2 = samples_data["agent_infos2"]
         dist_info_list = [agent_infos2[k] for k in self.policy.distribution.dist_info_keys]
+        
         input_values_with_agent = input_values + dist_info_list
         
         
@@ -520,21 +596,99 @@ class KLANNEAL(BatchPolopt):
         log_pnew = dist.log_likelihood_sym(U_var, dist_info_vars)
         
         log_pold = dist.log_likelihood_sym(U_var, old_dist_info_vars)
-        
-        log_q = dist.log_likelihood_sym(U_var, self.udist_info_vars) #compute the log-likelihood of the actions under the uncontrolled dynamics
-        
+                
                 
         pnew_pold = dist.likelihood_ratio_sym(U_var, old_dist_info_vars, dist_info_vars)
         pnew_pold_reshaped = pnew_pold.reshape((self.N,self.T)) 
 
         log_pnew_reshaped = log_pnew.reshape((self.N,self.T))
-        log_pold_reshaped = log_pold.reshape((self.N,self.T))
-        log_q_reshaped = log_q.reshape((self.N,self.T))
-        
+        log_pold_reshaped = log_pold.reshape((self.N,self.T))        
         kl_pold_pnew = dist.kl_sym(old_dist_info_vars, dist_info_vars)
+        
         
         log_pold_pnew = dist.log_likelihood_ratio_sym(U_var, dist_info_vars,old_dist_info_vars)
         log_pold_pnew_reshaped = log_pold_pnew.reshape((self.N,self.T)) 
         
-        return log_pold_reshaped, log_pnew_reshaped, log_q_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
+        return log_pold_reshaped, log_pnew_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
     
+    
+    def screen_line(self,prev_param,f,new_param,input_values_with_eta,color):
+        K=100
+        losses = np.zeros([K,1])
+        myrange=np.linspace(0,2,K)
+        i=0
+        for alpha in myrange:
+            cur_param = (1-alpha)*prev_param + alpha*new_param
+            self.policy.set_param_values(cur_param, trainable=True)
+            losses[i] = f(*input_values_with_eta)
+            i+=1
+        
+        plt.plot(myrange,losses,color)
+        bestloss=myrange[losses.argmin()]
+        bestparams=(1-bestloss)*prev_param + bestloss*new_param
+        return bestparams
+    
+    
+    
+    def screen_line_list(self,prev_param,f,new_param,input_values_with_eta,color):
+        K=50
+        losses = np.zeros([K,1])
+        myrange=np.linspace(0,2,K)
+        i=0
+        for alpha in myrange:
+            cur_param = (1-alpha)*prev_param + alpha*new_param
+            self.policy.set_param_values(cur_param, trainable=True)
+            los=f(*input_values_with_eta)[0]
+            if i==0:
+                losses=np.zeros([K,len(los)])
+            losses[i,:] = los
+            i+=1
+        
+        plt.plot(myrange,losses,color)
+        plt.figure()
+        plt.plot(myrange,np.log(losses),color)
+        
+        
+        
+    def do_introspection(self,prev_param,new_param1,input_values_with_eta):
+        plt.figure()
+        self.screen_line(prev_param,self.target_J,new_param1,input_values_with_eta,color='red')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_J_plain,new_param1,input_values_with_eta,color='blue')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_CE,new_param1,input_values_with_eta,color='green')
+
+        plt.figure()
+        self.screen_line(prev_param,self.target_trpocost,new_param1,input_values_with_eta,color='black')
+
+        plt.figure()
+        self.screen_line(prev_param,self.kl_constraint,new_param1,input_values_with_eta,color='magenta')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.stat1,new_param1,input_values_with_eta,color='cyan')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.stat2,new_param1,input_values_with_eta,color='yellow')
+
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.J_plain,new_param1,input_values_with_eta,color='blue')
+
+
+        plt.figure()
+        self.screen_line(prev_param,self.CE_constraint,new_param1,input_values_with_eta,color='purple')
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.CE,new_param1,input_values_with_eta,color='red')
+
+        plt.figure()
+        self.screen_line_list(prev_param,self.pnew_old,new_param1,input_values_with_eta,color='magenta')
+        
+        self.policy.set_param_values(new_param1, trainable=True)
+        
+        plt.show()
+        

@@ -1,3 +1,8 @@
+###
+### Stop using this file.
+###
+
+'''
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
@@ -502,4 +507,4 @@ class PLAINKLANNEAL(BatchPolopt):
         log_pold_pnew_reshaped = log_pold_pnew.reshape((self.N,self.T)) 
         
         return log_pold_reshaped, log_pnew_reshaped, kl_pold_pnew, log_pold_pnew_reshaped, pnew_pold_reshaped
-    
+'''

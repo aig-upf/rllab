@@ -1,3 +1,7 @@
+#########
+### this file was copies into KL_annealing.py
+#########
+'''
 from rllab.misc import ext
 from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
@@ -685,3 +689,6 @@ class KLANNEAL(BatchPolopt):
         self.screen_line_list(prev_param,self.pnew_old,new_param1,input_values_with_eta,color='magenta')
 
         plt.show()
+        
+        
+'''
