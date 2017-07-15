@@ -3,7 +3,9 @@ from rllab.misc.overrides import overrides
 from rllab.algos.batch_polopt import BatchPolopt
 #from rllab.optimizers.KL_conjugate_gradient_optimizer import ConjugateGradientOptimizer
 from rllab.optimizers.first_order_optimizer import FirstOrderOptimizer
-from rllab.optimizers.conjugate_gradient_optimizer2 import ConjugateGradientOptimizer
+#from rllab.optimizers.conjugate_gradient_optimizer2 import ConjugateGradientOptimizer
+from rllab.optimizers.cg_final import ConjugateGradientOptimizer
+from rllab.optimizers.conjugate_gradient_optimizer3 import ConjugateGradientOptimizer as ConjugateGradientOptimizer2
 from rllab.optimizers.hessian_optimizer import HessianOptimizer
 from rllab.optimizers.lbfgs_optimizer import LbfgsOptimizer
 import rllab.misc.logger as logger
@@ -45,6 +47,8 @@ class KLANNEAL(BatchPolopt):
             optimizer = HessianOptimizer(cg_iters=cg_iters,**optimizer_args)
         elif self.optim=="cg":
             optimizer = ConjugateGradientOptimizer(cg_iters=cg_iters,**optimizer_args)
+        elif self.optim=="cg2":
+            optimizer = ConjugateGradientOptimizer2(cg_iters=cg_iters,backtrack_ratio=0.8,**optimizer_args)
         else:
             optimizer = FirstOrderOptimizer(max_epochs=100,
             tolerance=1e-6,batch_size=None,**optimizer_args)
@@ -286,25 +290,31 @@ class KLANNEAL(BatchPolopt):
         ############################
         
         
-        
+        mean_kl = TT.mean(kl_pold_pnew)
         #create the input list for the optimizer
         if self.optim == "cg":
-            mean_kl = TT.mean(kl_pold_pnew)
             self.optimizer.update_opt(
                 loss=PoF,
-                d_loss=PoFd,
+                #d_loss=PoFd,
                 target=self.policy,
                 leq_constraint=(mean_kl, self.step_size),
                 inputs=input_with_eta,
                 constraint_name="mean_kl",
             )
-        elif self.optim == "Hessian":
-            mean_kl = TT.mean(kl_pold_pnew)
+        elif self.optim == "cg2":
             self.optimizer.update_opt(
                 loss=PoF,
-                d_loss=PoF,
+                d_loss=PoFd,
                 target=self.policy,
-                leq_constraint=(PoF, 1),
+                leq_constraint=(CEdistance, self.step_size),
+                dleq_constraint = mean_kl,
+                inputs=input_with_eta,
+                constraint_name="CEdistance",
+            )
+        elif self.optim == "Hessian":
+            self.optimizer.update_opt(
+                loss=PoF,
+                target=self.policy,
                 inputs=input_with_eta,
                 constraint_name="hessian",
             )
@@ -321,6 +331,11 @@ class KLANNEAL(BatchPolopt):
         ###########
         # some pseudo targets for introspection
         ##########
+        
+        self.target_PoF = ext.compile_function(
+            inputs=input_with_eta,
+            outputs=[PoF]
+        )
         
         self.target_J = ext.compile_function(
             inputs=input_with_eta,
@@ -645,8 +660,6 @@ class KLANNEAL(BatchPolopt):
             i+=1
         
         plt.plot(myrange,losses,color)
-        plt.figure()
-        plt.plot(myrange,np.log(losses),color)
         
         
         
@@ -687,6 +700,9 @@ class KLANNEAL(BatchPolopt):
 
         plt.figure()
         self.screen_line_list(prev_param,self.pnew_old,new_param1,input_values_with_eta,color='magenta')
+        
+        plt.figure()
+        self.screen_line(prev_param,self.target_PoF,new_param1,input_values_with_eta,color='black')
         
         self.policy.set_param_values(new_param1, trainable=True)
         

@@ -128,7 +128,7 @@ class ConjugateGradientOptimizer(Serializable):
             reg_coeff=1e-5,
             subsample_factor=1.,
             backtrack_ratio=0.8,
-            max_backtracks=15,
+            max_backtracks=35,
             accept_violation=False,
             hvp_approach=None,
             num_slices=1):
@@ -159,7 +159,7 @@ class ConjugateGradientOptimizer(Serializable):
             hvp_approach = PerlmutterHvp(num_slices)
         self._hvp_approach = hvp_approach
 
-    def update_opt(self, loss, d_loss, target, leq_constraint, inputs, extra_inputs=None, constraint_name="constraint", *args,
+    def update_opt(self, loss, d_loss, target, leq_constraint,dleq_constraint, inputs, extra_inputs=None, constraint_name="constraint", *args,
                    **kwargs):
         """
         :param loss: Symbolic expression for the loss function.
@@ -178,8 +178,10 @@ class ConjugateGradientOptimizer(Serializable):
         else:
             extra_inputs = tuple(extra_inputs)
 
-        constraint_term, constraint_value = leq_constraint
-
+        lconstraint_term, constraint_value = leq_constraint
+        constraint_term = dleq_constraint
+        
+        
         params = target.get_params(trainable=True)
         grads = theano.grad(d_loss, wrt=params, disconnected_inputs='warn')
         flat_grad = ext.flatten_tensor_variables(grads)
@@ -204,12 +206,12 @@ class ConjugateGradientOptimizer(Serializable):
             ),
             f_constraint=lambda: ext.compile_function(
                 inputs=inputs + extra_inputs,
-                outputs=constraint_term,
+                outputs=lconstraint_term,
                 log_name="constraint",
             ),
             f_loss_constraint=lambda: ext.compile_function(
                 inputs=inputs + extra_inputs,
-                outputs=[loss, constraint_term],
+                outputs=[loss, lconstraint_term],
                 log_name="f_loss_constraint",
             ),
         )
@@ -290,6 +292,9 @@ class ConjugateGradientOptimizer(Serializable):
             self._target.set_param_values(cur_param, trainable=True)
             loss, constraint_val = sliced_fun(
                 self._opt_fun["f_loss_constraint"], self._num_slices)(inputs, extra_inputs)
+            print('loss and constraint')
+            print(loss)
+            print(constraint_val)
             if loss < loss_before and constraint_val < self._max_constraint_val:
                 break
         if (np.isnan(loss) or np.isnan(constraint_val) or loss >= loss_before or constraint_val >=
