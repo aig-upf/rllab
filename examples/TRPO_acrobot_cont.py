@@ -1,18 +1,18 @@
+
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.PlainKLanneal import PLAINKLANNEAL
-#from rllab.algos.KLannealing_introspection import KLANNEAL
-#from rllab.algos.npireps import NPIREPS as KLANNEAL
+from rllab.algos.trpo import TRPO
+from rllab.algos.KLannealing import KLANNEAL
 from rllab.sampler.annealkl_sampler import AKLSampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
-#from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
-from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
-#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
+
 from rllab.envs.normalized_env import normalize
-from rllab.policies.categorical_mlp_policy import CategoricalMLPPolicy
+from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
 import lasagne.init as LI
 from time import gmtime, strftime
 from rllab.envs.gym_env import GymEnv
+from rllab.policies.categorical_mlp_policy import CategoricalMLPPolicy
+
 
 
 import rllab.misc.logger as logger
@@ -23,7 +23,7 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 15 :
+if len(sys.argv) != 14 :
     print('we need more arguments as input here... sorry I will not list them all please look into the script ;P')
 else :
     keyword = sys.argv[1]
@@ -41,42 +41,37 @@ else :
     
     plot = np.bool(np.int(sys.argv[13]))
     
-    which = sys.argv[14]
-    
-    
     def run_task(*_):
-        env = normalize(GymEnv(which, record_video=False, record_log=False))
+        env = normalize(GymEnv("Acrobot-v3", record_video=False, record_log=False))
     
         print("Action dims = " + str(env.action_dim))
         print("obs dim = " + str(env.observation_space.flat_dim))
         
         
     
-        policy = CategoricalMLPPolicy(
+        policy = KL_GaussianMLPPolicy(
             env_spec=env.spec,
+            learn_std = True,
+            init_std=stduncontrolled, #set the std of the NN equal to the uncontrolled std
+            hidden_sizes=(50,50),
+            hidden_nonlinearity=NL.rectify,
+            hidden_W_init_mean=LI.Orthogonal('relu'),
+            hidden_W_init_std=LI.Orthogonal('relu')
         )
         
         baseline = LinearFeatureBaseline(env_spec=env.spec)
     
-        algo = PLAINKLANNEAL(
+        algo = TRPO(
             env=env,
             policy=policy,
             baseline=baseline,
-            sampler_cls=AKLSampler,
-            step_size = epsilon,
-            plot=plot,
             n_itr=n_itr,
-            delta=delta,
-            log_std_uncontrolled= np.log(stduncontrolled),
-            lambd = lambd,
-            algorithm = algorithm, #which PoD to take
-            PoF = PoF, #which PoF to take
-            optim = optim,#'Lbfgs',
+            plot=True,
             max_path_length=env.horizon,
             batch_size=N*env.horizon,
-            cg_iters = 10
+            step_size=delta,
         )
-        
+
         logger.log("    eps " + str(epsilon))
         logger.log("    seed " + str(seed))
         logger.log("    keyword " + keyword)

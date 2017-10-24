@@ -1,14 +1,10 @@
 
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.kl_trpo import KLTRPO
+
 from rllab.algos.KLannealing import KLANNEAL
-#from rllab.algos.KLannealing_introspection import KLANNEAL
-#from rllab.algos.npireps import NPIREPS as KLANNEAL
 from rllab.sampler.annealkl_sampler import AKLSampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
-#from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
-from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
-#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
+
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
@@ -32,7 +28,7 @@ else :
     delta = np.float(sys.argv[2])#0.8
     epsilon = np.float(sys.argv[3])#0.1
     N= np.int(sys.argv[4]) #200
-    seed = np.int(sys.argv[5]) #1708
+    
     n_parallel = np.int(sys.argv[6])
     algorithm =sys.argv[7]
     PoF =sys.argv[8]
@@ -40,6 +36,8 @@ else :
     stduncontrolled = np.float(sys.argv[10]) #1.0
     lambd = np.float(sys.argv[11]) #0.1
     n_itr = np.int(sys.argv[12])
+    
+    seed = np.int(np.round((np.int(sys.argv[5])+1000*epsilon+1234*delta)*10)) #1708
     
     plot = np.bool(np.int(sys.argv[13]))
     
@@ -79,7 +77,8 @@ else :
             optim = optim,#'Lbfgs',
             max_path_length=env.horizon,
             batch_size=N*env.horizon,
-            cg_iters = 10
+            cg_iters = 10,
+            introspection=0
         )
         
         logger.log("    eps " + str(epsilon))

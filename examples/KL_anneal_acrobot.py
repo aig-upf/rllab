@@ -1,18 +1,18 @@
 
 from rllab.misc.instrument import run_experiment_lite
-from rllab.algos.kl_trpo import KLTRPO
+
 from rllab.algos.KLannealing import KLANNEAL
-#from rllab.algos.npireps import NPIREPS as KLANNEAL
 from rllab.sampler.annealkl_sampler import AKLSampler
 from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
-#from rllab.envs.box2d.double_pendulum_env import DoublePendulumEnv
-from rllab.envs.box2d.kl_double_pendulum_env import KLDoublePendulumEnv
-#from rllab.envs.box2d.kl_time_double_pendulum_env import KLDoublePendulumEnv
+
 from rllab.envs.normalized_env import normalize
 from rllab.policies.KL_gaussian_mlp_policy import KL_GaussianMLPPolicy
 import lasagne.nonlinearities as NL
 import lasagne.init as LI
 from time import gmtime, strftime
+from rllab.envs.gym_env import GymEnv
+from rllab.policies.categorical_mlp_policy import CategoricalMLPPolicy
+
 
 
 import rllab.misc.logger as logger
@@ -23,40 +23,34 @@ import sys
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-if len(sys.argv) != 3 :
-    print('Use as: python fname.py n_parallel n_itr')
+if len(sys.argv) != 14 :
+    print('we need more arguments as input here... sorry I will not list them all please look into the script ;P')
 else :
-    variant = 'KLannealing'
-    keyword = 'debug'
-    delta = 0.8
-    epsilon = 0.1
-    N= 200
-    seed = 1708
-    n_parallel = np.int(sys.argv[1])
+    keyword = sys.argv[1]
+    delta = np.float(sys.argv[2])#0.8
+    epsilon = np.float(sys.argv[3])#0.1
+    N= np.int(sys.argv[4]) #200
+    seed = np.int(sys.argv[5]) #1708
+    n_parallel = np.int(sys.argv[6])
+    algorithm =sys.argv[7]
+    PoF =sys.argv[8]
+    optim =sys.argv[9]
+    stduncontrolled = np.float(sys.argv[10]) #1.0
+    lambd = np.float(sys.argv[11]) #0.1
+    n_itr = np.int(sys.argv[12])
     
-    
-    stduncontrolled = 1.0
-    lambd = 0.1
-    n_itr = np.int(sys.argv[2])
-    
-    plot = True 
+    plot = np.bool(np.int(sys.argv[13]))
     
     def run_task(*_):
-        env = normalize(KLDoublePendulumEnv())
+        env = normalize(GymEnv("Acrobot-v2", record_video=False, record_log=False))
     
         print("Action dims = " + str(env.action_dim))
         print("obs dim = " + str(env.observation_space.flat_dim))
         
         
     
-        policy = KL_GaussianMLPPolicy(
+        policy = CategoricalMLPPolicy(
             env_spec=env.spec,
-            learn_std = False,
-            init_std=stduncontrolled, #set the std of the NN equal to the uncontrolled std
-            hidden_sizes=(32,32),
-            hidden_nonlinearity=NL.tanh, #NL.rectify
-            hidden_W_init_mean=LI.GlorotUniform(),
-            hidden_W_init_std=LI.GlorotUniform() #LI.Orthogonal('relu')
         )
         
         baseline = LinearFeatureBaseline(env_spec=env.spec)
@@ -68,24 +62,28 @@ else :
             sampler_cls=AKLSampler,
             step_size = epsilon,
             plot=plot,
-            max_path_length=100,
             n_itr=n_itr,
-            batch_size=N*100,
             delta=delta,
             log_std_uncontrolled= np.log(stduncontrolled),
             lambd = lambd,
-            algorithm = 'Algorithm2', #which PoD to take
-            PoF = 'KL_CE2', #which PoF to take
-            optim = 'firstorder',#'Lbfgs',
+            algorithm = algorithm, #which PoD to take
+            PoF = PoF, #which PoF to take
+            optim = optim,#'Lbfgs',
+            max_path_length=env.horizon,
+            batch_size=N*env.horizon,
+            cg_iters = 10,
+            introspection=0
         )
-    
-        logger.log("    variant " + variant)
+        
         logger.log("    eps " + str(epsilon))
         logger.log("    seed " + str(seed))
         logger.log("    keyword " + keyword)
         logger.log("    log_std_uncontrolled " + str(np.log(stduncontrolled)))
         logger.log("    lambda " + str(lambd))
         logger.log("    n_itr " + str(n_itr))
+        logger.log('    algorithm '+str(algorithm))
+        logger.log('    PoF '+str(PoF))
+        logger.log('    optim '+str(optim))
     
         algo.train()
     
@@ -100,5 +98,5 @@ else :
         seed=seed,
         plot=plot,
         exp_prefix=keyword,
-        exp_name='debug'
+        exp_name='sweep'+strftime("%Y-%m-%d %H:%M:%S", gmtime())+'keyword '+keyword+'eps '+str(epsilon)+'seed '+str(seed)+'delta '+str(delta)+'N '+str(N)+'algorithm '+str(algorithm)+'PoF '+str(PoF)+'optim '+str(optim)
     )
